@@ -1,20 +1,29 @@
-//
-// Euterpe.js
-//
-// Max E. Kuznetsov <mek@mek.uz.ua>
-// Copyright MuzMates 2014
+/**
+ * Euterpe.js
+ *
+ * @author Max E. Kuznetsov <mek@mek.uz.ua>
+ * @copyright MuzMates 2014
+ */
 
-// Params
-//  * x :: float() - x coordinate of the center
-//  * y :: float() - y coordinate of the center
-//  * type :: whole | half | quarter - note head type
-//  * scale :: float() - stave scale
-//  * beamDirection :: up | down - Beam direction
-
-// Public object attributes:
-//  * group :: Kinetic.Group()
-
+/**
+ * @namespace Euterpe
+ */
 Euterpe.Note = (function() {
+    /**
+     * Note object
+     *
+     * @constructor
+     * @param {Object} config - Configuration parameters
+     * @param {float} [config.x=0] - X coordinate of the note head
+     * @param {float} [config.y=0] - Y coordinate of the note head
+     * @param {float} [config.scale=1.0] - Scale factor
+     * @param {String} [config.type="quarter"] - Note head type (whole|half|quarter)
+     * @param {String} [config.beamDirection] - Beam direction (up|down)
+     *
+     * Public attributes:
+     *  group {Kinetic.Group()}
+     */
+
     function Note(config) {
         this.init(config);
     }

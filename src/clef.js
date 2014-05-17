@@ -1,37 +1,43 @@
-//
-// Euterpe.js
-//
-// Max E. Kuznetsov <mek@mek.uz.ua>
-// Copyright MuzMates 2014
+/**
+ * Euterpe.js
+ *
+ * @author Max E. Kuznetsov <mek@mek.uz.ua>
+ * @copyright MuzMates 2014
+ */
 
-// Params
-//  * x :: float()
-//    x coordinate of the upper left corner
-//  * y :: float()
-//    y coordinate of the upper left corner
-
-// Public object attributes:
-//  * group :: Kinetic.Group()
-
+/**
+ * @namespace Euterpe
+ */
 Euterpe.TrebleClef = (function() {
+    /**
+     * Treble clef
+     *
+     * @constructor
+     * @param {Object} config - Configuration parameters
+     * @param {float} [config.x=0] - X coordinate of the upper left corner
+     * @param {float} [config.y=0] - Y coordinate of the upper left corner
+     * @param {float} [config.scale=1.0] - Scale factor
+     *
+     * Public attributes:
+     *  group {Kinetic.Group()}
+     */
     function TrebleClef(config) {
         this.init(config);
     }
 
     TrebleClef.prototype = {
         init: function(cfg) {
-            this.x = Euterpe.get_config(cfg, "x", 0);
-            this.y = Euterpe.get_config(cfg, "y", 0);
-            this.scale_x = 0.07;
-            this.scale_y = 0.07;
+            this.startX = Euterpe.get_config(cfg, "x", 0);
+            this.startY = Euterpe.get_config(cfg, "y", 0);
+            this.scale = Euterpe.get_config(cfg, "scale", 1.0);
             var self = this;
 
             var shape1 = new Kinetic.Shape({
                 sceneFunc: function(ctx) {
                     ctx.beginPath(); 
 
-                    ctx.translate(self.x,self.y);
-                    ctx.scale(self.scale_x,self.scale_y);
+                    ctx.translate(self.startX, self.startY);
+                    ctx.scale(self.scale,self.scale);
                     ctx.moveTo(159,3); 
                     ctx.quadraticCurveTo(129,50,117,93); 
                     ctx.quadraticCurveTo(107,126,102,167); 
@@ -84,8 +90,8 @@ Euterpe.TrebleClef = (function() {
                 sceneFunc: function(ctx) {
                     ctx.beginPath(); 
 
-                    ctx.translate(self.x,self.y);
-                    ctx.scale(self.scale_x,self.scale_y);
+                    ctx.translate(self.startX,self.startY);
+                    ctx.scale(self.scale,self.scale);
                     ctx.moveTo(191,93); 
                     ctx.quadraticCurveTo(179,83,171,93); 
                     ctx.quadraticCurveTo(126,162,131,281); 
@@ -104,9 +110,9 @@ Euterpe.TrebleClef = (function() {
                 sceneFunc: function(ctx) {
                     ctx.beginPath(); 
 
-                    ctx.translate(self.x,self.y);
-                    ctx.scale(self.scale_x,self.scale_y);
-                    ctx.moveTo(171,473); 
+                    ctx.translate(self.startX,self.startY);
+                    ctx.scale(self.scale,self.scale);
+                    ctx.moveTo(171,473);
                     ctx.quadraticCurveTo(188,555,206,648);  
                     ctx.quadraticCurveTo(237,639,255,620); 
                     ctx.quadraticCurveTo(283,588,283,558); 
@@ -125,9 +131,9 @@ Euterpe.TrebleClef = (function() {
                 sceneFunc: function(ctx) {
                     ctx.beginPath(); 
 
-                    ctx.translate(self.x,self.y);
-                    ctx.scale(self.scale_x,self.scale_y);
-                    ctx.moveTo(147,446); 
+                    ctx.translate(self.startX,self.startY);
+                    ctx.scale(self.scale,self.scale);
+                    ctx.moveTo(147,446);
                     ctx.quadraticCurveTo(141,411,132,369); 
                     ctx.quadraticCurveTo(90,401,68,435); 
                     ctx.quadraticCurveTo(45,467,39,503); 
@@ -147,9 +153,9 @@ Euterpe.TrebleClef = (function() {
                 sceneFunc: function(ctx) {
                     ctx.beginPath(); 
 
-                    ctx.translate(self.x,self.y);
-                    ctx.scale(self.scale_x,self.scale_y);
-                    ctx.moveTo(147,444); 
+                    ctx.translate(self.startX,self.startY);
+                    ctx.scale(self.scale,self.scale);
+                    ctx.moveTo(147,444);
                     ctx.quadraticCurveTo(120,456,101,480); 
                     ctx.quadraticCurveTo(83,504,84,536); 
                     ctx.quadraticCurveTo(86,567,107,588); 

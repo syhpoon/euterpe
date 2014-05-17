@@ -1,12 +1,21 @@
-//
-// Euterpe.js
-//
-// Max E. Kuznetsov <mek@mek.uz.ua>
-// Copyright MuzMates 2014
+/**
+ * Euterpe.js
+ *
+ * @author Max E. Kuznetsov <mek@mek.uz.ua>
+ * @copyright MuzMates 2014
+ */
 
 function Euterpe() {};
 
-// Get the object value by key or default if undefined
+/**
+ * Get the object value by key or default if undefined
+ *
+ * @namespace Euterpe
+ * @param {Object} config
+ * @param {String} name
+ * @param {Object} defaultVal
+ * @returns {Object|Number}
+ */
 Euterpe.get_config = function(config, name, defaultVal) {
     if(typeof config === 'undefined')
         return defaultVal;
