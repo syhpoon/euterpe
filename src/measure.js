@@ -10,44 +10,105 @@
  */
 Euterpe.Measure = (function() {
     /**
-     * Measure object
+     * Measure [container]
      *
      * @constructor
      * @param {Object} config - Configuration parameters
-     * @param {Number} config.measureLength - Length of the measure
-     * @param {Number} [config.x=0] - X coordinate of the upper left corner
-     * @param {Number} [config.y=0] - Y coordinate of the upper left corner
-     * @param {Number} [config.scale=1.0] - Scale factor
+     * @param {Number} config.number - Measure number
      * @param {String} [config.leftBarType=single] - Left bar type (single|double|double bold|repeat)
      * @param {String} [config.rightBarType=single] - Right bar type (single|double|double bold|repeat)
-     *
-     * Public attributes:
-     *  leftBar {Kinetic.Line()} - Left bar
-     *  rightBar {Kinetic.Line()} - Left bar
-     *  leftBarWidth {Number} - Left bar width
-     *  rightBarWidth {Number} - Right bar width
-     *  line1 {Kinetic.Line()} - Line 1 (upper)
-     *  line2 {Kinetic.Line()} - Line 2
-     *  line3 {Kinetic.Line()} - Line 3
-     *  line4 {Kinetic.Line()} - Line 4
-     *  line5 {Kinetic.Line()} - Line 5 (lower)
-     *  group {Kinetic.Group()}
      */
     function Measure(config) {
-        this.init(config);
+        Euterpe.initContainer(this);
+
+        this.leftBarType = Euterpe.get_config(config, "leftBarType", "single");
+        this.rightBarType = Euterpe.get_config(config, "rightBarType", "single");
+        this.number = Euterpe.get_config(config, "number", undefined);
     }
 
     Measure.prototype = {
-        init: function(cfg) {
-            this.scale = Euterpe.get_config(cfg, "scale", 1.0);
-            this._x = Euterpe.get_config(cfg, "x", 0);
-            this._y = Euterpe.get_config(cfg, "y", 0);
-            this.leftBarType = Euterpe.get_config(cfg, "leftBarType", "single");
-            this.rightBarType = Euterpe.get_config(cfg, "rightBarType", "single");
-            this.measureLength = Euterpe.get_config(cfg, "measureLength", 0) * this.scale;
+        /**
+         * Calculate item y coordinate
+         *
+         * @private
+         * @param {Object} item
+         * @param {Number} y
+         * @param {Number} scale
+         * @returns {Number}
+         */
+        get_item_y: function(item, y, scale) {
+            if(typeof item.location === 'undefined') {
+                return y;
+            }
+
+            if(typeof item.location.line === 'number') {
+                return this.get_item_y_line(item, y);
+            }
+
+            if(typeof item.location.raw === 'function') {
+                return item.location.raw(this, item, y, scale);
+            }
+
+            return y;
+        },
+
+        get_item_y_line: function(item, y) {
+            var offset = this.linePadding / 2 + this.lineWidth / 2;
+
+            switch(item.location.line) {
+                case 1:
+                    return this.line1.y();
+                    break;
+                case 1.5:
+                    return this.line1.y() + offset;
+                    break;
+                case 2:
+                    return this.line2.y();
+                    break;
+                case 2.5:
+                    return this.line2.y() + offset;
+                    break;
+                case 3:
+                    return this.line3.y();
+                    break;
+                case 3.5:
+                    return this.line3.y() + offset;
+                    break;
+                case 4:
+                    return this.line4.y();
+                    break;
+                case 4.5:
+                    return this.line4.y() + offset;
+                    break;
+                case 5:
+                    return this.line5.y();
+                    break;
+            }
+
+            return y;
+        },
+
+        prepare: function(x, y, scale) {
+            var self = this;
+            var acc = [this.prepareSelf(x, y, scale)];
+
+            var itemcb = function(item, x, y, scale) {
+                var item_y = self.get_item_y(item, y, scale);
+
+                return item.prepare(x, item_y, scale);
+            };
+
+            return acc.concat(this.basePrepare(x, y, scale, itemcb));
+        },
+
+        prepareSelf: function(x, y, scale) {
+            this._x = x;
+            this._y = y;
+            this.scale = scale;
+            this.measureLength = Euterpe.getRealWidth(this);
 
             this.linePadding = 13 * this.scale;
-            this.lineWidth = 1 * this.scale;
+            this.lineWidth = this.scale;
 
             var lb = this.initLeftBar(this.leftBarType, this._x, this._y);
             var rb = this.initRightBar(this.rightBarType,
@@ -61,14 +122,10 @@ Euterpe.Measure = (function() {
             var startX = lb.x;
             var startY = this._y + (this.lineWidth / 2);
 
-            var line2_y = startY + this.linePadding * 1 +
-                (this.lineWidth * 1);
-            var line3_y = startY + this.linePadding * 2 +
-                (this.lineWidth * 2);
-            var line4_y = startY + this.linePadding * 3 +
-                (this.lineWidth * 3);
-            var line5_y = startY + this.linePadding * 4 +
-                (this.lineWidth * 4);
+            var line2_y = startY + this.linePadding * 1 + (this.lineWidth * 1);
+            var line3_y = startY + this.linePadding * 2 + (this.lineWidth * 2);
+            var line4_y = startY + this.linePadding * 3 + (this.lineWidth * 3);
+            var line5_y = startY + this.linePadding * 4 + (this.lineWidth * 4);
 
             this.line1 = new Kinetic.Line({
                 points: [0, 0, this.measureLength, 0],
@@ -103,6 +160,19 @@ Euterpe.Measure = (function() {
             this.group.add(this.line4);
             this.group.add(this.line5);
             this.group.add(this.rightBar);
+
+            if(typeof this.number !== 'undefined') {
+                var number = new Kinetic.Text({
+                    x: startX + 3 * scale,
+                    y: startY - 13 * scale,
+                    text: this.number.toString(),
+                    fontSize: 10 * scale,
+                    fontFamily: 'Arial',
+                    fill: 'black'
+                });
+
+                this.group.add(number);
+            }
 
             return this.group;
         },

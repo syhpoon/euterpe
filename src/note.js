@@ -14,29 +14,39 @@ Euterpe.Note = (function() {
      *
      * @constructor
      * @param {Object} config - Configuration parameters
-     * @param {float} [config.x=0] - X coordinate of the note head
-     * @param {float} [config.y=0] - Y coordinate of the note head
-     * @param {float} [config.scale=1.0] - Scale factor
      * @param {String} [config.type="quarter"] - Note head type (whole|half|quarter)
      * @param {String} [config.beamDirection] - Beam direction (up|down)
      * @param {Number} [config.flags=0] - Number of flags
-     *
-     * Public attributes:
-     *  group {Kinetic.Group()}
+     * @param {Object} [config.location] - Location of the note
      */
 
     function Note(config) {
-        this.init(config);
+        this.type = Euterpe.get_config(config, "type", "quarter");
+        this.beamDir = Euterpe.get_config(config, "beamDirection", undefined);
+        this.flags = Euterpe.get_config(config, "flags", 0);
+        this.location = Euterpe.get_config(config, "location", undefined);
+
+        if(this.type === "whole") {
+            this.realWidth = 21.2;
+        }
+        else {
+            this.realWidth = 14;
+        }
     }
 
     Note.prototype = {
-        init: function(cfg) {
-            this.scale = Euterpe.get_config(cfg, "scale", 1.0);
-            this.startX = Euterpe.get_config(cfg, "x", 0);
-            this.startY = Euterpe.get_config(cfg, "y", 0);
-            this.type = Euterpe.get_config(cfg, "type", "quarter");
-            this.beamDir = Euterpe.get_config(cfg, "beamDirection", undefined);
-            this.flags = Euterpe.get_config(cfg, "flags", 0);
+
+        /**
+         * Prepare object
+         * @param x
+         * @param y
+         * @param scale
+         * @returns {Kinetic.*}
+         */
+        prepare: function(x, y, scale) {
+            this.scale = scale;
+            this.startX = x + this.realWidth / 2;
+            this.startY = y;
 
             switch(this.type) {
                 case "whole":
@@ -45,9 +55,15 @@ Euterpe.Note = (function() {
                 default:
                     this.group = this.initHalfQuarter();
             }
+
+            return this.group;
         },
 
-        // Make a whole head
+        /**
+         * Make a whole head
+         *
+         * @private
+         */
         initWhole: function() {
             var extEl = new Kinetic.Ellipse({
                 x: this.startX,
@@ -80,7 +96,11 @@ Euterpe.Note = (function() {
             return group;
         },
 
-        // Make a half and quarter head
+        /**
+         * Make a half and quarter head
+         *
+         * @private
+         */
         initHalfQuarter: function() {
             var group = new Kinetic.Group({});
             var self = this;
@@ -89,12 +109,11 @@ Euterpe.Note = (function() {
                 x: this.startX,
                 y: this.startY,
                 radius: {
-                    x: 7.5 * this.scale,
-                    y: 5.5 * this.scale
+                    x: 7.6 * this.scale,
+                    y: 5.6 * this.scale
                 },
 
                 fill: "black"
-
             });
 
             extEl.rotation(140);
@@ -105,8 +124,8 @@ Euterpe.Note = (function() {
                     x: this.startX,
                     y: this.startY,
                     radius: {
-                        x: 6.5 * this.scale,
-                        y: 2.4 * this.scale
+                        x: 6.6 * this.scale,
+                        y: 2.5 * this.scale
                     },
 
                     fill: "white"
