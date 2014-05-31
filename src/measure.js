@@ -30,19 +30,19 @@ Euterpe.Measure = (function() {
         /**
          * Calculate item y coordinate
          *
-         * @private
+         * @public
          * @param {Object} item
          * @param {Number} y
          * @param {Number} scale
          * @returns {Number}
          */
-        get_item_y: function(item, y, scale) {
+        getItemY: function(item, y, scale) {
             if(typeof item.location === 'undefined') {
                 return y;
             }
 
             if(typeof item.location.line === 'number') {
-                return this.get_item_y_line(item, y);
+                return this.getItemYLine(item, y);
             }
 
             if(typeof item.location.raw === 'function') {
@@ -52,7 +52,15 @@ Euterpe.Measure = (function() {
             return y;
         },
 
-        get_item_y_line: function(item, y) {
+        /**
+         * Calculate item y coordinate base on specified line number
+         *
+         * @private
+         * @param {Object} item
+         * @param {Number} y
+         * @returns {Number}
+         */
+        getItemYLine: function(item, y) {
             var offset = this.linePadding / 2 + this.lineWidth / 2;
 
             switch(item.location.line) {
@@ -93,14 +101,22 @@ Euterpe.Measure = (function() {
             var acc = [this.prepareSelf(x, y, scale)];
 
             var itemcb = function(item, x, y, scale) {
-                var item_y = self.get_item_y(item, y, scale);
+                var itemY = self.getItemY(item, y, scale);
 
-                return item.prepare(x, item_y, scale);
+                if(typeof item.prepareMeasure === 'function') {
+                    return item.prepareMeasure(x, y, scale);
+                }
+                else {
+                    return item.prepare(x, y, scale);
+                }
             };
 
             return acc.concat(this.basePrepare(x, y, scale, itemcb));
         },
 
+        /**
+         * @private
+         */
         prepareSelf: function(x, y, scale) {
             this._x = x;
             this._y = y;
@@ -260,7 +276,7 @@ Euterpe.Measure = (function() {
          * @returns {Object}
          */
         initRightBar: function(type, x, y) {
-            var bar = new Kinetic.Group({});
+            var bar = new Kinetic.Group();
             var barWidth = 2 * this.scale;
             var startX = x - (barWidth / 2);
 

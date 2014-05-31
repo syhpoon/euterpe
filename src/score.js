@@ -10,17 +10,17 @@
  *
  * @namespace Euterpe
  */
-Euterpe.Packer = (function() {
+Euterpe.Score = (function() {
     /**
-     * Packer object
+     * Score object
      *
      * @constructor
      */
-    function Packer() {
+    function Score() {
         Euterpe.initContainer(this);
     }
 
-    Packer.prototype = {
+    Score.prototype = {
         /**
          * Recursively pack the container
          *
@@ -44,5 +44,5 @@ Euterpe.Packer = (function() {
         }
     };
 
-    return Packer;
+    return Score;
 }());

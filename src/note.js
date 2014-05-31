@@ -21,10 +21,20 @@ Euterpe.Note = (function() {
      */
 
     function Note(config) {
+        /** @public */
         this.type = Euterpe.get_config(config, "type", "quarter");
+
+        /** @public */
         this.beamDir = Euterpe.get_config(config, "beamDirection", undefined);
+
+        /** @public */
         this.flags = Euterpe.get_config(config, "flags", 0);
+
+        /** @public */
         this.location = Euterpe.get_config(config, "location", undefined);
+
+        /** @public */
+        this.beam = undefined;
 
         if(this.type === "whole") {
             this.realWidth = 21.2;
@@ -38,25 +48,49 @@ Euterpe.Note = (function() {
 
         /**
          * Prepare object
-         * @param x
-         * @param y
-         * @param scale
+         * @param {Number} x
+         * @param {Number} y
+         * @param {Number} scale
+         * @param {Object} options
          * @returns {Kinetic.*}
+         *
+         * Possible options:
+         * * skipFlags {Boolean} - Do not draw flags even if explicitly requested
          */
-        prepare: function(x, y, scale) {
+        prepare: function(x, y, scale, options) {
+            options = options || {};
+
+            /** @public */
             this.scale = scale;
+
+            /** @public */
             this.startX = x + this.realWidth / 2;
+
+            /** @public */
             this.startY = y;
+
+            /** @public */
+            this.beamWidth = 1.3 * this.scale;
+
+            /** @public */
+            this.beamHeight = 30 * this.scale;
 
             switch(this.type) {
                 case "whole":
                     this.group = this.initWhole();
                     break;
                 default:
-                    this.group = this.initHalfQuarter();
+                    this.group = this.initHalfQuarter(options);
             }
 
             return this.group;
+        },
+
+        /**
+         * For NoteGroup avoid drawing flags
+         */
+        prepareNoteGroup: function(x, y, scale) {
+            return this.prepare(x, y, scale, {skipFlags: true});
         },
 
         /**
@@ -101,7 +135,7 @@ Euterpe.Note = (function() {
          *
          * @private
          */
-        initHalfQuarter: function() {
+        initHalfQuarter: function(options) {
             var group = new Kinetic.Group({});
             var self = this;
 
@@ -136,70 +170,72 @@ Euterpe.Note = (function() {
                 group.add(intEl);
             }
 
-            var beamWidth = 1.3 * this.scale;
-            var beamHeight = 30 * this.scale;
-            var bX, bY, beam;
+            var bX, bY;
 
             // Check if beam is needed
             if(typeof this.beamDir === 'string') {
                 if(this.beamDir === 'up') {
-                    bX = extEl.x() + (extEl.width() / 2) - beamWidth - (beamWidth / 3);
+                    bX = extEl.x() + (extEl.width() / 2) -
+                         this.beamWidth - (this.beamWidth / 3);
                     bY = extEl.y();
 
-                    beam = new Kinetic.Line({
-                        points: [0, 0, 0, -beamHeight],
+                    this.beam = new Kinetic.Line({
+                        points: [0, 0, 0, -this.beamHeight],
                         stroke: 'black',
-                        strokeWidth: beamWidth,
+                        strokeWidth: this.beamWidth,
                         x: bX,
                         y: bY
                     });
 
-                    group.add(beam);
+                    group.add(this.beam);
                 }
                 else if(this.beamDir === 'down') {
-                    bX = extEl.x() - (extEl.width() / 2) + beamWidth + (beamWidth/3);
+                    bX = extEl.x() - (extEl.width() / 2) +
+                         this.beamWidth + (this.beamWidth / 3);
                     bY = extEl.y();
 
-                    beam = new Kinetic.Line({
-                        points: [0, 0, 0, beamHeight],
+                    this.beam = new Kinetic.Line({
+                        points: [0, 0, 0, this.beamHeight],
                         stroke: 'black',
-                        strokeWidth: beamWidth,
+                        strokeWidth: this.beamWidth,
                         x: bX,
                         y: bY
                     });
 
-                    group.add(beam);
+                    group.add(this.beam);
                 }
 
-                // Check for flags
-                if(this.flags == 1) {
-                    var fx = beam.x();
-                    var fy = beam.y() - beamHeight;
+                if(!options.skipFlags) {
+                    // Check for flags
+                    if(this.flags == 1) {
+                        var fx = this.beam.x();
+                        var fy = this.beam.y() - this.beamHeight;
 
-                    var flag = new Kinetic.Shape({
-                        sceneFunc: function(ctx) {
-                            ctx.beginPath();
-                            ctx.moveTo(fx, fy);
-                            ctx.bezierCurveTo(
-                                fx + 6.2 * self.scale, fy + 11.8 * self.scale,
-                                fx + 21.4 * self.scale, fy + 10.4 * self.scale,
-                                fx + 10 * self.scale, fy + 26.4 * self.scale);
+                        var flag = new Kinetic.Shape({
+                            sceneFunc: function(ctx) {
+                                ctx.beginPath();
+                                ctx.moveTo(fx, fy);
+                                ctx.bezierCurveTo(
+                                    fx + 6.2 * self.scale, fy + 11.8 * self.scale,
+                                    fx + 21.4 * self.scale, fy + 10.4 * self.scale,
+                                    fx + 10 * self.scale, fy + 26.4 * self.scale);
 
-                            ctx.bezierCurveTo(
-                                fx + 19.6 * self.scale, fy + 12.4 * self.scale,
-                                fx + 5.4 * self.scale, fy + 10.4 * self.scale,
-                                fx - 0.2 * self.scale, fy + 7.4 * self.scale);
+                                ctx.bezierCurveTo(
+                                    fx + 19.6 * self.scale, fy + 12.4 * self.scale,
+                                    fx + 5.4 * self.scale, fy + 10.4 * self.scale,
+                                    fx - 0.2 * self.scale, fy + 7.4 * self.scale);
 
-                            ctx.closePath();
+                                ctx.closePath();
 
-                            ctx.fillStrokeShape(this);
-                        },
-                        fill: 'black',
-                        stroke: 'black',
-                        strokeWidth: 1
-                    });
+                                ctx.fillStrokeShape(this);
+                            },
+                            fill: 'black',
+                            stroke: 'black',
+                            strokeWidth: 1
+                        });
 
-                    group.add(flag);
+                        group.add(flag);
+                    }
                 }
             }
 

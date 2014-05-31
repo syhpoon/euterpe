@@ -47,7 +47,7 @@ Euterpe.gap = function(size, direction) {
  */
 Euterpe.initContainer = function(obj) {
     obj.isContainer = true;
-    obj.defaultGap = 10;
+    obj.defaultGap = 20;
     obj.items = [];
 
     /**
@@ -61,6 +61,13 @@ Euterpe.initContainer = function(obj) {
 
         this.addGap(gap);
         this.items.push(item);
+    };
+
+    /**
+     * Add item to collection without preceding gap
+     */
+    obj.addNoGap = function(item) {
+        this.add(item, null);
     };
 
     /**
