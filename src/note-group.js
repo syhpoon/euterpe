@@ -19,6 +19,14 @@ Euterpe.NoteGroup = (function() {
     }
 
     NoteGroup.prototype = {
+        events: {
+            "ready": "onReady"
+        },
+
+        onReady: function() {
+            this.group.moveToBottom();
+        },
+
         prepare: function(x, y, scale) {
             var self = this;
             var first = null;

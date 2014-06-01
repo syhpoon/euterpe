@@ -104,6 +104,15 @@ Euterpe.Measure = (function() {
                 var itemY = self.getItemY(item, y, scale);
 
                 if(typeof item.prepareMeasure === 'function') {
+                    return item.prepareMeasure(x, itemY, scale);
+                }
+                else {
+                    return item.prepare(x, itemY, scale);
+                }
+            };
+
+            var contcb = function(item, x, y, scale) {
+                if(typeof item.prepareMeasure === 'function') {
                     return item.prepareMeasure(x, y, scale);
                 }
                 else {
@@ -111,7 +120,7 @@ Euterpe.Measure = (function() {
                 }
             };
 
-            return acc.concat(this.basePrepare(x, y, scale, itemcb));
+            return acc.concat(this.basePrepare(x, y, scale, itemcb, contcb));
         },
 
         /**

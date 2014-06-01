@@ -37,6 +37,8 @@ Euterpe.Score = (function() {
             _.each(objectsToDraw, function(obj) {
                 layer.add(obj);
             });
+
+            Euterpe.events.fire("ready");
         },
 
         prepare: function(x, y, scale) {

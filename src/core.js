@@ -8,6 +8,62 @@
 function Euterpe() {}
 
 /**
+ * Events repository
+ *
+ * Possible events:
+ *
+ * ready - all objects have been prepared for rendering
+ */
+Euterpe.events = {
+    handlers: [],
+
+    /**
+     * Add event handler
+     * @param {String} event - Event name
+     * @param {Function} handler - Handler function
+     * @param {Object} node - Node for 'this' pointer
+     */
+    addHandler: function(event, handler, node) {
+        if(!_.isArray(this.handlers[event])) {
+            this.handlers[event] = [];
+        }
+
+        this.handlers[event].push([node, handler]);
+    },
+
+    /**
+     * Set event handlers for object (both containers and nodes)
+     * @param {Object} obj
+     */
+    setEventHandlers: function(obj) {
+        var self = this;
+
+        // Set event handlers
+        if(typeof obj.events === 'object') {
+            _.each(_.keys(obj.events),
+                function(key) {
+                    self.addHandler(key, obj[obj.events[key]], obj);
+                });
+        }
+    },
+
+    /**
+     * Fire event
+     * @param {String} event - Event name to fire
+     */
+    fire: function(event) {
+        if(_.isArray(this.handlers[event])) {
+            _.each(this.handlers[event], function(evt) {
+                var node = evt[0];
+                var handler = evt[1];
+
+                handler.apply(node);
+            });
+        }
+    }
+};
+
+/**
  * Get the object value by key or default if undefined
  *
  * @namespace Euterpe
@@ -40,6 +96,20 @@ Euterpe.gap = function(size, direction) {
 };
 
 /**
+ * Init node object
+ *
+ * @param {Object} node - Node to init
+ * @param {String} name - Node name
+ */
+Euterpe.initNode = function(node, name) {
+    node.isNode = true;
+    node.nodeName = name;
+
+    Euterpe.events.setEventHandlers(node);
+};
+
+
+/**
  * Init a container object
  *
  * @namespace Euterpe
@@ -49,6 +119,8 @@ Euterpe.initContainer = function(obj) {
     obj.isContainer = true;
     obj.defaultGap = 20;
     obj.items = [];
+
+    Euterpe.events.setEventHandlers(obj);
 
     /**
      * Add item to container

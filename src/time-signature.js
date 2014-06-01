@@ -102,7 +102,7 @@ Euterpe.TimeSignature = (function() {
             return width;
         },
 
-        prepare: function(x, y, scale) {
+        prepareMeasure: function(x, y, scale) {
             var group = new Kinetic.Group();
 
             var yUp = this.parentContainer.line1.y() + 2 * scale;

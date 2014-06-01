@@ -36,6 +36,8 @@ Euterpe.Note = (function() {
         /** @public */
         this.beam = undefined;
 
+        Euterpe.initNode(this, "Euterpe.Note");
+
         if(this.type === "whole") {
             this.realWidth = 21.2;
         }
@@ -45,6 +47,13 @@ Euterpe.Note = (function() {
     }
 
     Note.prototype = {
+        events: {
+            "ready": "onReady"
+        },
+
+        onReady: function() {
+            this.group.moveToBottom();
+        },
 
         /**
          * Prepare object
