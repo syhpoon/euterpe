@@ -22,16 +22,16 @@ Euterpe.Note = (function() {
 
     function Note(config) {
         /** @public */
-        this.type = Euterpe.get_config(config, "type", "quarter");
+        this.type = Euterpe.getConfig(config, "type", "quarter");
 
         /** @public */
-        this.beamDir = Euterpe.get_config(config, "beamDirection", undefined);
+        this.beamDir = Euterpe.getConfig(config, "beamDirection", undefined);
 
         /** @public */
-        this.flags = Euterpe.get_config(config, "flags", 0);
+        this.flags = Euterpe.getConfig(config, "flags", 0);
 
         /** @public */
-        this.location = Euterpe.get_config(config, "location", undefined);
+        this.location = Euterpe.getConfig(config, "location", undefined);
 
         /** @public */
         this.beam = undefined;

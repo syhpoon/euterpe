@@ -13,9 +13,10 @@ Euterpe.VAlignLeft = (function() {
      * Left vertical align [container]
      *
      * @constructor
+     * @param {Object} config - Configuration parameters
      */
-    function VAlignLeft() {
-        Euterpe.initContainer(this);
+    function VAlignLeft(config) {
+        Euterpe.initContainer(this, "Euterpe.VAlignLeft", config);
     }
 
     VAlignLeft.prototype = {

@@ -15,9 +15,10 @@ Euterpe.Score = (function() {
      * Score object
      *
      * @constructor
+     * @param {Object} config - Configuration parameters
      */
-    function Score() {
-        Euterpe.initContainer(this);
+    function Score(config) {
+        Euterpe.initContainer(this, "Euterpe.Score", config);
     }
 
     Score.prototype = {

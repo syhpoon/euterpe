@@ -72,7 +72,7 @@ Euterpe.events = {
  * @param {*} defaultVal
  * @returns {*}
  */
-Euterpe.get_config = function(config, name, defaultVal) {
+Euterpe.getConfig = function(config, name, defaultVal) {
     if(typeof config === 'undefined')
         return defaultVal;
 
@@ -131,12 +131,14 @@ Euterpe.initNode = function(node, name) {
  * @namespace Euterpe
  * @param {Object} obj - Object to init
  * @param {String} name - Container name
+ * @param {Object} [config] - Container parameters
  */
-Euterpe.initContainer = function(obj, name) {
+Euterpe.initContainer = function(obj, name, config) {
     obj.isContainer = true;
     obj.defaultGap = 20;
     obj.items = [];
     obj.name = name;
+    obj.config = config;
 
     Euterpe.events.setEventHandlers(obj);
 
@@ -245,6 +247,32 @@ Euterpe.initContainer = function(obj, name) {
 
         return acc;
     };
+
+    // Try to populate items if were defined in config
+    if(typeof config !== 'undefined' && _.isArray(config.items)) {
+        var gap = obj.defaultGap;
+
+        for(var i=0; i < config.items.length; i++){
+            var item = config.items[i];
+
+            if(item === null) {
+                gap = null;
+                continue;
+            }
+            else if(typeof item === 'number') {
+                gap = item;
+                continue;
+            }
+            else if(item === 'default') {
+                obj.addGap(obj.defaultGap);
+                continue;
+            }
+
+            obj.add(config.items[i], gap);
+
+            gap = obj.defaultGap;
+        }
+    }
 };
 
 /**

@@ -19,11 +19,11 @@ Euterpe.Measure = (function() {
      * @param {String} [config.rightBarType=single] - Right bar type (none|single|double|double bold|repeat)
      */
     function Measure(config) {
-        Euterpe.initContainer(this, "Euterpe.Measure");
+        Euterpe.initContainer(this, "Euterpe.Measure", config);
 
-        this.leftBarType = Euterpe.get_config(config, "leftBarType", "single");
-        this.rightBarType = Euterpe.get_config(config, "rightBarType", "single");
-        this.number = Euterpe.get_config(config, "number", undefined);
+        this.leftBarType = Euterpe.getConfig(config, "leftBarType", "single");
+        this.rightBarType = Euterpe.getConfig(config, "rightBarType", "single");
+        this.number = Euterpe.getConfig(config, "number", undefined);
     }
 
     Measure.prototype = {

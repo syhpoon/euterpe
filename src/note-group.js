@@ -13,9 +13,10 @@ Euterpe.NoteGroup = (function() {
      * NoteGroup [container]
      *
      * @constructor
+     * @param {Object} config - Configuration parameters
      */
-    function NoteGroup() {
-        Euterpe.initContainer(this, "Euterpe.NoteGroup");
+    function NoteGroup(config) {
+        Euterpe.initContainer(this, "Euterpe.NoteGroup", config);
     }
 
     NoteGroup.prototype = {
