@@ -30,13 +30,13 @@ function initEditor(stage) {
                     ctx.bezierCurveTo(points[1].x, points[1].y,
                         points[2].x, points[2].y,
                         points[3].x, points[3].y);
-                    ctx.strokeStyle = 'red';
+                    ctx.strokeStyle = 'black';
                     ctx.stroke();
                     //ctx.closePath();
                     //ctx.fillStrokeShape(this);
                 },
-                fill: 'red',
-                stroke: 'red',
+                fill: 'black',
+                stroke: 'black',
                 strokeWidth: 1
             });
 
@@ -95,8 +95,8 @@ function initEditor(stage) {
             var line = new Kinetic.Line({
                 name: "line-"+cid,
                 points: points,
-                fill: 'red',
-                stroke: 'red',
+                fill: 'black',
+                stroke: 'black',
                 strokeWidth: 1
             });
 
