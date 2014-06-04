@@ -85,7 +85,7 @@ Euterpe.TimeSignature = (function() {
         this.numerator = Euterpe.get_config(config, "numerator", 4);
         this.denominator = Euterpe.get_config(config, "denominator", 4);
 
-        Euterpe.initContainer(this);
+        Euterpe.initContainer(this, "Euterpe.TimeSignature");
 
         this.items.push(new Shape(this.numerator));
         this.items.push(new Shape(this.denominator));

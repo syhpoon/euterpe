@@ -52,7 +52,9 @@ Euterpe.Note = (function() {
         },
 
         onReady: function() {
-            this.group.moveToBottom();
+            if(this.group) {
+                this.group.moveToBottom();
+            }
         },
 
         /**

@@ -96,6 +96,22 @@ Euterpe.gap = function(size, direction) {
 };
 
 /**
+ * Try to get item location based on container and location definition
+ */
+Euterpe.getItemY = function(container, item, y, scale) {
+    if(typeof item.location === 'object' &&
+       typeof item.location[container.name] === 'object') {
+        return container.getItemY(item, item.location[container.name], y, scale);
+    }
+    else if(typeof container.parentContainer !== 'undefined') {
+        return Euterpe.getItemY(container.parentContainer, item, y, scale);
+    }
+    else {
+        return y;
+    }
+};
+
+/**
  * Init node object
  *
  * @param {Object} node - Node to init
@@ -114,11 +130,13 @@ Euterpe.initNode = function(node, name) {
  *
  * @namespace Euterpe
  * @param {Object} obj - Object to init
+ * @param {String} name - Container name
  */
-Euterpe.initContainer = function(obj) {
+Euterpe.initContainer = function(obj, name) {
     obj.isContainer = true;
     obj.defaultGap = 20;
     obj.items = [];
+    obj.name = name;
 
     Euterpe.events.setEventHandlers(obj);
 

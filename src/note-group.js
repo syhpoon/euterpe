@@ -15,7 +15,7 @@ Euterpe.NoteGroup = (function() {
      * @constructor
      */
     function NoteGroup() {
-        Euterpe.initContainer(this);
+        Euterpe.initContainer(this, "Euterpe.NoteGroup");
     }
 
     NoteGroup.prototype = {
@@ -24,7 +24,9 @@ Euterpe.NoteGroup = (function() {
         },
 
         onReady: function() {
-            this.group.moveToBottom();
+            if(this.group) {
+                this.group.moveToBottom();
+            }
         },
 
         prepare: function(x, y, scale) {
@@ -33,7 +35,7 @@ Euterpe.NoteGroup = (function() {
             var last = null;
 
             var cb = function(item, x, y, scale) {
-                var itemY = self.parentContainer.getItemY(item, y, scale);
+                var itemY = Euterpe.getItemY(self.parentContainer, item, y, scale);
 
                 if(first === null) {
                     first = item;

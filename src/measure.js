@@ -15,11 +15,11 @@ Euterpe.Measure = (function() {
      * @constructor
      * @param {Object} config - Configuration parameters
      * @param {Number} config.number - Measure number
-     * @param {String} [config.leftBarType=single] - Left bar type (single|double|double bold|repeat)
-     * @param {String} [config.rightBarType=single] - Right bar type (single|double|double bold|repeat)
+     * @param {String} [config.leftBarType=single] - Left bar type (none|single|double|double bold|repeat)
+     * @param {String} [config.rightBarType=single] - Right bar type (none|single|double|double bold|repeat)
      */
     function Measure(config) {
-        Euterpe.initContainer(this);
+        Euterpe.initContainer(this, "Euterpe.Measure");
 
         this.leftBarType = Euterpe.get_config(config, "leftBarType", "single");
         this.rightBarType = Euterpe.get_config(config, "rightBarType", "single");
@@ -32,21 +32,22 @@ Euterpe.Measure = (function() {
          *
          * @public
          * @param {Object} item
+         * @param {Object} location - Location definition
          * @param {Number} y
          * @param {Number} scale
          * @returns {Number}
          */
-        getItemY: function(item, y, scale) {
-            if(typeof item.location === 'undefined') {
+        getItemY: function(item, location, y, scale) {
+            if(typeof location === 'undefined') {
                 return y;
             }
 
-            if(typeof item.location.line === 'number') {
-                return this.getItemYLine(item, y);
+            if(typeof location.line === 'number') {
+                return this.getItemYLine(location, y);
             }
 
-            if(typeof item.location.raw === 'function') {
-                return item.location.raw(this, item, y, scale);
+            if(typeof location.raw === 'function') {
+                return location.raw(this, item, y, scale);
             }
 
             return y;
@@ -56,14 +57,14 @@ Euterpe.Measure = (function() {
          * Calculate item y coordinate base on specified line number
          *
          * @private
-         * @param {Object} item
+         * @param {Object} location
          * @param {Number} y
          * @returns {Number}
          */
-        getItemYLine: function(item, y) {
+        getItemYLine: function(location, y) {
             var offset = this.linePadding / 2 + this.lineWidth / 2;
 
-            switch(item.location.line) {
+            switch(location.line) {
                 case 1:
                     return this.line1.y();
                     break;
@@ -101,7 +102,7 @@ Euterpe.Measure = (function() {
             var acc = [this.prepareSelf(x, y, scale)];
 
             var itemcb = function(item, x, y, scale) {
-                var itemY = self.getItemY(item, y, scale);
+                var itemY = Euterpe.getItemY(self, item, y, scale);
 
                 if(typeof item.prepareMeasure === 'function') {
                     return item.prepareMeasure(x, itemY, scale);
@@ -221,7 +222,10 @@ Euterpe.Measure = (function() {
 
             var offset = 5 * this.scale;
 
-            if(type === "single") {
+            if(type === "none") {
+                barWidth = 0;
+            }
+            else if(type === "single") {
                 var b = new Kinetic.Line({
                     points: [0, 0, 0, barHeight],
                     stroke: 'black',
