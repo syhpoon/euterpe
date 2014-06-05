@@ -8,19 +8,21 @@
 /**
  * @namespace Euterpe
  */
-Euterpe.TimeSignature = (function() {
+Euterpe.TimeSignatureShape = (function() {
     /**
      * Digit shape
      *
      * @param {Number} digit
+     * @param {Object} location
      * @constructor
      */
-    function Shape(digit) {
+    function TimeSignatureShape(digit, location) {
         this.digit = digit.toString();
         this.realWidth = 22.4;
+        this.location = location;
     }
 
-    Shape.prototype = {
+    TimeSignatureShape.prototype = {
         prepare: function(startX, startY, scale) {
             var self = this;
             this.scale = scale;
@@ -72,48 +74,6 @@ Euterpe.TimeSignature = (function() {
         }
     };
 
-    /**
-     * Time signature [container]
-     *
-     * @constructor
-     * @param {Object} config - Configuration parameters
-     * @param {Number} [config.numerator=4] - Numerator digit
-     * @param {Number} [config.denominator=4] - Denominator digit
-     */
+    return TimeSignatureShape;
+})();
 
-    function TimeSignature(config) {
-        this.numerator = Euterpe.getConfig(config, "numerator", 4);
-        this.denominator = Euterpe.getConfig(config, "denominator", 4);
-
-        Euterpe.initContainer(this, "Euterpe.TimeSignature");
-
-        this.items.push(new Shape(this.numerator));
-        this.items.push(new Shape(this.denominator));
-    }
-
-    TimeSignature.prototype = {
-        // Override width calculation
-        calculateWidth: function(scale) {
-            var width = _.max(_.map(this.items,
-                function(item) {return Euterpe.getRealWidth(item)})) * scale;
-
-            this.realWidth = width;
-
-            return width;
-        },
-
-        prepareMeasure: function(x, y, scale) {
-            var group = new Kinetic.Group();
-
-            var yUp = this.parentContainer.line1.y() + 2 * scale;
-            var yDown = this.parentContainer.line3.y() + 2 * scale;
-
-            group.add(this.items[0].prepare(x, yUp, scale));
-            group.add(this.items[1].prepare(x, yDown, scale));
-
-            return group;
-        }
-    };
-
-    return TimeSignature;
-}());

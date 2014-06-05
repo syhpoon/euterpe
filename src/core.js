@@ -96,7 +96,46 @@ Euterpe.gap = function(size, direction) {
 };
 
 /**
- * Try to get item location based on container and location definition
+ * Make a time signature container
+ *
+ * @param {Number} [numerator=4] - Numerator digit
+ * @param {Number} [denominator=4] - Denominator digit
+ */
+Euterpe.timeSignature = function(numerator, denominator) {
+    if(typeof numerator === 'undefined') {
+        numerator = 4;
+    }
+
+    if(typeof denominator === 'undefined') {
+        denominator = 4;
+    }
+
+    return new Euterpe.VAlignLeft({
+        items: [
+            null,
+            new Euterpe.TimeSignatureShape(numerator,
+                {
+                    "Euterpe.Measure": {
+                        raw: function(container, _item, _y, scale) {
+                            return container.line1.y() + 2 * scale;
+                        }
+                    }
+                }),
+            null,
+            new Euterpe.TimeSignatureShape(denominator,
+                {
+                    "Euterpe.Measure": {
+                        raw: function(container, _item, _y, scale) {
+                            return container.line3.y() + 2 * scale;
+                        }
+                    }
+                })
+            ]
+    });
+};
+
+/**
+ * Try to get item location based on container type and location definition
  */
 Euterpe.getItemY = function(container, item, y, scale) {
     if(typeof item.location === 'object' &&

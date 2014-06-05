@@ -38,6 +38,7 @@ Euterpe.Measure = (function() {
          * @returns {Number}
          */
         getItemY: function(item, location, y, scale) {
+
             if(typeof location === 'undefined') {
                 return y;
             }
