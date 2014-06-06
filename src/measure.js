@@ -19,14 +19,14 @@ Euterpe.Measure = (function() {
      * @param {String} [config.rightBarType=single] - Right bar type (none|single|double|double bold|repeat)
      */
     function Measure(config) {
-        Euterpe.initContainer(this, "Euterpe.Measure", config);
+        Measure.super.call(this, "Euterpe.Measure", config);
 
         this.leftBarType = Euterpe.getConfig(config, "leftBarType", "single");
         this.rightBarType = Euterpe.getConfig(config, "rightBarType", "single");
         this.number = Euterpe.getConfig(config, "number", undefined);
     }
 
-    Measure.prototype = {
+    Euterpe.extend(Euterpe.Container, Measure, {
         /**
          * Calculate item y coordinate
          *
@@ -352,7 +352,7 @@ Euterpe.Measure = (function() {
 
             return {bar: bar, barWidth: barWidth};
         }
-    };
+    });
 
     return Measure;
 }());

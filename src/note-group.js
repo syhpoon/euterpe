@@ -15,11 +15,11 @@ Euterpe.NoteGroup = (function() {
      * @constructor
      * @param {Object} config - Configuration parameters
      */
-    function NoteGroup(config) {
-        Euterpe.initContainer(this, "Euterpe.NoteGroup", config);
-    }
+    var NoteGroup = function(config) {
+        NoteGroup.super.call(this, "Euterpe.NoteGroup", config);
+    };
 
-    NoteGroup.prototype = {
+    Euterpe.extend(Euterpe.Container, NoteGroup, {
         events: {
             "ready": "onReady"
         },
@@ -97,7 +97,7 @@ Euterpe.NoteGroup = (function() {
                 strokeWidth: 0
             });
         }
-    };
+    });
 
     return NoteGroup;
 }());

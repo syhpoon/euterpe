@@ -96,45 +96,6 @@ Euterpe.gap = function(size, direction) {
 };
 
 /**
- * Make a time signature container
- *
- * @param {Number} [numerator=4] - Numerator digit
- * @param {Number} [denominator=4] - Denominator digit
- */
-Euterpe.timeSignature = function(numerator, denominator) {
-    if(typeof numerator === 'undefined') {
-        numerator = 4;
-    }
-
-    if(typeof denominator === 'undefined') {
-        denominator = 4;
-    }
-
-    return new Euterpe.VAlignLeft({
-        items: [
-            null,
-            new Euterpe.TimeSignatureShape(numerator,
-                {
-                    "Euterpe.Measure": {
-                        raw: function(container, _item, _y, scale) {
-                            return container.line1.y() + 2 * scale;
-                        }
-                    }
-                }),
-            null,
-            new Euterpe.TimeSignatureShape(denominator,
-                {
-                    "Euterpe.Measure": {
-                        raw: function(container, _item, _y, scale) {
-                            return container.line3.y() + 2 * scale;
-                        }
-                    }
-                })
-            ]
-    });
-};
-
-/**
  * Try to get item location based on container type and location definition
  */
 Euterpe.getItemY = function(container, item, y, scale) {
@@ -163,157 +124,6 @@ Euterpe.initNode = function(node, name) {
     Euterpe.events.setEventHandlers(node);
 };
 
-
-/**
- * Init a container object
- *
- * @namespace Euterpe
- * @param {Object} obj - Object to init
- * @param {String} name - Container name
- * @param {Object} [config] - Container parameters
- */
-Euterpe.initContainer = function(obj, name, config) {
-    obj.isContainer = true;
-    obj.defaultGap = 20;
-    obj.items = [];
-    obj.name = name;
-    obj.config = config;
-
-    Euterpe.events.setEventHandlers(obj);
-
-    /**
-     * Add item to container
-     *
-     * @param {Object} item - Item
-     * @param {Number|Object} [gap=Packer.defaultGap] gap - Horizontal gap before the item
-     */
-    obj.add = function(item, gap) {
-        item.parentContainer = this;
-
-        this.addGap(gap);
-        this.items.push(item);
-    };
-
-    /**
-     * Add item to collection without preceding gap
-     */
-    obj.addNoGap = function(item) {
-        this.add(item, null);
-    };
-
-    /**
-     * Add gap
-     * @param {Number | Object} gap
-     */
-    obj.addGap = function(gap) {
-        var _gap;
-
-        if(typeof gap === 'number') {
-            _gap = Euterpe.gap(gap);
-        }
-        else if(typeof gap === 'undefined') {
-            _gap = Euterpe.gap(this.defaultGap);
-        }
-        else {
-            _gap = gap;
-        }
-
-        if(_gap !== null) {
-            this.items.push(_gap);
-        }
-    };
-
-    if(typeof obj.__proto__.calculateWidth === 'undefined') {
-        /**
-         * Recursively calculate width of all items and containers
-         *
-         * @param {Number} scale - Scale
-         */
-        obj.calculateWidth = function(scale) {
-            var width = 0;
-
-            for(var i=0; i < this.items.length; i++) {
-                var item = this.items[i];
-
-                if(item.isGap) {
-                    item.size *= scale;
-
-                    width += item.size;
-                }
-                else if(item.isContainer) {
-                    width += item.calculateWidth(scale);
-                }
-                else {
-                    item.realWidth *= scale;
-
-                    width += Euterpe.getRealWidth(item);
-                }
-            }
-
-            this.realWidth = width;
-
-            return width;
-        };
-    }
-
-    obj.basePrepare = function(x, y, scale, itemcb, containercb) {
-        var acc = [];
-
-        var cb = function(item, x, y, scale) {
-            return item.prepare(x, y, scale);
-        };
-
-        itemcb = itemcb || cb;
-        containercb = containercb || cb;
-
-        for(var i=0; i < this.items.length; i++) {
-            var item = this.items[i];
-
-            if(item.isGap) {
-                x += item.size;
-            }
-            else if(item.isContainer) {
-                acc.push(containercb(item, x, y, scale));
-
-                x += Euterpe.getRealWidth(item);
-            }
-            else {
-                acc.push(itemcb(item, x, y, scale));
-
-                x += Euterpe.getRealWidth(item);
-            }
-        }
-
-        return acc;
-    };
-
-    // Try to populate items if were defined in config
-    if(typeof config !== 'undefined' && _.isArray(config.items)) {
-        var gap = obj.defaultGap;
-
-        for(var i=0; i < config.items.length; i++){
-            var item = config.items[i];
-
-            if(item === null) {
-                gap = null;
-                continue;
-            }
-            else if(typeof item === 'number') {
-                gap = item;
-                continue;
-            }
-            else if(item === 'default') {
-                obj.addGap(obj.defaultGap);
-                continue;
-            }
-
-            obj.add(config.items[i], gap);
-
-            gap = obj.defaultGap;
-        }
-    }
-};
-
 /**
  * Get real width of the object
  *
@@ -332,3 +142,23 @@ Euterpe.getRealWidth = function(item) {
         return 0;
     }
 };
+
+/**
+ * Poor man inheritance
+ * @param base
+ * @param sub
+ * @param {Object} [extend]
+ */
+Euterpe.extend = function(base, sub, extend) {
+    function Inheritance() {}
+    Inheritance.prototype = base.prototype;
+    sub.prototype = new Inheritance();
+
+    sub.prototype.constructor = sub;
+    sub.super = base;
+
+    if(typeof extend === 'object') {
+        _.extend(sub.prototype, extend);
+    }
+};
+

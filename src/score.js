@@ -18,10 +18,10 @@ Euterpe.Score = (function() {
      * @param {Object} config - Configuration parameters
      */
     function Score(config) {
-        Euterpe.initContainer(this, "Euterpe.Score", config);
+        Score.super.call(this, "Euterpe.Score", config);
     }
 
-    Score.prototype = {
+    Euterpe.extend(Euterpe.Container, Score, {
         /**
          * Recursively pack the container
          *
@@ -45,7 +45,7 @@ Euterpe.Score = (function() {
         prepare: function(x, y, scale) {
             return this.basePrepare(x, y, scale);
         }
-    };
+    });
 
     return Score;
 }());

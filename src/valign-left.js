@@ -16,10 +16,10 @@ Euterpe.VAlignLeft = (function() {
      * @param {Object} config - Configuration parameters
      */
     function VAlignLeft(config) {
-        Euterpe.initContainer(this, "Euterpe.VAlignLeft", config);
+        VAlignLeft.super.call(this, "Euterpe.VAlignLeft", config);
     }
 
-    VAlignLeft.prototype = {
+    Euterpe.extend(Euterpe.Container, VAlignLeft, {
         // Override width calculation
         calculateWidth: function(scale) {
             var widths = [];
@@ -59,7 +59,7 @@ Euterpe.VAlignLeft = (function() {
 
             return this.basePrepare(origX, y, scale, itemCb, contCb);
         }
-    };
+    });
 
     return VAlignLeft;
 }());
