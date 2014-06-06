@@ -7,7 +7,7 @@ var root = new Euterpe.Score({
             items: [
                 new Euterpe.TrebleClef(),
 
-                Euterpe.timeSignature(4, 4),
+                new Euterpe.TimeSignature(4, 4),
 
                 null,
 
