@@ -18,10 +18,10 @@ Euterpe.TrebleClef = (function() {
     function TrebleClef() {
         this.realWidth = 36.8;
 
-        Euterpe.initNode(this, "Euterpe.TrebleClef");
+        TrebleClef.super.call(this, "Euterpe.TrebleClef");
     }
 
-    TrebleClef.prototype = {
+    Euterpe.extend(Euterpe.Node, TrebleClef, {
         events: {
             "ready": "onReady"
         },
@@ -185,7 +185,7 @@ Euterpe.TrebleClef = (function() {
 
             return this.group;
         }
-    };
+    });
 
     return TrebleClef;
 }());

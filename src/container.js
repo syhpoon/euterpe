@@ -5,10 +5,13 @@
  * @copyright MuzMates 2014
  */
 
+/**
+ * Base container superclass
+ * @namespace Euterpe
+ */
 Euterpe.Container = (function() {
     var Container = function(name, config) {
         this.items = [];
-        this.isContainer = true;
         this.defaultGap = 20;
         this.name = name;
         this.config = config;
@@ -41,6 +44,8 @@ Euterpe.Container = (function() {
     };
 
     Container.prototype = {
+        isContainer: true,
+
         add: function(item, gap) {
             item.parentContainer = this;
 

@@ -20,9 +20,11 @@ Euterpe.TimeSignatureShape = (function() {
         this.digit = digit.toString();
         this.realWidth = 22.4;
         this.location = location;
+
+        TimeSignatureShape.super.call(this, "Euterpe.TimeSignatureShape");
     }
 
-    TimeSignatureShape.prototype = {
+    Euterpe.extend(Euterpe.Node, TimeSignatureShape, {
         prepare: function(startX, startY, scale) {
             var self = this;
             this.scale = scale;
@@ -72,7 +74,7 @@ Euterpe.TimeSignatureShape = (function() {
                 });
             }
         }
-    };
+    });
 
     return TimeSignatureShape;
 })();
