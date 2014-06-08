@@ -49,7 +49,6 @@ var root = new Euterpe.Score({
                 new Euterpe.VAlignLeft({
                     items: [
                         null,
-
                         new Euterpe.Note({
                             type: "quarter",
                             beamDirection: "up",
@@ -61,13 +60,12 @@ var root = new Euterpe.Score({
                         }),
 
                         null,
-
                         new Euterpe.Note({
                             type: "half",
                             beamDirection: "down",
                             location: {
                                 "Euterpe.Measure": {
-                                    line: 5
+                                    line: 7
                                 }
                             }
                         })
@@ -139,7 +137,7 @@ var root = new Euterpe.Score({
                             beamDirection: "down",
                             location: {
                                 "Euterpe.Measure": {
-                                    line: 5
+                                    line: 7
                                 }
                             }
                         }),
