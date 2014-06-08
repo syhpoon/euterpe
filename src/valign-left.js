@@ -48,7 +48,7 @@ Euterpe.VAlignLeft = (function() {
 
             var itemCb = function(item, x, y, scale) {
                 // Get Y coordinate relative to our own container (Measure)
-                var _y = Euterpe.getItemY(self.parentContainer, item, y, scale);
+                var _y = Euterpe.getItemY(self.parentContainer, item, origX, y, scale);
 
                 return item.prepare(origX, _y, scale);
             };

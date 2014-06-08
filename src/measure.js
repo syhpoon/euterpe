@@ -24,6 +24,7 @@ Euterpe.Measure = (function() {
         this.leftBarType = Euterpe.getConfig(config, "leftBarType", "single");
         this.rightBarType = Euterpe.getConfig(config, "rightBarType", "single");
         this.number = Euterpe.getConfig(config, "number", undefined);
+        this.ledgerLines = [];
     }
 
     Euterpe.extend(Euterpe.Container, Measure, {
@@ -33,18 +34,18 @@ Euterpe.Measure = (function() {
          * @public
          * @param {Object} item
          * @param {Object} location - Location definition
+         * @param {Number} x
          * @param {Number} y
          * @param {Number} scale
          * @returns {Number}
          */
-        getItemY: function(item, location, y, scale) {
-
+        getItemY: function(item, location, x, y, scale) {
             if(typeof location === 'undefined') {
                 return y;
             }
 
             if(typeof location.line === 'number') {
-                return this.getItemYLine(location, y);
+                return this.getItemYLine(item, location, x, y);
             }
 
             if(typeof location.raw === 'function') {
@@ -58,11 +59,13 @@ Euterpe.Measure = (function() {
          * Calculate item y coordinate base on specified line number
          *
          * @private
+         * @param {Object} item
          * @param {Object} location
+         * @param {Number} x
          * @param {Number} y
          * @returns {Number}
          */
-        getItemYLine: function(location, y) {
+        getItemYLine: function(item, location, x, y) {
             var offset = this.linePadding / 2 + this.lineWidth / 2;
 
             switch(location.line) {
@@ -93,9 +96,51 @@ Euterpe.Measure = (function() {
                 case 5:
                     return this.line5.y();
                     break;
+                // Ledger lines
+                default:
+                    var width = Euterpe.getRealWidth(item);
+                    var d, extra;
+
+                    // Line below
+                    if(location.line > 5) {
+                        d = Math.floor(location.line) - 5;
+                        extra = Math.ceil(location.line) > location.line ? offset: 0;
+
+                        return this.addLedgerLine(d, x, width,
+                                                  this.line5.y(), 1) + extra;
+                    }
+                    // Line above
+                    else if(location.line < 0) {
+                        d = Math.ceil(location.line);
+                        extra = Math.floor(location.line) < location.line ? offset: 0;
+
+                        return this.addLedgerLine(d * -1, x, width,
+                                                  this.line1.y(), -1) - extra;
+                    }
             }
 
             return y;
+        },
+
+        /** @private **/
+        addLedgerLine: function(pos, x, width, baseY, m) {
+            if(pos === 0) {
+                return baseY;
+            }
+
+            var off = this.linePadding * pos + (this.lineWidth * pos);
+            var _y = baseY + off * m;
+
+            // Check if this line is already defined
+            if(!_.find(this.ledgerLines, function(line) {
+                return line[0] === x && line[1] === _y;
+            })) {
+                this.ledgerLines.push([x, _y, width]);
+            }
+
+            this.addLedgerLine(pos - 1, x, width, baseY, m);
+
+            return _y;
         },
 
         prepare: function(x, y, scale) {
@@ -103,7 +148,7 @@ Euterpe.Measure = (function() {
             var acc = [this.prepareSelf(x, y, scale)];
 
             var itemcb = function(item, x, y, scale) {
-                var itemY = Euterpe.getItemY(self, item, y, scale);
+                var itemY = Euterpe.getItemY(self, item, x, y, scale);
 
                 if(typeof item.prepareMeasure === 'function') {
                     return item.prepareMeasure(x, itemY, scale);
@@ -122,12 +167,31 @@ Euterpe.Measure = (function() {
                 }
             };
 
-            return acc.concat(this.basePrepare(x, y, scale, itemcb, contcb));
+            acc = acc.concat(this.basePrepare(x, y, scale, itemcb, contcb));
+
+            this.prepareLedgerLines(this.ledgerLines, scale);
+
+            return acc;
         },
 
-        /**
-         * @private
-         */
+        /** @private */
+        prepareLedgerLines: function(lines, scale) {
+            for(var i=0; i < lines.length; i++) {
+                var x = lines[i][0];
+                var y = lines[i][1];
+                var width = lines[i][2] + 10 * scale;
+
+                this.group.add(new Kinetic.Line({
+                    points: [0, 0, width, 0],
+                    stroke: 'black',
+                    strokeWidth: this.lineWidth,
+                    x: x - 5 * scale,
+                    y: y
+                }));
+            }
+        },
+
+        /** @private */
         prepareSelf: function(x, y, scale) {
             this._x = x;
             this._y = y;

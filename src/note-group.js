@@ -36,7 +36,7 @@ Euterpe.NoteGroup = (function() {
             var last = null;
 
             var cb = function(item, x, y, scale) {
-                var itemY = Euterpe.getItemY(self.parentContainer, item, y, scale);
+                var itemY = Euterpe.getItemY(self.parentContainer, item, x, y, scale);
 
                 if(first === null) {
                     first = item;

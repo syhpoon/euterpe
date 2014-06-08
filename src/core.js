@@ -98,13 +98,13 @@ Euterpe.gap = function(size, direction) {
 /**
  * Try to get item location based on container type and location definition
  */
-Euterpe.getItemY = function(container, item, y, scale) {
+Euterpe.getItemY = function(container, item, x, y, scale) {
     if(typeof item.location === 'object' &&
        typeof item.location[container.name] === 'object') {
-        return container.getItemY(item, item.location[container.name], y, scale);
+        return container.getItemY(item, item.location[container.name], x, y, scale);
     }
     else if(typeof container.parentContainer !== 'undefined') {
-        return Euterpe.getItemY(container.parentContainer, item, y, scale);
+        return Euterpe.getItemY(container.parentContainer, item, x, y, scale);
     }
     else {
         return y;
