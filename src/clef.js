@@ -15,10 +15,10 @@ Euterpe.TrebleClef = (function() {
      *
      * @constructor
      */
-    function TrebleClef() {
+    function TrebleClef(config) {
         this.realWidth = 36.8;
 
-        TrebleClef.super.call(this, "Euterpe.TrebleClef");
+        TrebleClef.super.call(this, "Euterpe.TrebleClef", config);
     }
 
     Euterpe.extend(Euterpe.Node, TrebleClef, {
@@ -183,6 +183,10 @@ Euterpe.TrebleClef = (function() {
             this.group.add(shape4);
             this.group.add(shape5);
 
+            return this;
+        },
+
+        getPrepared: function() {
             return this.group;
         }
     });

@@ -1,46 +1,47 @@
 var scale = 2;
+var margin = 10 * scale;
+
+Euterpe.plugins.add(new Euterpe.PluginNoteBar());
 
 var root = new Euterpe.Score({
     items: [
         new Euterpe.Measure({
             number: 1,
             items: [
-                new Euterpe.TrebleClef(),
+                new Euterpe.TrebleClef({leftMargin: margin}),
 
-                new Euterpe.TimeSignature(4, 4),
+                new Euterpe.TimeSignature(4, 4, {leftMargin: margin}),
 
-                null,
+                new Euterpe.Note({
+                    leftMargin: margin,
+                    bar: "begin",
+                    beamDirection: "up",
+                    type: "quarter",
+                    flags: 1,
+                    location: {
+                        "Euterpe.Measure": {
+                            line: 1.5
+                        }
+                    }
+                }),
 
-                new Euterpe.NoteGroup({
-                    items: [
-                        new Euterpe.Note({
-                            beamDirection: "up",
-                            type: "quarter",
-                            flags: 1,
-                            location: {
-                                "Euterpe.Measure": {
-                                    line: 1.5
-                                }
-                            }
-                        }),
-
-                        new Euterpe.Note({
-                            beamDirection: "up",
-                            type: "quarter",
-                            flags: 1,
-                            location: {
-                                "Euterpe.Measure": {
-                                    line: 1
-                                }
-                            }
-                        }),
-
-                        "default"
-                    ]
+                new Euterpe.Note({
+                    leftMargin: margin,
+                    rightMargin: margin,
+                    bar: "end",
+                    beamDirection: "up",
+                    type: "quarter",
+                    flags: 1,
+                    location: {
+                        "Euterpe.Measure": {
+                            line: 1
+                        }
+                    }
                 })
             ]
         }),
 
+        /*
         null,
         new Euterpe.Measure({
             number: 2,
@@ -76,21 +77,34 @@ var root = new Euterpe.Score({
 
                 new Euterpe.NoteGroup({
                     items: [
-                        new Euterpe.Note({
-                            beamDirection: "up",
-                            type: "quarter",
-                            flags: 1,
-                            location: {
-                                "Euterpe.Measure": {
-                                    line: 3.5
-                                }
-                            }
+                        new Euterpe.HBox({
+                            items: [
+                                null,
+
+                                new Euterpe.Note({
+                                    beamDirection: "up",
+                                    type: "quarter",
+                                    flags: 1,
+                                    bar: "begin",
+                                    location: {
+                                        "Euterpe.Measure": {
+                                            line: 3.5
+                                        }
+                                    }
+                                }),
+
+                                5,
+                                new Euterpe.Text({
+                                    text: "2"
+                                })
+                            ]
                         }),
 
                         new Euterpe.Note({
                             beamDirection: "up",
                             type: "quarter",
                             flags: 1,
+                            bar: "end",
                             location: {
                                 "Euterpe.Measure": {
                                     line: 3
@@ -175,6 +189,7 @@ var root = new Euterpe.Score({
                 "default"
             ]
         })
+        */
     ]
 });
 
@@ -188,7 +203,7 @@ var layer = new Kinetic.Layer();
 
 stage.add(layer);
 
-root.pack(100, 170, scale, layer);
+root.prepare(100, 170, scale, layer);
 
 stage.draw();
 

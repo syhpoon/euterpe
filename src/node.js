@@ -6,8 +6,12 @@
  */
 
 Euterpe.Node = (function() {
-    var Node = function(name) {
-        this.nodeName = name;
+    var Node = function(name, config) {
+        this.name = name;
+        this.config = config;
+
+        this.leftMargin = Euterpe.getConfig(config, "leftMargin", 0);
+        this.rightMargin = Euterpe.getConfig(config, "rightMargin", 0);
 
         Euterpe.events.setEventHandlers(this);
     };

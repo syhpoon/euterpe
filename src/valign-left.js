@@ -16,6 +16,7 @@ Euterpe.VAlignLeft = (function() {
      * @param {Object} config - Configuration parameters
      */
     function VAlignLeft(config) {
+        console.log(config);
         VAlignLeft.super.call(this, "Euterpe.VAlignLeft", config);
     }
 
@@ -27,37 +28,32 @@ Euterpe.VAlignLeft = (function() {
             for(var i=0; i < this.items.length; i++) {
                 var item = this.items[i];
 
-                if(item.isGap) {
-                    widths.push(item.size *= scale);
-                }
-                else if(item.isContainer) {
-                    widths.push(item.calculateWidth(scale));
+                if(item.isContainer) {
+                    widths.push(Euterpe.calculateWidth(item, scale));
                 }
                 else {
                     widths.push(item.realWidth *= scale);
                 }
             }
 
-            this.realWidth = _.max(widths);
-
-            return this.realWidth;
+            return _.max(widths);
         },
 
         prepareMeasure: function(origX, y, scale) {
-            var self = this;
 
             var itemCb = function(item, x, y, scale) {
-                // Get Y coordinate relative to our own container (Measure)
-                var _y = Euterpe.getItemY(self.parentContainer, item, origX, y, scale);
-
-                return item.prepare(origX, _y, scale);
+                return item.prepare(origX, y, scale);
             };
 
             var contCb = function(item, x, y, scale) {
                 return item.prepare(origX, y, scale);
             };
 
-            return this.basePrepare(origX, y, scale, itemCb, contCb);
+            this.prepared = this.basePrepare(origX, y, scale, itemCb, contCb);
+        },
+
+        getPrepared: function() {
+            return this.prepared;
         }
     });
 

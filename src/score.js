@@ -18,6 +18,8 @@ Euterpe.Score = (function() {
      * @param {Object} config - Configuration parameters
      */
     function Score(config) {
+        this.layer = config.layer;
+
         Score.super.call(this, "Euterpe.Score", config);
     }
 
@@ -28,22 +30,28 @@ Euterpe.Score = (function() {
          * @param {Number} x - Start X coordinate
          * @param {Number} y - Start Y coordinate
          * @param {Number} scale - Scale
-         * @param {Kinetic.Layer} layer - Layer to pack into
          */
-        pack: function(x, y, scale, layer) {
-            this.calculateWidth(scale);
-
-            var objectsToDraw = _.flatten(this.prepare(x, y, scale));
-
-            _.each(objectsToDraw, function(obj) {
-                layer.add(obj);
-            });
+        prepare: function(x, y, scale) {
+            this.flatPack(this.basePrepare(x, y, scale), layer);
 
             Euterpe.events.fire("ready");
         },
 
-        prepare: function(x, y, scale) {
-            return this.basePrepare(x, y, scale);
+        /** @private */
+        flatPack: function(obj, layer) {
+            var self = this;
+
+            if(_.isArray(obj)) {
+                _.each(obj, function(item) {
+                    self.flatPack(item, layer);
+                });
+            }
+            else if(typeof obj.getPrepared === 'function') {
+                this.flatPack(obj.getPrepared(), layer);
+            }
+            else {
+                layer.add(obj);
+            }
         }
     });
 

@@ -10,35 +10,18 @@
  * @namespace Euterpe
  */
 Euterpe.Container = (function() {
-    var Container = function(name, config) {
+    var Container = function(name, config, isVisual) {
         this.items = [];
-        this.defaultGap = 20;
         this.name = name;
         this.config = config;
+        this.isVisual = isVisual || false;
+        this.leftMargin = Euterpe.getConfig(config, "leftMargin", 0);
+        this.rightMargin = Euterpe.getConfig(config, "rightMargin", 0);
 
         // Try to populate items if were defined in config
         if(typeof config !== 'undefined' && _.isArray(config.items)) {
-            var gap = this.defaultGap;
-
             for(var i=0; i < config.items.length; i++){
-                var item = config.items[i];
-
-                if(item === null) {
-                    gap = null;
-                    continue;
-                }
-                else if(typeof item === 'number') {
-                    gap = item;
-                    continue;
-                }
-                else if(item === 'default') {
-                    this.addGap(this.defaultGap);
-                    continue;
-                }
-
-                this.add(config.items[i], gap);
-
-                gap = this.defaultGap;
+                this.add(config.items[i]);
             }
         }
     };
@@ -46,73 +29,21 @@ Euterpe.Container = (function() {
     Container.prototype = {
         isContainer: true,
 
-        add: function(item, gap) {
+        add: function(item) {
             item.parentContainer = this;
 
-            this.addGap(gap);
             this.items.push(item);
         },
 
         /**
-         * Add item to collection without preceding gap
+         * Base prepare method
+         * @param x
+         * @param y
+         * @param scale
+         * @param [itemcb]
+         * @param [containercb]
+         * @returns {Array|null}
          */
-        addNoGap: function(item) {
-            this.add(item, null);
-        },
-
-        /**
-         * Add gap
-         * @param {Number | Object} gap
-         */
-        addGap: function(gap) {
-            var _gap;
-
-            if(typeof gap === 'number') {
-                _gap = Euterpe.gap(gap);
-            }
-            else if(typeof gap === 'undefined') {
-                _gap = Euterpe.gap(this.defaultGap);
-            }
-            else {
-                _gap = gap;
-            }
-
-            if(_gap !== null) {
-                this.items.push(_gap);
-            }
-        },
-
-        /**
-         * Recursively calculate width of all items and containers
-         *
-         * @param {Number} scale - Scale
-         */
-        calculateWidth: function(scale) {
-            var width = 0;
-
-            for(var i=0; i < this.items.length; i++) {
-                var item = this.items[i];
-
-                if(item.isGap) {
-                    item.size *= scale;
-
-                    width += item.size;
-                }
-                else if(item.isContainer) {
-                    width += item.calculateWidth(scale);
-                }
-                else {
-                    item.realWidth *= scale;
-
-                    width += Euterpe.getRealWidth(item);
-                }
-            }
-
-            this.realWidth = width;
-
-            return width;
-        },
-
         basePrepare: function(x, y, scale, itemcb, containercb) {
             var acc = [];
 
@@ -123,25 +54,72 @@ Euterpe.Container = (function() {
             itemcb = itemcb || cb;
             containercb = containercb || cb;
 
+            var objs2show = this.items.length;
+
             for(var i=0; i < this.items.length; i++) {
                 var item = this.items[i];
+                var width = 0;
 
-                if(item.isGap) {
-                    x += item.size;
-                }
-                else if(item.isContainer) {
-                    acc.push(containercb(item, x, y, scale));
+                if(item.isContainer) {
+                    var cont = Euterpe.plugins.fold("beforePrepareContainer", item);
 
-                    x += Euterpe.getRealWidth(item);
+                    if(cont === null) {
+                        objs2show -= 1;
+                        continue;
+                    }
+
+                    cont.parentContainer = this;
+
+                    width = Euterpe.calculateWidth(cont, scale);
+
+                    containercb(cont, x + cont.leftMargin, y, scale);
+
+                    var cont2 = Euterpe.plugins.fold("afterPrepareContainer", cont);
+
+                    if(cont2 === null) {
+                        objs2show -= 1;
+                        continue;
+                    }
+
+                    cont2.parentContainer = this;
+
+                    acc.push(cont2);
+
+                    x += width;
                 }
                 else {
-                    acc.push(itemcb(item, x, y, scale));
+                    var itm = Euterpe.plugins.fold("beforePrepareNode", item);
 
-                    x += Euterpe.getRealWidth(item);
+                    if(itm === null) {
+                        objs2show -= 1;
+                        continue;
+                    }
+
+                    itm.parentContainer = this;
+
+                    width = Euterpe.calculateWidth(itm, scale);
+
+                    var _y = Euterpe.getItemY(this, itm, x + itm.leftMargin,
+                                              y, scale);
+
+                    itemcb(itm, x + itm.leftMargin, _y, scale);
+
+                    var itm2 = Euterpe.plugins.fold("afterPrepareNode", itm);
+
+                    if(itm2 === null) {
+                        objs2show -= 1;
+                        continue;
+                    }
+
+                    itm2.parentContainer = this;
+
+                    acc.push(itm2);
+
+                    x += width;
                 }
             }
 
-            return acc;
+            return objs2show === 0 ? null: acc;
         }
     };
 

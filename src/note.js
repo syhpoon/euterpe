@@ -36,7 +36,7 @@ Euterpe.Note = (function() {
         /** @public */
         this.beam = undefined;
 
-        Note.super.call(this, "Euterpe.Note");
+        Note.super.call(this, "Euterpe.Note", config);
 
         if(this.type === "whole") {
             this.realWidth = 21.2;
@@ -94,6 +94,10 @@ Euterpe.Note = (function() {
                     this.group = this.initHalfQuarter(options);
             }
 
+            return this;
+        },
+
+        getPrepared: function() {
             return this.group;
         },
 

@@ -64,6 +64,96 @@ Euterpe.events = {
 };
 
 /**
+ * Plugins repository
+ *
+ * Possible plugins events:
+ *
+ * init
+ * onCalulateWidthNode
+ * onCalulateWidthContainer
+ * beforePrepareNode - Node is about to be prepared
+ * afterPrepareNode - Node has been prepared
+ * beforePrepareContainer - Container is about to be prepared
+ * afterPrepareContainer - Node has been prepared
+ * done
+ */
+Euterpe.plugins = {
+    handlers: [],
+    plugins: [],
+
+    add: function(plugin) {
+        this.plugins.push(plugin);
+
+        this.setEventHandlers(plugin);
+    },
+
+    /**
+     * Add event handler
+     * @param {Object} event - Event object
+     */
+    addHandler: function(event) {
+        if(!_.isArray(this.handlers[event.event])) {
+            this.handlers[event.event] = [];
+        }
+
+        this.handlers[event.event].push(event);
+    },
+
+    /**
+     * Set event handlers for plugin
+     * @param {Object} obj
+     */
+    setEventHandlers: function(obj) {
+        var self = this;
+
+        var cmp = function(name) {
+            return function(item) {
+                return item.name === name;
+            }
+        };
+
+        if(_.isArray(obj.events)) {
+            for(var i=0; i < obj.events.length; i++) {
+                obj.events[i].item = obj;
+                // Transform string into real function
+                obj.events[i].handler = obj[obj.events[i].handler];
+
+                // Replace string filter with function matching item name
+                if(typeof obj.events[i].filter === 'string') {
+                    obj.events[i].filter = cmp(obj.events[i].filter);
+                }
+                self.addHandler(obj.events[i]);
+            }
+        }
+    },
+
+    fold: function(eventName, obj) {
+        if(_.isArray(this.handlers[eventName])) {
+            var r = obj;
+
+            for(var i=0; i < this.handlers[eventName].length; i++) {
+                if(r === null) {
+                    return r;
+                }
+
+                var h = this.handlers[eventName][i];
+
+                if(typeof h.filter === 'undefined' || h.filter.call(h.item, r)) {
+                    var args = [r].concat(_.toArray(arguments).slice(2));
+
+                    r = h.handler.apply(h.item, args);
+                }
+            }
+
+            return r;
+        }
+        else {
+            return obj;
+        }
+    }
+};
+
+/**
  * Get the object value by key or default if undefined
  *
  * @namespace Euterpe
@@ -77,22 +167,6 @@ Euterpe.getConfig = function(config, name, defaultVal) {
         return defaultVal;
 
     return typeof config[name] === 'undefined' ? defaultVal : config[name];
-};
-
-/**
- * Create a gap object
- *
- * @namespace Euterpe
- * @param {Number} size - Gap size in pixels
- * @param {String} [direction='horizontal'] - Gap direction (horizontal | vertical)
- * @returns {Object}
- */
-Euterpe.gap = function(size, direction) {
-    return {
-        size: size,
-        vertical: direction === 'vertical',
-        isGap: true
-    };
 };
 
 /**
@@ -132,8 +206,10 @@ Euterpe.initNode = function(node, name) {
  * @returns {Number}
  */
 Euterpe.getRealWidth = function(item) {
+    var margins = item.leftMargin + item.rightMargin;
+
     if(typeof item.realWidth === "number") {
-        return item.realWidth;
+        return item.realWidth + margins;
     }
     else if(typeof item.width === "function") {
         return item.width();
@@ -162,3 +238,61 @@ Euterpe.extend = function(base, sub, extend) {
     }
 };
 
+Euterpe.calculateWidth = function(item, scale) {
+    var width = 0;
+
+    if(item.isContainer) {
+        if(!item.__size_set) {
+            item.leftMargin *= scale;
+            item.rightMargin *= scale;
+            item.__size_set = true;
+        }
+
+        if(typeof item.realWidth !== 'undefined') {
+            return Euterpe.getRealWidth(item);
+        }
+
+        // Possible width calculation override
+        if(typeof item.calculateWidth === 'function') {
+            item.realWidth = item.calculateWidth(scale);
+
+            return Euterpe.calculateWidth(item, scale);
+        }
+
+        // Else first time calculation
+        width = 0;
+
+        for(var i=0; i < item.items.length; i++) {
+            var itm = item.items[i];
+
+            width += Euterpe.calculateWidth(itm, scale);
+        }
+
+        item.realWidth = width;
+
+        return width;
+    }
+    else {
+        if(!item.__size_set) {
+            item.realWidth *= scale;
+            item.leftMargin *= scale;
+            item.rightMargin *= scale;
+            item.__size_set = true;
+        }
+
+        return Euterpe.getRealWidth(item);
+    }
+};
+
+// TODO: Come up with better name
+Euterpe.getStack = function(item) {
+    if(typeof item.parentContainer === 'undefined') {
+        return item;
+    }
+    if(item.parentContainer.isVisual) {
+        return item;
+    }
+    else {
+        return Euterpe.getStack(item.parentContainer);
+    }
+};

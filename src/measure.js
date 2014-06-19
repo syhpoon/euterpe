@@ -19,12 +19,13 @@ Euterpe.Measure = (function() {
      * @param {String} [config.rightBarType=single] - Right bar type (none|single|double|double bold|repeat)
      */
     function Measure(config) {
-        Measure.super.call(this, "Euterpe.Measure", config);
+        Measure.super.call(this, "Euterpe.Measure", config, true);
 
         this.leftBarType = Euterpe.getConfig(config, "leftBarType", "single");
         this.rightBarType = Euterpe.getConfig(config, "rightBarType", "single");
         this.number = Euterpe.getConfig(config, "number", undefined);
         this.ledgerLines = [];
+        this.prepared = [];
     }
 
     Euterpe.extend(Euterpe.Container, Measure, {
@@ -144,17 +145,14 @@ Euterpe.Measure = (function() {
         },
 
         prepare: function(x, y, scale) {
-            var self = this;
-            var acc = [this.prepareSelf(x, y, scale)];
+            this.prepared = [this.prepareSelf(x, y, scale)];
 
             var itemcb = function(item, x, y, scale) {
-                var itemY = Euterpe.getItemY(self, item, x, y, scale);
-
                 if(typeof item.prepareMeasure === 'function') {
-                    return item.prepareMeasure(x, itemY, scale);
+                    return item.prepareMeasure(x, y, scale);
                 }
                 else {
-                    return item.prepare(x, itemY, scale);
+                    return item.prepare(x, y, scale);
                 }
             };
 
@@ -167,11 +165,15 @@ Euterpe.Measure = (function() {
                 }
             };
 
-            acc = acc.concat(this.basePrepare(x, y, scale, itemcb, contcb));
+            this.prepared.push(this.basePrepare(x, y, scale, itemcb, contcb));
 
             this.prepareLedgerLines(this.ledgerLines, scale);
 
-            return acc;
+            return this;
+        },
+
+        getPrepared: function() {
+            return this.prepared;
         },
 
         /** @private */
