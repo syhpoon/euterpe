@@ -40,31 +40,46 @@ Euterpe.Container = (function() {
          * @param x
          * @param y
          * @param scale
-         * @param [itemcb]
-         * @param [containercb]
+         * @param {Function} [itemcb]
+         * @param {Function} [containercb]
          * @returns {Array|null}
          */
         basePrepare: function(x, y, scale, itemcb, containercb) {
-            var acc = [];
+            var state = {
+                x: x,
+                y: y,
+                scale: scale
+            };
 
-            var cb = function(item, x, y, scale) {
-                return item.prepare(x, y, scale);
+            var acc = [];
+            var self = this;
+
+            var cb = function(item, x, y, scale, idx) {
+                var _y = y;
+
+                if(item.isNode) {
+                    _y = Euterpe.getItemY(self, item, x + item.leftMargin,
+                                          y, scale);
+                }
+
+                return item.prepare(x, _y, scale, idx);
             };
 
             itemcb = itemcb || cb;
             containercb = containercb || cb;
 
-            var objs2show = this.items.length;
+            var skipped = false;
 
             for(var i=0; i < this.items.length; i++) {
                 var item = this.items[i];
                 var width = 0;
 
                 if(item.isContainer) {
-                    var cont = Euterpe.plugins.fold("beforePrepareContainer", item);
+                    var cont = Euterpe.plugins.fold("beforePrepareContainer",
+                                                    item, state);
 
                     if(cont === null) {
-                        objs2show -= 1;
+                        skipped = true;
                         continue;
                     }
 
@@ -72,12 +87,17 @@ Euterpe.Container = (function() {
 
                     width = Euterpe.calculateWidth(cont, scale);
 
-                    containercb(cont, x + cont.leftMargin, y, scale);
+                    if(containercb(cont, state.x + cont.leftMargin, state.y,
+                                   state.scale, i) === null) {
+                        skipped = true;
+                        continue;
+                    }
 
-                    var cont2 = Euterpe.plugins.fold("afterPrepareContainer", cont);
+                    var cont2 = Euterpe.plugins.fold("afterPrepareContainer",
+                                                     cont, state);
 
                     if(cont2 === null) {
-                        objs2show -= 1;
+                        skipped = true;
                         continue;
                     }
 
@@ -85,29 +105,32 @@ Euterpe.Container = (function() {
 
                     acc.push(cont2);
 
-                    x += width;
+                    state.x += width;
                 }
                 else {
-                    var itm = Euterpe.plugins.fold("beforePrepareNode", item);
+                    var itm = Euterpe.plugins.fold("beforePrepareNode",
+                                                   item, state);
 
                     if(itm === null) {
-                        objs2show -= 1;
+                        skipped = true;
                         continue;
                     }
 
                     itm.parentContainer = this;
 
-                    width = Euterpe.calculateWidth(itm, scale);
+                    width = Euterpe.calculateWidth(itm, state.scale);
 
-                    var _y = Euterpe.getItemY(this, itm, x + itm.leftMargin,
-                                              y, scale);
+                    if(itemcb(itm, state.x + itm.leftMargin, state.y,
+                              state.scale, i) === null) {
+                        skipped = true;
+                        continue;
+                    }
 
-                    itemcb(itm, x + itm.leftMargin, _y, scale);
-
-                    var itm2 = Euterpe.plugins.fold("afterPrepareNode", itm);
+                    var itm2 = Euterpe.plugins.fold("afterPrepareNode", itm,
+                                                    state);
 
                     if(itm2 === null) {
-                        objs2show -= 1;
+                        skipped = true;
                         continue;
                     }
 
@@ -115,11 +138,16 @@ Euterpe.Container = (function() {
 
                     acc.push(itm2);
 
-                    x += width;
+                    state.x += width;
                 }
             }
 
-            return objs2show === 0 ? null: acc;
+            if(skipped && !self.isVisual) {
+                return null
+            }
+            else {
+                return acc;
+            }
         }
     };
 

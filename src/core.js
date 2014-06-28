@@ -127,7 +127,7 @@ Euterpe.plugins = {
         }
     },
 
-    fold: function(eventName, obj) {
+    fold: function(eventName, obj, state) {
         if(_.isArray(this.handlers[eventName])) {
             var r = obj;
 
@@ -238,15 +238,24 @@ Euterpe.extend = function(base, sub, extend) {
     }
 };
 
+Euterpe.initWidth = function(item, scale, isNode) {
+    if(!item.__size_set) {
+        item.leftMargin *= scale;
+        item.rightMargin *= scale;
+
+        if(isNode) {
+            item.realWidth *= scale;
+        }
+
+        item.__size_set = true;
+    }
+};
+
 Euterpe.calculateWidth = function(item, scale) {
     var width = 0;
 
     if(item.isContainer) {
-        if(!item.__size_set) {
-            item.leftMargin *= scale;
-            item.rightMargin *= scale;
-            item.__size_set = true;
-        }
+        Euterpe.initWidth(item, scale, false);
 
         if(typeof item.realWidth !== 'undefined') {
             return Euterpe.getRealWidth(item);
@@ -273,12 +282,7 @@ Euterpe.calculateWidth = function(item, scale) {
         return width;
     }
     else {
-        if(!item.__size_set) {
-            item.realWidth *= scale;
-            item.leftMargin *= scale;
-            item.rightMargin *= scale;
-            item.__size_set = true;
-        }
+        Euterpe.initWidth(item, scale, true);
 
         return Euterpe.getRealWidth(item);
     }

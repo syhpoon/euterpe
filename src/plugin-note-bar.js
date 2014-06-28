@@ -18,7 +18,6 @@ Euterpe.PluginNoteBar = (function() {
     var PluginNoteBar = function(config) {
         PluginNoteBar.super.call(this, "Euterpe.PluginNoteBar", config);
 
-        this.barOn = false;
         this.notes = [];
     };
 
@@ -37,24 +36,28 @@ Euterpe.PluginNoteBar = (function() {
             var config = item.config || {};
 
             if(config.bar === 'end') {
+                item.__note_bar_flags = item.flags;
+                item.flags = 0;
 
                 this.notes.push([Euterpe.getStack(item), this.mark(item)]);
 
                 var hbox = new Euterpe.HBox({
-                    items: _.map(this.notes, function(obj) {return obj[0]})
+                    items: _.map(this.notes, function(obj) {return obj[0]}),
+                    leftMargin: this.notes[0].leftMargin
                 });
 
                 hbox.add(new Bar(_.map(this.notes,
                          function(obj) {return obj[1]})));
 
                 this.notes.length = 0;
-                this.barOn = false;
 
                 return hbox;
             }
-            else if(config.bar === 'begin' || this.barOn) {
+            else if(config.bar === 'begin' || config.bar === 'cont') {
+                item.__note_bar_flags = item.flags;
+                item.flags = 0;
+
                 this.notes.push([Euterpe.getStack(item), this.mark(item)]);
-                this.barOn = true;
 
                 return null;
             }
