@@ -1,7 +1,11 @@
-var scale = 2;
+var scale = 1;
 var margin = 20;
 
 Euterpe.plugins.add(new Euterpe.PluginNoteBar());
+
+Euterpe.plugins.add(new Euterpe.PluginPackMeasures({
+    measuresPerLine: 1
+}));
 
 var root = new Euterpe.Score({
     items: [
@@ -162,6 +166,7 @@ var root = new Euterpe.Score({
 
                 new Euterpe.Note({
                     leftMargin: margin,
+                    rightMargin: margin,
                     type: "quarter",
                     flags: 1,
                     bar: "end",
@@ -172,6 +177,135 @@ var root = new Euterpe.Score({
                         }
                     }
                 })
+            ]
+        }),
+
+        new Euterpe.Measure({
+            number: 3,
+            leftBarType: "none",
+            items: [
+                new Euterpe.VAlignLeft({
+                    leftMargin: margin,
+                    items: [
+                        new Euterpe.Note({
+                            type: "quarter",
+                            beamDirection: "up",
+                            location: {
+                                "Euterpe.Measure": {
+                                    line: 1.5
+                                }
+                            }
+                        }),
+                        new Euterpe.Note({
+                            beamDirection: "down",
+                            type: "half",
+                            location: {
+                                "Euterpe.Measure": {
+                                    line: 8.5
+                                }
+                            }
+                        })
+                    ]
+                }),
+
+                new Euterpe.Note({
+                    bar: "begin",
+                    flags: 1,
+                    leftMargin: margin,
+                    beamDirection: "up",
+                    type: "quarter",
+                    location: {
+                        "Euterpe.Measure": {
+                            line: 3
+                        }
+                    }
+                }),
+                new Euterpe.Note({
+                    bar: "end",
+                    flags: 1,
+                    leftMargin: margin,
+                    beamDirection: "up",
+                    type: "quarter",
+                    location: {
+                        "Euterpe.Measure": {
+                            line: 2.5
+                        }
+                    }
+                }),
+
+                new Euterpe.VAlignLeft({
+                    leftMargin: margin,
+                    items: [
+                        new Euterpe.HBox({
+                            commonY: 0,
+                            items: [
+                                new Euterpe.Note({
+                                    bar: "begin",
+                                    type: "quarter",
+                                    beamDirection: "up",
+                                    flags: 1,
+                                    location: {
+                                        "Euterpe.Measure": {
+                                            line: 2
+                                        }
+                                    }
+                                }),
+
+                                new Euterpe.Text({text: "4"})
+                            ]
+                        }),
+
+                        new Euterpe.Note({
+                            type: "half",
+                            beamDirection: "down",
+                            location: {
+                                "Euterpe.Measure": {
+                                    line: 8.5
+                                }
+                            }
+                        })
+                    ]
+                }),
+
+                new Euterpe.Note({
+                    leftMargin: margin,
+                    bar: "end",
+                    type: "quarter",
+                    beamDirection: "up",
+                    flags: 1,
+                    location: {
+                        "Euterpe.Measure": {
+                            line: 3
+                        }
+                    }
+                }),
+
+                new Euterpe.Note({
+                    bar: "begin",
+                    flags: 1,
+                    leftMargin: margin,
+                    beamDirection: "up",
+                    type: "quarter",
+                    location: {
+                        "Euterpe.Measure": {
+                            line: 1.5
+                        }
+                    }
+                }),
+                new Euterpe.Note({
+                    rightMargin: margin,
+                    bar: "end",
+                    flags: 1,
+                    leftMargin: margin,
+                    beamDirection: "up",
+                    type: "quarter",
+                    location: {
+                        "Euterpe.Measure": {
+                            line: 1
+                        }
+                    }
+                })
+
             ]
         })
     ]
