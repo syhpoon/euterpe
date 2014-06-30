@@ -19,7 +19,7 @@ Euterpe.Measure = (function() {
      * @param {String} [config.rightBarType=single] - Right bar type (none|single|double|double bold|repeat)
      */
     function Measure(config) {
-        Measure.super.call(this, "Euterpe.Measure", config, true);
+        Measure.super.call(this, "Euterpe.Measure", config);
 
         this.leftBarType = Euterpe.getConfig(config, "leftBarType", "single");
         this.rightBarType = Euterpe.getConfig(config, "rightBarType", "single");
@@ -99,7 +99,7 @@ Euterpe.Measure = (function() {
                     break;
                 // Ledger lines
                 default:
-                    var width = Euterpe.getRealWidth(item);
+                    var width = item.getRealWidth(scale);
                     var d, extra;
 
                     // Line below
@@ -144,38 +144,24 @@ Euterpe.Measure = (function() {
             return _y;
         },
 
-        prepare: function(x, y, scale) {
-            this.prepared = [this.prepareSelf(x, y, scale)];
+        render: function(x, y, scale) {
+            this.prepared = [this.renderSelf(x, y, scale)];
             var self = this;
 
             var itemcb = function(item, x, y, scale) {
                 var _y = Euterpe.getItemY(self, item, x, y, scale);
 
-                if(typeof item.prepareMeasure === 'function') {
-                    return item.prepareMeasure(x, _y, scale);
-                }
-                else {
-                    return item.prepare(x, _y, scale);
-                }
+                return item.render(x, _y, scale);
             };
 
             var contcb = function(item, x, y, scale) {
-                if(typeof item.prepareMeasure === 'function') {
-                    return item.prepareMeasure(x, y, scale);
-                }
-                else {
-                    return item.prepare(x, y, scale);
-                }
+                return item.render(x, y, scale);
             };
 
-            this.prepared.push(this.basePrepare(x, y, scale, itemcb, contcb));
+            this.prepared.push(this.baseRender(x, y, scale, itemcb, contcb));
 
             this.prepareLedgerLines(this.ledgerLines, scale);
 
-            return this.prepared;
-        },
-
-        getPrepared: function() {
             return this.prepared;
         },
 
@@ -184,24 +170,26 @@ Euterpe.Measure = (function() {
             for(var i=0; i < lines.length; i++) {
                 var x = lines[i][0];
                 var y = lines[i][1];
-                var width = lines[i][2] + 10 * scale;
+                var shift = lines[i][2] / 2;
+                var width = lines[i][2] + shift * 2;
 
-                this.group.add(new Kinetic.Line({
+                console.log(lines[i][2], shift, x, x - shift);
+                this.prepared.push(new Kinetic.Line({
                     points: [0, 0, width, 0],
                     stroke: 'black',
                     strokeWidth: this.lineWidth,
-                    x: x - 5 * scale,
+                    x: x - shift,
                     y: y
                 }));
             }
         },
 
         /** @private */
-        prepareSelf: function(x, y, scale) {
+        renderSelf: function(x, y, scale) {
             this._x = x;
             this._y = y;
             this.scale = scale;
-            this.measureLength = Euterpe.getRealWidth(this);
+            this.measureLength = this.getRealWidth(scale);
 
             this.linePadding = 13 * this.scale;
             this.lineWidth = this.scale;
@@ -247,15 +235,15 @@ Euterpe.Measure = (function() {
                 y: line5_y
             });
 
-            this.group = new Kinetic.Group({});
+            this.prepared = new Kinetic.Group({});
 
-            this.group.add(this.leftBar);
-            this.group.add(this.line1);
-            this.group.add(this.line2);
-            this.group.add(this.line3);
-            this.group.add(this.line4);
-            this.group.add(this.line5);
-            this.group.add(this.rightBar);
+            this.prepared.add(this.leftBar);
+            this.prepared.add(this.line1);
+            this.prepared.add(this.line2);
+            this.prepared.add(this.line3);
+            this.prepared.add(this.line4);
+            this.prepared.add(this.line5);
+            this.prepared.add(this.rightBar);
 
             if(typeof this.number !== 'undefined') {
                 var number = new Kinetic.Text({
@@ -267,10 +255,10 @@ Euterpe.Measure = (function() {
                     fill: 'black'
                 });
 
-                this.group.add(number);
+                this.prepared.add(number);
             }
 
-            return this.group;
+            return this.prepared;
         },
 
         /**

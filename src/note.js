@@ -52,13 +52,13 @@ Euterpe.Note = (function() {
         },
 
         onReady: function() {
-            if(this.group) {
-                this.group.moveToBottom();
+            if(this.prepared) {
+                this.prepared.moveToBottom();
             }
         },
 
         /**
-         * Prepare object
+         * Render object
          * @param {Number} x
          * @param {Number} y
          * @param {Number} scale
@@ -68,7 +68,7 @@ Euterpe.Note = (function() {
          * Possible options:
          * * skipFlags {Boolean} - Do not draw flags even if explicitly requested
          */
-        prepare: function(x, y, scale, options) {
+        render: function(x, y, scale, options) {
             options = options || {};
 
             /** @public */
@@ -88,24 +88,13 @@ Euterpe.Note = (function() {
 
             switch(this.type) {
                 case "whole":
-                    this.group = this.initWhole();
+                    this.prepared = this.initWhole();
                     break;
                 default:
-                    this.group = this.initHalfQuarter(options);
+                    this.prepared = this.initHalfQuarter(options);
             }
 
-            return this;
-        },
-
-        getPrepared: function() {
-            return this.group;
-        },
-
-        /**
-         * For NoteGroup avoid drawing flags
-         */
-        prepareNoteGroup: function(x, y, scale) {
-            return this.prepare(x, y, scale, {skipFlags: true});
+            return this.prepared;
         },
 
         /**

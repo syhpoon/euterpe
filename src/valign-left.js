@@ -21,26 +21,18 @@ Euterpe.VAlignLeft = (function() {
 
     Euterpe.extend(Euterpe.Container, VAlignLeft, {
         // Override width calculation
-        calculateWidth: function(scale) {
-            var widths = [];
+        getRealWidth: function(scale) {
+            var margins = this.leftMargin * scale + this.rightMargin * scale;
 
-            for(var i=0; i < this.items.length; i++) {
-                var item = this.items[i];
-
-                if(item.isContainer) {
-                    widths.push(Euterpe.calculateWidth(item, scale));
-                }
-                else {
-                    Euterpe.initWidth(item, scale, true);
-
-                    widths.push(item.realWidth);
-                }
-            }
-
-            return _.max(widths);
+            return _.max(
+                _.map(this.items,
+                    function(item) {
+                        return item.getRealWidth(scale);
+                    })
+            ) + margins;
         },
 
-        prepare: function(origX, y, scale) {
+        render: function(origX, y, scale) {
             var self = this;
 
             var itemCb = function(item, x, y, scale) {
@@ -48,19 +40,15 @@ Euterpe.VAlignLeft = (function() {
                 var _y = Euterpe.getItemY(self.parentContainer, item,
                                           origX, y, scale);
 
-                return item.prepare(origX, _y, scale);
+                return item.render(origX, _y, scale);
             };
 
             var contCb = function(item, x, y, scale) {
-                return item.prepare(origX, y, scale);
+                return item.render(origX, y, scale);
             };
 
-            this.prepared = this.basePrepare(origX, y, scale, itemCb, contCb);
+            this.prepared = this.baseRender(origX, y, scale, itemCb, contCb);
 
-            return this.prepared;
-        },
-
-        getPrepared: function() {
             return this.prepared;
         }
     });

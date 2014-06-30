@@ -42,8 +42,8 @@ Euterpe.Text = (function() {
     }
 
     Euterpe.extend(Euterpe.Node, Text, {
-        prepare: function(x, y, scale) {
-            this.group = new Kinetic.Text({
+        render: function(x, y, scale) {
+            this.prepared = new Kinetic.Text({
                 x: x,
                 y: y - this.realHeight / 2,
                 text: this.text,
@@ -51,10 +51,8 @@ Euterpe.Text = (function() {
                 fontFamily: this.fontFamily,
                 fill: this.color
             });
-        },
 
-        getPrepared: function() {
-            return this.group;
+            return this.prepared;
         }
     });
 

@@ -199,27 +199,6 @@ Euterpe.initNode = function(node, name) {
 };
 
 /**
- * Get real width of the object
- *
- * @namespace Euterpe
- * @param {Object} item - Item
- * @returns {Number}
- */
-Euterpe.getRealWidth = function(item) {
-    var margins = item.leftMargin + item.rightMargin;
-
-    if(typeof item.realWidth === "number") {
-        return item.realWidth + margins;
-    }
-    else if(typeof item.width === "function") {
-        return item.width();
-    }
-    else {
-        return 0;
-    }
-};
-
-/**
  * Poor man inheritance
  * @param base
  * @param sub
@@ -238,56 +217,6 @@ Euterpe.extend = function(base, sub, extend) {
     }
 };
 
-Euterpe.initWidth = function(item, scale, isNode) {
-    if(!item.__size_set) {
-        item.leftMargin *= scale;
-        item.rightMargin *= scale;
-
-        if(isNode) {
-            item.realWidth *= scale;
-        }
-
-        item.__size_set = true;
-    }
-};
-
-Euterpe.calculateWidth = function(item, scale) {
-    var width = 0;
-
-    if(item.isContainer) {
-        Euterpe.initWidth(item, scale, false);
-
-        if(typeof item.realWidth !== 'undefined') {
-            return Euterpe.getRealWidth(item);
-        }
-
-        // Possible width calculation override
-        if(typeof item.calculateWidth === 'function') {
-            item.realWidth = item.calculateWidth(scale);
-
-            return Euterpe.calculateWidth(item, scale);
-        }
-
-        // Else first time calculation
-        width = 0;
-
-        for(var i=0; i < item.items.length; i++) {
-            var itm = item.items[i];
-
-            width += Euterpe.calculateWidth(itm, scale);
-        }
-
-        item.realWidth = width;
-
-        return width;
-    }
-    else {
-        Euterpe.initWidth(item, scale, true);
-
-        return Euterpe.getRealWidth(item);
-    }
-};
-
 // TODO: Come up with better name
 Euterpe.getStack = function(item) {
     if(typeof item.parentContainer === 'undefined') {
@@ -299,4 +228,18 @@ Euterpe.getStack = function(item) {
     else {
         return Euterpe.getStack(item.parentContainer);
     }
+};
+
+Euterpe.render = function(root, x, y, scale, layer) {
+    var rendered = _.flatten(root.baseRender(x, y, scale));
+
+    for(var i=0; i < rendered.length; i++) {
+        layer.add(rendered[i]);
+    }
+
+    Euterpe.events.fire("ready");
+};
+
+Euterpe.getMargins = function(item, scale) {
+    return item.leftMargin * scale + item.rightMargin * scale;
 };

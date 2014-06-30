@@ -27,11 +27,12 @@ Euterpe.TrebleClef = (function() {
         },
 
         onReady: function() {
-            this.group.moveToBottom();
+            this.prepared.moveToBottom();
         },
 
-        prepareMeasure: function(x, y, scale) {
+        render: function(x, y, scale) {
             this.startX = x;
+            // TODO: Replace with location
             this.startY = this.parentContainer.line1.y() - 27 * scale;
             this.scale = 0.125 * scale;
             var self = this;
@@ -176,18 +177,14 @@ Euterpe.TrebleClef = (function() {
                 strokeWidth: 0
             });
 
-            this.group = new Kinetic.Group();
-            this.group.add(shape1);
-            this.group.add(shape2);
-            this.group.add(shape3);
-            this.group.add(shape4);
-            this.group.add(shape5);
+            this.prepared = new Kinetic.Group();
+            this.prepared.add(shape1);
+            this.prepared.add(shape2);
+            this.prepared.add(shape3);
+            this.prepared.add(shape4);
+            this.prepared.add(shape5);
 
-            return this;
-        },
-
-        getPrepared: function() {
-            return this.group;
+            return this.prepared;
         }
     });
 

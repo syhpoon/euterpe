@@ -10,7 +10,7 @@
  */
 Euterpe.TimeSignatureShape = (function() {
     /**
-     * Digit shape
+     * Digit prepared
      *
      * @param {Number} digit
      * @param {Object} location
@@ -25,14 +25,14 @@ Euterpe.TimeSignatureShape = (function() {
     }
 
     Euterpe.extend(Euterpe.Node, TimeSignatureShape, {
-        prepare: function(startX, startY, scale) {
+        render: function(startX, startY, scale) {
             var self = this;
             this.scale = scale;
             this.startX = startX;
             this.startY = startY;
 
             if(this.digit === "4") {
-                this.shape = new Kinetic.Shape({
+                this.prepared = new Kinetic.Shape({
                     sceneFunc: function(ctx) {
                         var x = self.startX + 17.6 * scale;
                         var y = self.startY;
@@ -74,11 +74,7 @@ Euterpe.TimeSignatureShape = (function() {
                 });
             }
 
-            return this;
-        },
-
-        getPrepared: function() {
-            return this.shape;
+            return this.prepared;
         }
     });
 

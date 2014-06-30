@@ -18,5 +18,11 @@ Euterpe.Node = (function() {
 
     Node.prototype.isNode = true;
 
+    Node.prototype.getRealWidth = function(scale) {
+        var margins = Euterpe.getMargins(this, scale);
+
+        return this.realWidth * scale + margins;
+    };
+
     return Node;
 })();
