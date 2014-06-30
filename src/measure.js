@@ -170,10 +170,9 @@ Euterpe.Measure = (function() {
             for(var i=0; i < lines.length; i++) {
                 var x = lines[i][0];
                 var y = lines[i][1];
-                var shift = lines[i][2] / 2;
+                var shift = 5 * scale;
                 var width = lines[i][2] + shift * 2;
 
-                console.log(lines[i][2], shift, x, x - shift);
                 this.prepared.push(new Kinetic.Line({
                     points: [0, 0, width, 0],
                     stroke: 'black',

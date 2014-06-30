@@ -22,7 +22,7 @@ Euterpe.VAlignLeft = (function() {
     Euterpe.extend(Euterpe.Container, VAlignLeft, {
         // Override width calculation
         getRealWidth: function(scale) {
-            var margins = this.leftMargin * scale + this.rightMargin * scale;
+            var margins = Euterpe.getMargins(this, scale);
 
             return _.max(
                 _.map(this.items,
