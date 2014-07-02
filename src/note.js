@@ -75,7 +75,7 @@ Euterpe.Note = (function() {
             this.scale = scale;
 
             /** @public */
-            this.startX = x + this.realWidth / 2;
+            this.startX = x + this.realWidth * scale / 2;
 
             /** @public */
             this.startY = y;

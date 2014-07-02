@@ -11,6 +11,7 @@
  */
 Euterpe.Container = (function() {
     var Container = function(name, config) {
+        this.id = Euterpe.randomString(20);
         this.items = [];
         this.name = name;
         this.config = config;
@@ -61,8 +62,7 @@ Euterpe.Container = (function() {
                 var _y = y;
 
                 if(item.isNode) {
-                    _y = Euterpe.getItemY(self, item, x + item.leftMargin * scale,
-                                          y, scale);
+                    _y = Euterpe.getItemY(self, item, x, y, scale);
                 }
 
                 return item.render(x, _y, scale, idx);

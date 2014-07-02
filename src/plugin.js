@@ -14,7 +14,11 @@ Euterpe.Plugin = (function() {
         this.config = config;
     };
 
-    Node.prototype.isPlugin = true;
+    Plugin.prototype.isPlugin = true;
+
+    Plugin.prototype.process = function(item) {
+        return item;
+    };
 
     return Plugin;
 })();

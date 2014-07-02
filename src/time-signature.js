@@ -49,7 +49,7 @@ Euterpe.TimeSignature = (function() {
                 }));
     }
 
-    Euterpe.extend(Euterpe.VAlignLeft, TimeSignature);
+    Euterpe.extend(Euterpe.VBox, TimeSignature);
 
     return TimeSignature;
 })();

@@ -17,62 +17,63 @@ Euterpe.PluginNoteBar = (function() {
      */
     var PluginNoteBar = function(config) {
         PluginNoteBar.super.call(this, "Euterpe.PluginNoteBar", config);
-
-        this.notes = [];
     };
 
     Euterpe.extend(Euterpe.Plugin, PluginNoteBar, {
-        events: [
-            {
-                event: "beforePrepareNode",
-                filter: function(item) {
-                    return item.name === "Euterpe.Note" && !this.isMarked(item)
-                },
-                handler: "beforePrepareNode"
+        process: function(root) {
+            var measures = Euterpe.select("Euterpe.Measure", root);
+
+            for(var i=0; i < measures.length; i++) {
+                var m = measures[i];
+                var acc = [];
+                var tmp = [];
+
+                for(var j=0; j < m.items.length; j++) {
+                    var itm = m.items[j];
+                    var hasBar = false;
+
+                    var notes = Euterpe.select("Euterpe.Note", itm);
+
+                    if(notes.length > 0) {
+                        for(var k=0; k < notes.length; k++) {
+                            var note = notes[k];
+                            var cfg = note.config || {};
+
+                            if(cfg.bar === 'begin' || cfg.bar === 'cont'
+                                || cfg.bar === 'end') {
+                                hasBar = true;
+                                note.__note_bar_flags = note.flags;
+                                note.flags = 0;
+
+                                tmp.push([note.id, itm]);
+
+                                if(cfg.bar === 'end') {
+                                    var hbox = new Euterpe.HBox({
+                                        items: _.map(tmp,
+                                            function(obj){return obj[1]})
+                                    });
+
+                                    hbox.add(new Bar(
+                                        _.map(tmp, function(obj){return obj[0]}))
+                                    );
+
+                                    tmp.length = 0;
+
+                                    acc.push(hbox);
+                                }
+                            }
+                        }
+                    }
+
+                    if(!hasBar) {
+                        acc.push(itm);
+                    }
+                }
+
+                m.items = acc;
             }
-        ],
 
-        beforePrepareNode: function(item) {
-            var config = item.config || {};
-
-            if(config.bar === 'end') {
-                item.__note_bar_flags = item.flags;
-                item.flags = 0;
-
-                this.notes.push([Euterpe.getStack(item), this.mark(item)]);
-
-                var hbox = new Euterpe.HBox({
-                    items: _.map(this.notes, function(obj) {return obj[0]}),
-                    leftMargin: this.notes[0].leftMargin
-                });
-
-                hbox.add(new Bar(_.map(this.notes,
-                         function(obj) {return obj[1]})));
-
-                this.notes.length = 0;
-
-                return hbox;
-            }
-            else if(config.bar === 'begin' || config.bar === 'cont') {
-                item.__note_bar_flags = item.flags;
-                item.flags = 0;
-
-                this.notes.push([Euterpe.getStack(item), this.mark(item)]);
-
-                return null;
-            }
-
-            return item;
-        },
-
-        mark: function(item) {
-            item.__processedByPluginNote = true;
-
-            return item;
-        },
-
-        isMarked: function(item) {
-            return item.__processedByPluginNote === true;
+            return root;
         }
     });
 
@@ -90,10 +91,10 @@ Euterpe.PluginNoteBar = (function() {
     }
 
     Euterpe.extend(Euterpe.Node, Bar, {
-        prepare: function(_x, _y, scale) {
+        render: function(_x, _y, scale) {
             this.scale = scale;
-            var first = this.notes[0];
-            var last = this.notes[1];
+            var first = Euterpe.select("#"+this.notes[0])[0];
+            var last = Euterpe.select("#"+this.notes[1])[0];
 
             this.bar = new Kinetic.Shape({
                 sceneFunc: function(ctx) {
@@ -118,9 +119,7 @@ Euterpe.PluginNoteBar = (function() {
                 stroke: 'black',
                 strokeWidth: 0
             });
-        },
 
-        getPrepared: function() {
             return this.bar;
         }
     });

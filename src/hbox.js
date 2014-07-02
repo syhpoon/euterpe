@@ -37,7 +37,7 @@ Euterpe.HBox = (function() {
             var contCb = function(item, x, y, scale, idx) {
                 _y = self.getCommonY(y, idx);
 
-                return item.prepare(x, _y, scale);
+                return item.render(x, _y, scale);
             };
 
             this.prepared = this.baseRender(x, y, scale, itemCb, contCb);

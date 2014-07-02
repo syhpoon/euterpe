@@ -1,7 +1,7 @@
-var scale = 4;
+var scale = 2;
 var margin = 20;
 
-//Euterpe.plugins.add(new Euterpe.PluginNoteBar());
+Euterpe.plugins.add(new Euterpe.PluginNoteBar());
 //Euterpe.plugins.add(new Euterpe.PluginPackMeasures({measuresPerLine: 1}));
 
 var root = new Euterpe.Score({
@@ -46,7 +46,7 @@ var root = new Euterpe.Score({
             number: 2,
             leftBarType: "none",
             items: [
-                new Euterpe.VAlignLeft({
+                new Euterpe.VBox({
                     leftMargin: margin,
                     items: [
                         new Euterpe.Note({
@@ -108,7 +108,7 @@ var root = new Euterpe.Score({
                     }
                 }),
 
-                new Euterpe.VAlignLeft({
+                new Euterpe.VBox({
                     leftMargin: margin,
                     items: [
                         new Euterpe.Note({
@@ -179,12 +179,11 @@ var root = new Euterpe.Score({
         }),
 
         /*
-
         new Euterpe.Measure({
             number: 3,
             leftBarType: "none",
             items: [
-                new Euterpe.VAlignLeft({
+                new Euterpe.VBox({
                     leftMargin: margin,
                     items: [
                         new Euterpe.Note({
@@ -233,7 +232,7 @@ var root = new Euterpe.Score({
                     }
                 }),
 
-                new Euterpe.VAlignLeft({
+                new Euterpe.VBox({
                     leftMargin: margin,
                     items: [
                         new Euterpe.HBox({

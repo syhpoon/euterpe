@@ -7,6 +7,7 @@
 
 Euterpe.Node = (function() {
     var Node = function(name, config) {
+        this.id = Euterpe.randomString(20);
         this.name = name;
         this.config = config;
 

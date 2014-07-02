@@ -7,6 +7,9 @@
 
 function Euterpe() {}
 
+/** Global configuration **/
+Euterpe.global = {};
+
 /**
  * Events repository
  *
@@ -66,90 +69,19 @@ Euterpe.events = {
 /**
  * Plugins repository
  *
- * Possible plugins events:
- *
- * init
- * onCalulateWidthNode
- * onCalulateWidthContainer
- * beforePrepareNode - Node is about to be prepared
- * afterPrepareNode - Node has been prepared
- * beforePrepareContainer - Container is about to be prepared
- * afterPrepareContainer - Node has been prepared
- * done
  */
 Euterpe.plugins = {
-    handlers: [],
     plugins: [],
 
     add: function(plugin) {
         this.plugins.push(plugin);
-
-        this.setEventHandlers(plugin);
     },
 
-    /**
-     * Add event handler
-     * @param {Object} event - Event object
-     */
-    addHandler: function(event) {
-        if(!_.isArray(this.handlers[event.event])) {
-            this.handlers[event.event] = [];
-        }
-
-        this.handlers[event.event].push(event);
-    },
-
-    /**
-     * Set event handlers for plugin
-     * @param {Object} obj
-     */
-    setEventHandlers: function(obj) {
-        var self = this;
-
-        var cmp = function(name) {
-            return function(item) {
-                return item.name === name;
-            }
-        };
-
-        if(_.isArray(obj.events)) {
-            for(var i=0; i < obj.events.length; i++) {
-                obj.events[i].item = obj;
-                // Transform string into real function
-                obj.events[i].handler = obj[obj.events[i].handler];
-
-                // Replace string filter with function matching item name
-                if(typeof obj.events[i].filter === 'string') {
-                    obj.events[i].filter = cmp(obj.events[i].filter);
-                }
-                self.addHandler(obj.events[i]);
-            }
-        }
-    },
-
-    fold: function(eventName, obj, state) {
-        if(_.isArray(this.handlers[eventName])) {
-            var r = obj;
-
-            for(var i=0; i < this.handlers[eventName].length; i++) {
-                if(r === null) {
-                    return r;
-                }
-
-                var h = this.handlers[eventName][i];
-
-                if(typeof h.filter === 'undefined' || h.filter.call(h.item, r)) {
-                    var args = [r].concat(_.toArray(arguments).slice(2));
-
-                    r = h.handler.apply(h.item, args);
-                }
-            }
-
-            return r;
-        }
-        else {
-            return obj;
-        }
+    fold: function(root) {
+        return _.reduce(this.plugins,
+            function(obj, plugin) {
+                return plugin.process(obj)
+            }, root);
     }
 };
 
@@ -200,6 +132,7 @@ Euterpe.initNode = function(node, name) {
 
 /**
  * Poor man inheritance
+ *
  * @param base
  * @param sub
  * @param {Object} [extend]
@@ -217,21 +150,21 @@ Euterpe.extend = function(base, sub, extend) {
     }
 };
 
-// TODO: Come up with better name
-Euterpe.getStack = function(item) {
-    if(typeof item.parentContainer === 'undefined') {
-        return item;
-    }
-    if(item.parentContainer.isVisual) {
-        return item;
-    }
-    else {
-        return Euterpe.getStack(item.parentContainer);
-    }
-};
-
+/**
+ * Main render function
+ *
+ * @param {Object} root - Root item
+ * @param {Number} x - X coordinate
+ * @param {Number} y - Y coordinate
+ * @param {Number} scale - Scale factor
+ * @param layer
+ */
 Euterpe.render = function(root, x, y, scale, layer) {
-    var rendered = _.flatten(root.baseRender(x, y, scale));
+    Euterpe.global.root = root;
+
+    var processed = Euterpe.plugins.fold(root);
+
+    var rendered = _.flatten(processed.baseRender(x, y, scale));
 
     for(var i=0; i < rendered.length; i++) {
         layer.add(rendered[i]);
@@ -240,6 +173,71 @@ Euterpe.render = function(root, x, y, scale, layer) {
     Euterpe.events.fire("ready");
 };
 
+/**
+ * Calculate the size of item margins
+ *
+ * @param item
+ * @param scale
+ * @returns {Number}
+ */
 Euterpe.getMargins = function(item, scale) {
     return item.leftMargin * scale + item.rightMargin * scale;
 };
+
+/**
+ * Generate random string
+ * From http://stackoverflow.com/a/19964557
+ *
+ * @param len
+ * @returns {string}
+ */
+Euterpe.randomString = function(len) {
+    return new Array(len + 1).join(
+        (Math.random().toString(36) + '00000000000000000')
+            .slice(2, 18)).slice(0, len);
+};
+
+/**
+ * Select items
+ * Selector format: #<ID> or <NAME>
+ *
+ * @param {String} selector - Selector string
+ * @param {Object} [root] - Root object
+ */
+Euterpe.select = function(selector, root) {
+    var f = function(obj) {
+        // Compare by id
+        if(selector[0] === '#') {
+            return obj.id === selector.slice(1, selector.length);
+        }
+        // Compare by name
+        else {
+            return obj.name === selector;
+        }
+    };
+
+    root = root || Euterpe.global.root;
+
+    var r = [];
+
+    if(root.isNode && f(root)) {
+        r.push(root);
+    }
+    else if(root.isContainer) {
+        for(var i=0; i < root.items.length; i++) {
+            var item = root.items[i];
+
+            if(f(item)) {
+                r.push(item);
+            }
+
+            if(item.isContainer) {
+                r.push(Euterpe.select(selector, item));
+            }
+        }
+    }
+
+    return _.flatten(r);
+};
+
+

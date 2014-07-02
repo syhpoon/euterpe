@@ -8,18 +8,18 @@
 /**
  * @namespace Euterpe
  */
-Euterpe.VAlignLeft = (function() {
+Euterpe.VBox = (function() {
     /**
      * Left vertical align [container]
      *
      * @constructor
      * @param {Object} config - Configuration parameters
      */
-    function VAlignLeft(config) {
-        VAlignLeft.super.call(this, "Euterpe.VAlignLeft", config);
+    function VBox(config) {
+        VBox.super.call(this, "Euterpe.VBox", config);
     }
 
-    Euterpe.extend(Euterpe.Container, VAlignLeft, {
+    Euterpe.extend(Euterpe.Container, VBox, {
         // Override width calculation
         getRealWidth: function(scale) {
             var margins = Euterpe.getMargins(this, scale);
@@ -53,5 +53,5 @@ Euterpe.VAlignLeft = (function() {
         }
     });
 
-    return VAlignLeft;
+    return VBox;
 }());
