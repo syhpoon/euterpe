@@ -57,6 +57,11 @@ Euterpe.Container = (function() {
         baseRender: function(x, y, scale, itemcb, containercb) {
             var acc = [];
             var self = this;
+            var state = {
+                x: x,
+                y: y,
+                scale: scale
+            };
 
             var cb = function(item, x, y, scale, idx) {
                 var _y = y;
@@ -75,13 +80,22 @@ Euterpe.Container = (function() {
                 var item = this.items[i];
                 var width = 0;
 
-                if(item.isContainer) {
+                if(typeof item === 'function') {
+                    item(state);
+
+                    x = state.x;
+                    y = state.y;
+                    scale = state.scale;
+                }
+                else if(item.isContainer) {
                     item.parentContainer = this;
 
                     width = item.getRealWidth(scale);
 
-                    acc.push(containercb(item, x + item.leftMargin * scale,
-                                         y, scale, i));
+                    item.X = x + item.leftMargin * scale;
+                    item.Y = y;
+
+                    acc.push(containercb(item, item.X, item.Y, scale, i));
 
                     x += width;
                 }
@@ -90,8 +104,10 @@ Euterpe.Container = (function() {
 
                     width = item.getRealWidth(scale);
 
-                    acc.push(itemcb(item, x + item.leftMargin * scale,
-                                    y, scale, i));
+                    item.X = x + item.leftMargin * scale;
+                    item.Y = y;
+
+                    acc.push(itemcb(item, item.X, item.Y, scale, i));
 
                     x += width;
                 }

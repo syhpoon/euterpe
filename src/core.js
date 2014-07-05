@@ -77,10 +77,10 @@ Euterpe.plugins = {
         this.plugins.push(plugin);
     },
 
-    fold: function(root) {
+    fold: function(root, scale) {
         return _.reduce(this.plugins,
             function(obj, plugin) {
-                return plugin.process(obj)
+                return plugin.process(obj, scale)
             }, root);
     }
 };
@@ -162,7 +162,7 @@ Euterpe.extend = function(base, sub, extend) {
 Euterpe.render = function(root, x, y, scale, layer) {
     Euterpe.global.root = root;
 
-    var processed = Euterpe.plugins.fold(root);
+    var processed = Euterpe.plugins.fold(root, scale);
 
     var rendered = _.flatten(processed.baseRender(x, y, scale));
 
@@ -239,5 +239,4 @@ Euterpe.select = function(selector, root) {
 
     return _.flatten(r);
 };
-
 
