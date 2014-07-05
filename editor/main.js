@@ -1,8 +1,12 @@
-var scale = 2;
-var margin = 20;
+var scale = 1;
+var margin = 40;
+var width = 1300;
 
 Euterpe.plugins.add(new Euterpe.PluginNoteBar());
-//Euterpe.plugins.add(new Euterpe.PluginPackMeasures({measuresPerLine: 1}));
+Euterpe.plugins.add(new Euterpe.PluginPackMeasures({
+    measuresPerLine: 3,
+    totalWidth: width - 100
+}));
 
 var root = new Euterpe.Score({
     items: [
@@ -178,7 +182,6 @@ var root = new Euterpe.Score({
             ]
         }),
 
-        /*
         new Euterpe.Measure({
             number: 3,
             leftBarType: "none",
@@ -250,7 +253,10 @@ var root = new Euterpe.Score({
                                     }
                                 }),
 
-                                new Euterpe.Text({text: "4"})
+                                new Euterpe.Text({
+                                    text: "4",
+                                    leftMargin: 2 * scale
+                                })
                             ]
                         }),
 
@@ -307,14 +313,13 @@ var root = new Euterpe.Score({
 
             ]
         })
-        */
     ]
 });
 
 var stage = new Kinetic.Stage({
     container: 'canvas',
-    width: 1300,
-    height: 600
+    width: width,
+    height: 700
 });
 
 var layer = new Kinetic.Layer();
