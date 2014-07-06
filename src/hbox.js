@@ -51,11 +51,11 @@ Euterpe.HBox = (function() {
 
             // There is a common Y defined
             if(typeof this.commonY === 'number') {
-                if(typeof this.Y === 'undefined' && idx === this.commonY) {
-                    this.Y = _y;
+                if(typeof this._y === 'undefined' && idx === this.commonY) {
+                    this._y = _y;
                 }
-                else if(typeof this.Y === 'number') {
-                    _y = this.Y;
+                else if(typeof this._y === 'number') {
+                    _y = this._y;
                 }
             }
 
