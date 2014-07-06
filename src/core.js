@@ -164,7 +164,8 @@ Euterpe.render = function(root, x, y, scale, layer) {
 
     var processed = Euterpe.plugins.fold(root, scale);
 
-    var rendered = _.flatten(processed.baseRender(x, y, scale));
+    var rendered = _.flatten(
+        processed.baseRender(x + root.leftMargin * scale, y, scale));
 
     for(var i=0; i < rendered.length; i++) {
         layer.add(rendered[i]);
