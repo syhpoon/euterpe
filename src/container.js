@@ -68,6 +68,7 @@ Euterpe.Container = (function() {
 
                 if(item.isNode) {
                     _y = Euterpe.getItemY(self, item, x, y, scale);
+                    item.Y = _y;
                 }
 
                 return item.render(x, _y, scale, idx);

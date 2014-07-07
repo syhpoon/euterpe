@@ -14,7 +14,8 @@ Euterpe.Text = (function() {
      *
      * @constructor
      * @param {Object} config - Configuration parameters
-     * @param {String} [config.text='black'] - Text to render
+     * @param {String} config.text - Text to render
+     * @param {String} [config.color='black'] - Text color
      * @param {String} [config.fontFamily='Arial'] - Font family
      * @param {Number} [config.fontSize=10] - Font size
      */

@@ -59,6 +59,8 @@ Euterpe.HBox = (function() {
                 }
             }
 
+            this.Y = _y;
+
             return _y;
         }
     });

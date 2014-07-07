@@ -18,6 +18,7 @@ Euterpe.Note = (function() {
      * @param {String} [config.beamDirection] - Beam direction (up|down)
      * @param {Number} [config.flags=0] - Number of flags
      * @param {Object} [config.location] - Location of the note
+     * @param {Number} [config.dots=0|1|2|3] - Number of dots
      */
 
     function Note(config) {
@@ -31,6 +32,9 @@ Euterpe.Note = (function() {
         this.flags = Euterpe.getConfig(config, "flags", 0);
 
         /** @public */
+        this.dots = Euterpe.getConfig(config, "dots", 0);
+
+        /** @public */
         this.location = Euterpe.getConfig(config, "location", undefined);
 
         /** @public */
@@ -39,11 +43,17 @@ Euterpe.Note = (function() {
         Note.super.call(this, "Euterpe.Note", config);
 
         if(this.type === "whole") {
-            this.realWidth = 21.2;
+            this.realWidth = this.headWidth = 21.2;
         }
         else {
-            this.realWidth = 14;
+            this.realWidth = this.headWidth = 14;
         }
+
+        this.dotWidth = 4.5;
+        this.dotMargin = 2.5;
+
+        this.realWidth += (this.dotMargin + this.dotWidth) * this.dots;
+
     }
 
     Euterpe.extend(Euterpe.Node, Note, {
@@ -62,36 +72,63 @@ Euterpe.Note = (function() {
          * @param {Number} x
          * @param {Number} y
          * @param {Number} scale
-         * @param {Object} options
          * @returns {Kinetic.*}
          *
-         * Possible options:
-         * * skipFlags {Boolean} - Do not draw flags even if explicitly requested
          */
-        render: function(x, y, scale, options) {
-            options = options || {};
-
+        render: function(x, y, scale) {
             /** @public */
             this.scale = scale;
 
             /** @public */
-            this.startX = x + this.realWidth * scale / 2;
+            this.startX = x + this.headWidth * scale / 2;
 
             /** @public */
             this.startY = y;
 
             /** @public */
-            this.beamWidth = 1.3 * this.scale;
+            this.beamWidth = 1.3 * scale;
 
             /** @public */
-            this.beamHeight = 30 * this.scale;
+            this.beamHeight = 35 * scale;
 
             switch(this.type) {
                 case "whole":
                     this.prepared = this.initWhole();
                     break;
                 default:
-                    this.prepared = this.initHalfQuarter(options);
+                    this.prepared = this.initHalfQuarter();
+            }
+
+            if(this.dots > 0) {
+                var yOff = 0;
+                var line = this.location["Euterpe.Measure"].line;
+
+                // Note itself is located on the line
+                // Need to shift the dot upwards
+                if(line % 1 === 0) {
+                    yOff = 3 * scale;
+                }
+
+                var _x = x + this.headWidth * scale;
+
+                for(var i=this.dots; i > 0; i--) {
+                    _x += (this.dotMargin * scale + this.dotWidth * scale / 2);
+
+                    this.prepared.add(
+                        new Kinetic.Ellipse({
+                            x: _x,
+                            y: this.Y - yOff,
+                            radius: {
+                                x: 2 * this.scale,
+                                y: 2 * this.scale
+                            },
+
+                            fill: "black"
+                        })
+                    );
+
+                    _x += this.dotWidth * scale / 2;
+                }
             }
 
             return this.prepared;
@@ -139,7 +176,7 @@ Euterpe.Note = (function() {
          *
          * @private
          */
-        initHalfQuarter: function(options) {
+        initHalfQuarter: function() {
             var group = new Kinetic.Group({});
             var self = this;
 
@@ -209,37 +246,35 @@ Euterpe.Note = (function() {
                     group.add(this.beam);
                 }
 
-                if(!options.skipFlags) {
-                    // Check for flags
-                    if(this.flags == 1) {
-                        var fx = this.beam.x();
-                        var fy = this.beam.y() - this.beamHeight;
+                // Check for flags
+                if(this.flags == 1) {
+                    var fx = this.beam.x();
+                    var fy = this.beam.y() - this.beamHeight;
 
-                        var flag = new Kinetic.Shape({
-                            sceneFunc: function(ctx) {
-                                ctx.beginPath();
-                                ctx.moveTo(fx, fy);
-                                ctx.bezierCurveTo(
-                                    fx + 6.2 * self.scale, fy + 11.8 * self.scale,
-                                    fx + 21.4 * self.scale, fy + 10.4 * self.scale,
-                                    fx + 10 * self.scale, fy + 26.4 * self.scale);
+                    var flag = new Kinetic.Shape({
+                        sceneFunc: function(ctx) {
+                            ctx.beginPath();
+                            ctx.moveTo(fx, fy);
+                            ctx.bezierCurveTo(
+                                fx + 6.2 * self.scale, fy + 11.8 * self.scale,
+                                fx + 21.4 * self.scale, fy + 10.4 * self.scale,
+                                fx + 10 * self.scale, fy + 26.4 * self.scale);
 
-                                ctx.bezierCurveTo(
-                                    fx + 19.6 * self.scale, fy + 12.4 * self.scale,
-                                    fx + 5.4 * self.scale, fy + 10.4 * self.scale,
-                                    fx - 0.2 * self.scale, fy + 7.4 * self.scale);
+                            ctx.bezierCurveTo(
+                                fx + 19.6 * self.scale, fy + 12.4 * self.scale,
+                                fx + 5.4 * self.scale, fy + 10.4 * self.scale,
+                                fx - 0.2 * self.scale, fy + 7.4 * self.scale);
 
-                                ctx.closePath();
+                            ctx.closePath();
 
-                                ctx.fillStrokeShape(this);
-                            },
-                            fill: 'black',
-                            stroke: 'black',
-                            strokeWidth: 1
-                        });
+                            ctx.fillStrokeShape(this);
+                        },
+                        fill: 'black',
+                        stroke: 'black',
+                        strokeWidth: 1
+                    });
 
-                        group.add(flag);
-                    }
+                    group.add(flag);
                 }
             }
 
