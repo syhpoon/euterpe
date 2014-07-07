@@ -28,15 +28,23 @@ Euterpe.PluginPackMeasures = (function() {
         process: function(root, scale) {
             var acc = [];
             var tmp = [];
-            var first = null;
             var clef = null;
             var barType = 'single';
+
+            var f = function(a, o) { return a + o.getRealWidth(scale);};
+            var newLine;
+
+            if(root.items.length > 0) {
+                newLine = function(state) {
+                    state.x = Euterpe.select("#"+root.items[0].id)[0].X;
+                    state.y += 170 * scale;
+                };
+            }
 
             for(var i=0; i < root.items.length; i++) {
                 var item = root.items[i];
 
                 if(i === 0) {
-                    first = item.id;
 
                     // Also save clef, we need to replicate it on the first
                     // measure of every line
@@ -58,11 +66,10 @@ Euterpe.PluginPackMeasures = (function() {
 
                     barType = 'single';
 
-                    var subset = (tmp.length === 1 && i === root.items.length - 1)
-                                  ? [item]: tmp;
+                    var subset = (tmp.length === 1 &&
+                        i === root.items.length - 1) ? [item]: tmp;
 
-                    var width = _.reduce(subset,
-                        function(a, o) { return a + o.getRealWidth(scale)}, 0);
+                    var width = _.reduce(subset, f, 0);
 
                     var marginsCount = this.calcMargins(subset);
 
@@ -72,10 +79,8 @@ Euterpe.PluginPackMeasures = (function() {
                     acc = acc.concat(tmp);
                     tmp.length = 0;
 
-                    acc.push(function(state) {
-                        state.x = Euterpe.select("#"+first)[0].X;
-                        state.y += 170 * scale;
-                    });
+                    console.log(newLine);
+                    acc.push(newLine);
                 }
                 else {
                     barType = 'none';

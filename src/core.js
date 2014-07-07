@@ -80,7 +80,7 @@ Euterpe.plugins = {
     fold: function(root, scale) {
         return _.reduce(this.plugins,
             function(obj, plugin) {
-                return plugin.process(obj, scale)
+                return plugin.process(obj, scale);
             }, root);
     }
 };

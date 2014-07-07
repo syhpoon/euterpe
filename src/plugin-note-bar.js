@@ -23,6 +23,9 @@ Euterpe.PluginNoteBar = (function() {
         process: function(root) {
             var measures = Euterpe.select("Euterpe.Measure", root);
 
+            var f0 = function(obj) {return obj[0];};
+            var f1 = function(obj) {return obj[1];};
+
             for(var i=0; i < measures.length; i++) {
                 var m = measures[i];
                 var acc = [];
@@ -39,8 +42,8 @@ Euterpe.PluginNoteBar = (function() {
                             var note = notes[k];
                             var cfg = note.config || {};
 
-                            if(cfg.bar === 'begin' || cfg.bar === 'cont'
-                                || cfg.bar === 'end') {
+                            if(cfg.bar === 'begin' ||
+                                cfg.bar === 'cont' || cfg.bar === 'end') {
                                 hasBar = true;
                                 note.__note_bar_flags = note.flags;
                                 note.flags = 0;
@@ -49,13 +52,10 @@ Euterpe.PluginNoteBar = (function() {
 
                                 if(cfg.bar === 'end') {
                                     var hbox = new Euterpe.HBox({
-                                        items: _.map(tmp,
-                                            function(obj){return obj[1]})
+                                        items: _.map(tmp, f1)
                                     });
 
-                                    hbox.add(new Bar(
-                                        _.map(tmp, function(obj){return obj[0]}))
-                                    );
+                                    hbox.add(new Bar(_.map(tmp, f0)));
 
                                     tmp.length = 0;
 

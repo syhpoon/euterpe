@@ -72,31 +72,22 @@ Euterpe.Measure = (function() {
             switch(location.line) {
                 case 1:
                     return this.line1.y();
-                    break;
                 case 1.5:
                     return this.line1.y() + offset;
-                    break;
                 case 2:
                     return this.line2.y();
-                    break;
                 case 2.5:
                     return this.line2.y() + offset;
-                    break;
                 case 3:
                     return this.line3.y();
-                    break;
                 case 3.5:
                     return this.line3.y() + offset;
-                    break;
                 case 4:
                     return this.line4.y();
-                    break;
                 case 4.5:
                     return this.line4.y() + offset;
-                    break;
                 case 5:
                     return this.line5.y();
-                    break;
                 // Ledger lines
                 default:
                     var width = item.getRealWidth(scale);

@@ -23,7 +23,7 @@ Euterpe.Score = (function() {
         Score.super.call(this, "Euterpe.Score", config);
     }
 
-    Euterpe.extend(Euterpe.Container, Score)
+    Euterpe.extend(Euterpe.Container, Score);
 
     return Score;
 }());
