@@ -90,7 +90,7 @@ Euterpe.Measure = (function() {
                     return this.line5.y();
                 // Ledger lines
                 default:
-                    var width = item.getRealWidth(scale);
+                    var width = item.getRealWidth(scale, true);
                     var d, extra;
 
                     // Line below

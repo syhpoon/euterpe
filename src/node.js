@@ -19,10 +19,10 @@ Euterpe.Node = (function() {
 
     Node.prototype.isNode = true;
 
-    Node.prototype.getRealWidth = function(scale) {
+    Node.prototype.getRealWidth = function(scale, excludeMargins) {
         var margins = Euterpe.getMargins(this, scale);
 
-        return this.realWidth * scale + margins;
+        return this.realWidth * scale + (excludeMargins ? 0: margins);
     };
 
     Node.prototype.clone = function() {

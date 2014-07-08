@@ -21,15 +21,15 @@ Euterpe.VBox = (function() {
 
     Euterpe.extend(Euterpe.Container, VBox, {
         // Override width calculation
-        getRealWidth: function(scale) {
+        getRealWidth: function(scale, excludeMargins) {
             var margins = Euterpe.getMargins(this, scale);
 
             return _.max(
                 _.map(this.items,
                     function(item) {
-                        return item.getRealWidth(scale);
+                        return item.getRealWidth(scale, excludeMargins);
                     })
-            ) + margins;
+            ) + (excludeMargins ? 0: margins);
         },
 
         render: function(origX, y, scale) {

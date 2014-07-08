@@ -27,11 +27,11 @@ Euterpe.Container = (function() {
     };
 
     Container.prototype = {
-        getRealWidth: function(scale) {
-            var width = Euterpe.getMargins(this, scale);
+        getRealWidth: function(scale, exludeMargins) {
+            var width = exludeMargins ? 0: Euterpe.getMargins(this, scale);
 
             for(var i=0; i < this.items.length; i++) {
-                width += this.items[i].getRealWidth(scale);
+                width += this.items[i].getRealWidth(scale, exludeMargins);
             }
 
             return width;

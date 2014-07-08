@@ -79,7 +79,6 @@ Euterpe.PluginPackMeasures = (function() {
                     acc = acc.concat(tmp);
                     tmp.length = 0;
 
-                    console.log(newLine);
                     acc.push(newLine);
                 }
                 else {
