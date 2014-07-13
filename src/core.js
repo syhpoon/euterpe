@@ -105,7 +105,8 @@ Euterpe.getConfig = function(config, name, defaultVal) {
  * Try to get item location based on container type and location definition
  */
 Euterpe.getItemY = function(container, item, x, y, scale) {
-    var loc = item.location || item.config.location;
+    var loc = item.location ||
+        (item.config ? item.config.location: undefined);
 
     if(typeof loc === 'object' &&
        typeof loc[container.name] === 'object') {

@@ -98,7 +98,7 @@ Euterpe.Measure = (function() {
                         d = Math.floor(location.line) - 5;
                         extra = Math.ceil(location.line) > location.line ? offset: 0;
 
-                        return this.addLedgerLine(d, x, width,
+                        return this.addLedgerLine(item, d, x, width,
                                                   this.line5.y(), 1) + extra;
                     }
                     // Line above
@@ -106,7 +106,7 @@ Euterpe.Measure = (function() {
                         d = Math.ceil(location.line);
                         extra = Math.floor(location.line) < location.line ? offset: 0;
 
-                        return this.addLedgerLine(d * -1, x, width,
+                        return this.addLedgerLine(item, d * -1, x, width,
                                                   this.line1.y(), -1) - extra;
                     }
             }
@@ -115,7 +115,7 @@ Euterpe.Measure = (function() {
         },
 
         /** @private **/
-        addLedgerLine: function(pos, x, width, baseY, m) {
+        addLedgerLine: function(item, pos, x, width, baseY, m) {
             if(pos === 0) {
                 return baseY;
             }
@@ -123,14 +123,16 @@ Euterpe.Measure = (function() {
             var off = this.linePadding * pos + (this.lineWidth * pos);
             var _y = baseY + off * m;
 
-            // Check if this line is already defined
-            if(!_.find(this.ledgerLines, function(line) {
-                return line[0] === x && line[1] === _y;
-            })) {
-                this.ledgerLines.push([x, _y, width]);
+            if(item.name === 'Euterpe.Note') {
+                // Check if this line is already defined
+                if(!_.find(this.ledgerLines, function(line) {
+                    return line[0] === x && line[1] === _y;
+                })) {
+                    this.ledgerLines.push([x, _y, width]);
+                }
             }
 
-            this.addLedgerLine(pos - 1, x, width, baseY, m);
+            this.addLedgerLine(item, pos - 1, x, width, baseY, m);
 
             return _y;
         },
