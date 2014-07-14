@@ -11,6 +11,7 @@
 Euterpe.PluginNoteBar = (function() {
     /**
      * PluginNoteBar [plugin]
+     * Adds 'bar' = "begin"|"cont"|"end" attribute to Euterpe.Note
      *
      * @constructor
      * @param {Object} config - Configuration parameters

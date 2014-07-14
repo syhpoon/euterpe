@@ -37,7 +37,7 @@ Euterpe.PluginPackMeasures = (function() {
             if(root.items.length > 0) {
                 newLine = function(state) {
                     state.x = Euterpe.select("#"+root.items[0].id)[0].X;
-                    state.y += 170 * scale;
+                    state.y += 200 * scale;
                 };
             }
 
