@@ -26,9 +26,28 @@ Euterpe.Measure = (function() {
         this.number = Euterpe.getConfig(config, "number", undefined);
         this.ledgerLines = [];
         this.prepared = [];
+
+        this.leftBarWidth = this.widths[this.leftBarType];
+        this.rightBarWidth = this.widths[this.rightBarType];
     }
 
     Euterpe.extend(Euterpe.Container, Measure, {
+        widths: {
+            "none": 0,
+            "single": 2.5,
+            "double": 7.5,
+            "double bold": 13.75,
+            "repeat": 20.5
+        },
+
+        // Override width calculation
+        getRealWidth: function(scale, excludeMargins) {
+            var width = Euterpe.Container.prototype.getRealWidth.call(
+                this, scale, excludeMargins);
+
+            return width + this.leftBarWidth * scale + this.rightBarWidth * scale;
+        },
+
         /**
          * Calculate item y coordinate
          *
@@ -139,6 +158,9 @@ Euterpe.Measure = (function() {
 
         render: function(x, y, scale) {
             this.prepared = [this.renderSelf(x, y, scale)];
+
+            x += this.leftBarWidth * scale;
+
             var self = this;
 
             var itemcb = function(item, x, y, scale) {
@@ -188,22 +210,20 @@ Euterpe.Measure = (function() {
             this.linePadding = 13 * this.scale;
             this.lineWidth = this.scale;
 
-            var lb = this.initLeftBar(this.leftBarType, this._x, this._y);
-            var rb = this.initRightBar(this.rightBarType,
-                                       lb.x + this.measureLength, this._y);
-
-            this.leftBar = lb.bar;
-            this.leftBarWidth = lb.barWidth;
-            this.rightBar = rb.bar;
-            this.rightBarWidth = rb.barWidth;
-
-            var startX = lb.x;
             var startY = this._y + (this.lineWidth / 2);
 
-            var line2_y = startY + this.linePadding * 1 + (this.lineWidth * 1);
-            var line3_y = startY + this.linePadding * 2 + (this.lineWidth * 2);
-            var line4_y = startY + this.linePadding * 3 + (this.lineWidth * 3);
-            var line5_y = startY + this.linePadding * 4 + (this.lineWidth * 4);
+            this.line2_y = startY + this.linePadding * 1 + (this.lineWidth * 1);
+            this.line3_y = startY + this.linePadding * 2 + (this.lineWidth * 2);
+            this.line4_y = startY + this.linePadding * 3 + (this.lineWidth * 3);
+            this.line5_y = startY + this.linePadding * 4 + (this.lineWidth * 4);
+
+            var lb = this.initBar(this.leftBarType, this._x, this._y, true);
+            var startX = lb.startX;
+            var rb = this.initBar(this.rightBarType,
+                                  startX + this.measureLength, this._y, false);
+
+            this.leftBar = lb.bar;
+            this.rightBar = rb.bar;
 
             this.line1 = new Kinetic.Line({
                 points: [0, 0, this.measureLength, 0],
@@ -214,19 +234,19 @@ Euterpe.Measure = (function() {
             });
 
             this.line2 = this.line1.clone({
-                y: line2_y
+                y: this.line2_y
             });
             
             this.line3 = this.line1.clone({
-                y: line3_y
+                y: this.line3_y
             });
 
             this.line4 = this.line1.clone({
-                y: line4_y
+                y: this.line4_y
             });
             
             this.line5 = this.line1.clone({
-                y: line5_y
+                y: this.line5_y
             });
 
             this.prepared = new Kinetic.Group({});
@@ -268,6 +288,7 @@ Euterpe.Measure = (function() {
             var bar = new Kinetic.Group({});
             var barWidth = 2 * this.scale;
             var startX = x + (barWidth / 2);
+            var dotDiameter = 3 * this.scale;
 
             var barHeight = this.linePadding * 4 +
                 this.lineWidth * 5 - (this.lineWidth / 2) + (this.lineWidth / 2);
@@ -306,7 +327,7 @@ Euterpe.Measure = (function() {
 
                 barWidth = barWidth * 2 + offset;
             }
-            else if(type === "double bold") {
+            else if(type === "double bold" || type === "repeat") {
                 var leftWidth = 4 * this.scale;
 
                 var db1 = new Kinetic.Line({
@@ -326,6 +347,23 @@ Euterpe.Measure = (function() {
                 bar.add(db2);
 
                 barWidth = barWidth * 2 + leftWidth + offset;
+
+                if(type === "repeat") {
+                    var dot = new Kinetic.Circle({
+                        x: startX + leftWidth + offset + offset,
+                        y: this.line2_y + 7 * scale,
+                        radius: dotDiameter,
+                        fill: 'black',
+                        strokeWidth: 0
+                    });
+
+                    bar.add(dot);
+                    bar.add(dot.clone({
+                        y: this.line3_y + 7 * scale
+                    }));
+
+                    barWidth += (offset + dotDiameter);
+                }
             }
 
             return {bar: bar, x: startX, barWidth: barWidth};
@@ -402,6 +440,89 @@ Euterpe.Measure = (function() {
             }
 
             return {bar: bar, barWidth: barWidth};
+        },
+
+        initBar: function(type, x, y, isLeft) {
+            var bar = new Kinetic.Group({});
+            var barWidth = 2 * this.scale;
+            var startX = x;
+            var dotDiameter = 3 * this.scale;
+            var m = isLeft ? 1: -1;
+
+            var barHeight = this.linePadding * 4 +
+                this.lineWidth * 5 - (this.lineWidth / 2) + (this.lineWidth / 2);
+
+            var offset = 5 * this.scale;
+
+            if(type === "single") {
+                startX = x + (barWidth / 2);
+
+                var b = new Kinetic.Line({
+                    points: [0, 0, 0, barHeight],
+                    stroke: 'black',
+                    strokeWidth: barWidth,
+                    x: startX,
+                    y: y
+                });
+
+                bar.add(b);
+            }
+            else if(type === "double") {
+                startX = x + (barWidth / 2);
+
+                var b1 = new Kinetic.Line({
+                    points: [0, 0, 0, barHeight],
+                    stroke: 'black',
+                    strokeWidth: barWidth,
+                    x: startX,
+                    y: y
+                });
+
+                var b2 = b1.clone({
+                    x: startX + offset * m
+                });
+
+                bar.add(b1);
+                bar.add(b2);
+            }
+            else if(type === "double bold" || type === "repeat") {
+                var bigWidth = 4 * this.scale;
+
+                startX = x + (barWidth + bigWidth) / 2;
+
+                var db1 = new Kinetic.Line({
+                    points: [0, 0, 0, barHeight],
+                    stroke: 'black',
+                    strokeWidth: barWidth + bigWidth,
+                    x: startX,
+                    y: y
+                });
+
+                var db2 = db1.clone({
+                    x: startX + bigWidth * m + offset * m,
+                    strokeWidth: barWidth
+                });
+
+                bar.add(db1);
+                bar.add(db2);
+
+                if(type === "repeat") {
+                    var dot = new Kinetic.Circle({
+                        x: startX + bigWidth * m + offset * m + offset * m,
+                        y: this.line2_y + 7 * scale,
+                        radius: dotDiameter,
+                        fill: 'black',
+                        strokeWidth: 0
+                    });
+
+                    bar.add(dot);
+                    bar.add(dot.clone({
+                        y: this.line3_y + 7 * scale
+                    }));
+                }
+            }
+
+            return {bar: bar, startX: startX};
         }
     });
 
