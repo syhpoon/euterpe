@@ -37,6 +37,7 @@ Euterpe.VBox = (function() {
                 var _y = Euterpe.getY(item, scale, y);
 
                 item.Y = _y;
+                item.X = origX;
 
                 return item.render(origX, _y, scale);
             };

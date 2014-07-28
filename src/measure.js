@@ -50,43 +50,43 @@ Euterpe.Measure = (function() {
         render: function(x, y, scale) {
             var lines = [];
             this.prepared = [this.renderSelf(x, y, scale)];
-            var self = this;
-
-            var cb = function(item, x, y, scale, idx) {
-                var _y = Euterpe.getY(item, scale, y);
-                item.Y = _y;
-
-                // Check for any required ledger lines
-                if(typeof item.config !== 'undefined' &&
-                    typeof item.config.location === 'number') {
-
-                    var width = item.getRealWidth(scale, true);
-                    var d;
-
-                    // Line below
-                    if(item.config.location > 4) {
-                        d = Math.floor(item.config.location);
-
-                        self.addLedgerLine(item, d, x, width, y, lines);
-                    }
-                    // Line above
-                    else if(item.config.location < 0) {
-                        d = Math.ceil(item.config.location);
-
-                        self.addLedgerLine(item, d, x, width, y, lines);
-                    }
-                }
-
-                return item.render(x, _y, scale, idx);
-            };
 
             x += this.leftBarWidth * scale;
 
-            this.prepared.push(this.baseRender(x, y, scale, cb));
+            this.prepared.push(this.baseRender(x, y, scale));
+
+            this.prepareLedgerLines(
+                lines,
+                Euterpe.select("Euterpe.Note", this),
+                y, scale);
 
             this.renderLedgerLines(lines, scale, this.prepared[0]);
 
             return this.prepared;
+        },
+
+        prepareLedgerLines: function(lines, notes, y, scale) {
+            for(var i=0; i < notes.length; i++) {
+                var note = notes[i];
+
+                if(typeof note.config.location === 'number') {
+                    var width = note.getRealWidth(scale, true);
+                    var d;
+
+                    // Line below
+                    if(note.config.location > 4) {
+                        d = Math.floor(note.config.location);
+
+                        this.addLedgerLine(note, d, note.X, width, y, lines);
+                    }
+                    // Line above
+                    else if(note.config.location < 0) {
+                        d = Math.ceil(note.config.location);
+
+                        this.addLedgerLine(note, d, note.X, width, y, lines);
+                    }
+                }
+            }
         },
 
         /** @private **/
