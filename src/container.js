@@ -56,7 +56,6 @@ Euterpe.Container = (function() {
          */
         baseRender: function(x, y, scale, itemcb, containercb) {
             var acc = [];
-            var self = this;
             var state = {
                 x: x,
                 y: y,
@@ -64,12 +63,8 @@ Euterpe.Container = (function() {
             };
 
             var cb = function(item, x, y, scale, idx) {
-                var _y = y;
-
-                if(item.isNode) {
-                    _y = Euterpe.getItemY(self, item, x, y, scale);
-                    item.Y = _y;
-                }
+                var _y = Euterpe.getY(item, scale, y);
+                item.Y = _y;
 
                 return item.render(x, _y, scale, idx);
             };

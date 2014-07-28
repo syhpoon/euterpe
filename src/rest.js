@@ -58,20 +58,9 @@ Euterpe.Rest = (function() {
                 this.realWidth = 30;
                 break;
         }
-
     }
 
     Euterpe.extend(Euterpe.Node, Rest, {
-        events: {
-            "ready": "onReady"
-        },
-
-        onReady: function() {
-            if(this.prepared) {
-                this.prepared.moveToBottom();
-            }
-        },
-
         /**
          * Render object
          * @param {Number} x

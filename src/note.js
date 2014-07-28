@@ -17,7 +17,6 @@ Euterpe.Note = (function() {
      * @param {String} [config.type="quarter"] - Note head type (whole|half|quarter)
      * @param {String} [config.beamDirection] - Beam direction (up|down)
      * @param {Number} [config.flags=0] - Number of flags
-     * @param {Object} [config.location] - Location of the note
      * @param {Number} [config.dots=0|1|2|3] - Number of dots
      */
 
@@ -33,9 +32,6 @@ Euterpe.Note = (function() {
 
         /** @public */
         this.dots = Euterpe.getConfig(config, "dots", 0);
-
-        /** @public */
-        this.location = Euterpe.getConfig(config, "location", undefined);
 
         /** @public */
         this.beam = undefined;
@@ -57,16 +53,6 @@ Euterpe.Note = (function() {
     }
 
     Euterpe.extend(Euterpe.Node, Note, {
-        events: {
-            "ready": "onReady"
-        },
-
-        onReady: function() {
-            if(this.prepared) {
-                this.prepared.moveToBottom();
-            }
-        },
-
         /**
          * Render object
          * @param {Number} x
@@ -101,7 +87,7 @@ Euterpe.Note = (function() {
 
             if(this.dots > 0) {
                 var yOff = 0;
-                var line = this.location["Euterpe.Measure"].line;
+                var line = this.location;
 
                 // Note itself is located on the line
                 // Need to shift the dot upwards

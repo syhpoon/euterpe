@@ -101,23 +101,45 @@ Euterpe.getConfig = function(config, name, defaultVal) {
     return typeof config[name] === 'undefined' ? defaultVal : config[name];
 };
 
-/**
- * Try to get item location based on container type and location definition
- */
-Euterpe.getItemY = function(container, item, x, y, scale) {
-    var loc = item.location ||
-        (item.config ? item.config.location: undefined);
+Euterpe.getY = function(item, scale, y) {
+    var location;
 
-    if(typeof loc === 'object' &&
-       typeof loc[container.name] === 'object') {
-        return container.getItemY(item, loc[container.name], x, y, scale);
+    if(typeof item === 'number') {
+        location = item;
     }
-    else if(typeof container.parentContainer !== 'undefined') {
-        return Euterpe.getItemY(container.parentContainer, item, x, y, scale);
+    else if(typeof item.config !== 'undefined' &&
+        typeof item.config.location !== 'undefined') {
+        location = item.config.location;
     }
     else {
         return y;
     }
+
+    if(typeof location === 'function') {
+        return location(scale, y);
+    }
+
+    var offset = Euterpe.global.linePadding / 2 + Euterpe.global.lineWidth / 2;
+    var off;
+
+    var d, extra;
+
+    if(location >= 0) {
+        d = Math.floor(location);
+        extra = Math.ceil(location) > location ? offset: 0;
+        off = Euterpe.global.linePadding * d + Euterpe.global.lineWidth * d;
+
+        return (y + off) + extra;
+    }
+    else if(location < 0) {
+        d = Math.ceil(location);
+        extra = Math.floor(location) < location ? offset: 0;
+        off = Euterpe.global.linePadding * -d + Euterpe.global.lineWidth * -d;
+
+        return (y + off * -1) - extra;
+    }
+
+    return y;
 };
 
 /**
@@ -160,10 +182,18 @@ Euterpe.extend = function(base, sub, extend) {
  * @param {Number} x - X coordinate
  * @param {Number} y - Y coordinate
  * @param {Number} scale - Scale factor
- * @param layer
+ * @param stage
  */
-Euterpe.render = function(root, x, y, scale, layer) {
+Euterpe.render = function(root, x, y, scale, stage) {
     Euterpe.global.root = root;
+    Euterpe.global.stage = stage;
+    Euterpe.global.background = new Kinetic.Layer({});
+    Euterpe.global.foreground = new Kinetic.Layer({});
+    Euterpe.global.linePadding = 13 * scale;
+    Euterpe.global.lineWidth = scale;
+
+    stage.add(Euterpe.global.foreground);
+    stage.add(Euterpe.global.background);
 
     var processed = Euterpe.plugins.fold(root, scale);
 
@@ -171,7 +201,12 @@ Euterpe.render = function(root, x, y, scale, layer) {
         processed.baseRender(x + root.leftMargin * scale, y, scale));
 
     for(var i=0; i < rendered.length; i++) {
-        layer.add(rendered[i]);
+        if(rendered[i].layer2draw === 'background') {
+            Euterpe.global.background.add(rendered[i]);
+        }
+        else {
+            Euterpe.global.foreground.add(rendered[i]);
+        }
     }
 
     Euterpe.events.fire("ready");

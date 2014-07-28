@@ -24,7 +24,6 @@ Euterpe.Measure = (function() {
         this.leftBarType = Euterpe.getConfig(config, "leftBarType", "single");
         this.rightBarType = Euterpe.getConfig(config, "rightBarType", "single");
         this.number = Euterpe.getConfig(config, "number", undefined);
-        this.ledgerLines = [];
         this.prepared = [];
 
         this.leftBarWidth = this.widths[this.leftBarType];
@@ -48,152 +47,82 @@ Euterpe.Measure = (function() {
             return width + this.leftBarWidth * scale + this.rightBarWidth * scale;
         },
 
-        /**
-         * Calculate item y coordinate
-         *
-         * @public
-         * @param {Object} item
-         * @param {Object} location - Location definition
-         * @param {Number} x
-         * @param {Number} y
-         * @param {Number} scale
-         * @returns {Number}
-         */
-        getItemY: function(item, location, x, y, scale) {
-            if(typeof location === 'undefined') {
-                return y;
-            }
+        render: function(x, y, scale) {
+            var lines = [];
+            this.prepared = [this.renderSelf(x, y, scale)];
+            var self = this;
 
-            if(typeof location.line === 'number') {
-                return this.getItemYLine(item, location, x, y);
-            }
+            var cb = function(item, x, y, scale, idx) {
+                var _y = Euterpe.getY(item, scale, y);
+                item.Y = _y;
 
-            if(typeof location.raw === 'function') {
-                return location.raw(this, item, y, scale);
-            }
+                // Check for any required ledger lines
+                if(typeof item.config !== 'undefined' &&
+                    typeof item.config.location === 'number') {
 
-            return y;
-        },
-
-        /**
-         * Calculate item y coordinate base on specified line number
-         *
-         * @private
-         * @param {Object} item
-         * @param {Object} location
-         * @param {Number} x
-         * @param {Number} y
-         * @returns {Number}
-         */
-        getItemYLine: function(item, location, x, y) {
-            var offset = this.linePadding / 2 + this.lineWidth / 2;
-
-            switch(location.line) {
-                case 1:
-                    return this.line1.y();
-                case 1.5:
-                    return this.line1.y() + offset;
-                case 2:
-                    return this.line2.y();
-                case 2.5:
-                    return this.line2.y() + offset;
-                case 3:
-                    return this.line3.y();
-                case 3.5:
-                    return this.line3.y() + offset;
-                case 4:
-                    return this.line4.y();
-                case 4.5:
-                    return this.line4.y() + offset;
-                case 5:
-                    return this.line5.y();
-                // Ledger lines
-                default:
                     var width = item.getRealWidth(scale, true);
-                    var d, extra;
+                    var d;
 
                     // Line below
-                    if(location.line > 5) {
-                        d = Math.floor(location.line) - 5;
-                        extra = Math.ceil(location.line) > location.line ? offset: 0;
+                    if(item.config.location > 4) {
+                        d = Math.floor(item.config.location);
 
-                        return this.addLedgerLine(item, d, x, width,
-                                                  this.line5.y(), 1) + extra;
+                        self.addLedgerLine(item, d, x, width, y, lines);
                     }
                     // Line above
-                    else if(location.line < 0) {
-                        d = Math.ceil(location.line);
-                        extra = Math.floor(location.line) < location.line ? offset: 0;
+                    else if(item.config.location < 0) {
+                        d = Math.ceil(item.config.location);
 
-                        return this.addLedgerLine(item, d * -1, x, width,
-                                                  this.line1.y(), -1) - extra;
+                        self.addLedgerLine(item, d, x, width, y, lines);
                     }
-            }
-
-            return y;
-        },
-
-        /** @private **/
-        addLedgerLine: function(item, pos, x, width, baseY, m) {
-            if(pos === 0) {
-                return baseY;
-            }
-
-            var off = this.linePadding * pos + (this.lineWidth * pos);
-            var _y = baseY + off * m;
-
-            if(item.name === 'Euterpe.Note') {
-                // Check if this line is already defined
-                if(!_.find(this.ledgerLines, function(line) {
-                    return line[0] === x && line[1] === _y;
-                })) {
-                    this.ledgerLines.push([x, _y, width]);
                 }
-            }
 
-            this.addLedgerLine(item, pos - 1, x, width, baseY, m);
-
-            return _y;
-        },
-
-        render: function(x, y, scale) {
-            this.prepared = [this.renderSelf(x, y, scale)];
+                return item.render(x, _y, scale, idx);
+            };
 
             x += this.leftBarWidth * scale;
 
-            var self = this;
+            this.prepared.push(this.baseRender(x, y, scale, cb));
 
-            var itemcb = function(item, x, y, scale) {
-                var _y = Euterpe.getItemY(self, item, x, y, scale);
-
-                item.Y = _y;
-
-                return item.render(x, _y, scale);
-            };
-
-            var contcb = function(item, x, y, scale) {
-                return item.render(x, y, scale);
-            };
-
-            this.prepared.push(this.baseRender(x, y, scale, itemcb, contcb));
-
-            this.prepareLedgerLines(this.ledgerLines, scale);
+            this.renderLedgerLines(lines, scale, this.prepared[0]);
 
             return this.prepared;
         },
 
+        /** @private **/
+        addLedgerLine: function(item, pos, x, width, baseY, lines) {
+            while(true) {
+                if((pos > 0 && pos <= 4) || (pos === 0)) {
+                    break;
+                }
+
+                var _y = Euterpe.getY(pos, scale, baseY);
+
+                if(item.name === 'Euterpe.Note') {
+                    // Check if this line is already defined
+                    if(!_.find(lines, function(line) {
+                        return line[0] === x && line[1] === _y;
+                    })) {
+                        lines.push([x, _y, width]);
+                    }
+                }
+
+                pos += (pos > 0 ? -1: 1);
+            }
+        },
+
         /** @private */
-        prepareLedgerLines: function(lines, scale) {
+        renderLedgerLines: function(lines, scale, prepared) {
             for(var i=0; i < lines.length; i++) {
                 var x = lines[i][0];
                 var y = lines[i][1];
                 var shift = 5 * scale;
                 var width = lines[i][2] + shift * 2;
 
-                this.prepared.push(new Kinetic.Line({
+                prepared.add(new Kinetic.Line({
                     points: [0, 0, width, 0],
                     stroke: 'black',
-                    strokeWidth: this.lineWidth,
+                    strokeWidth: Euterpe.global.lineWidth,
                     x: x - shift,
                     y: y
                 }));
@@ -202,25 +131,21 @@ Euterpe.Measure = (function() {
 
         /** @private */
         renderSelf: function(x, y, scale) {
-            this._x = x;
-            this._y = y;
             this.scale = scale;
             this.measureLength = this.getRealWidth(scale);
 
-            this.linePadding = 13 * this.scale;
-            this.lineWidth = this.scale;
+            this.line1_y = Euterpe.getY(0, scale, y);
+            this.line2_y = Euterpe.getY(1, scale, y);
+            this.line3_y = Euterpe.getY(2, scale, y);
+            this.line4_y = Euterpe.getY(3, scale, y);
+            this.line5_y = Euterpe.getY(4, scale, y);
 
-            var startY = this._y + (this.lineWidth / 2);
+            var barY = this.line1_y - (Euterpe.global.lineWidth / 2);
 
-            this.line2_y = startY + this.linePadding * 1 + (this.lineWidth * 1);
-            this.line3_y = startY + this.linePadding * 2 + (this.lineWidth * 2);
-            this.line4_y = startY + this.linePadding * 3 + (this.lineWidth * 3);
-            this.line5_y = startY + this.linePadding * 4 + (this.lineWidth * 4);
-
-            var lb = this.initBar(this.leftBarType, this._x, this._y, true);
+            var lb = this.initBar(this.leftBarType, x, barY, true);
             var startX = lb.startX;
             var rb = this.initBar(this.rightBarType,
-                                  startX + this.measureLength, this._y, false);
+                                  startX + this.measureLength, barY, false);
 
             this.leftBar = lb.bar;
             this.rightBar = rb.bar;
@@ -228,9 +153,9 @@ Euterpe.Measure = (function() {
             this.line1 = new Kinetic.Line({
                 points: [0, 0, this.measureLength, 0],
                 stroke: 'black',
-                strokeWidth: this.lineWidth,
+                strokeWidth: Euterpe.global.lineWidth,
                 x: startX,
-                y: startY
+                y: this.line1_y
             });
 
             this.line2 = this.line1.clone({
@@ -249,30 +174,32 @@ Euterpe.Measure = (function() {
                 y: this.line5_y
             });
 
-            this.prepared = new Kinetic.Group({});
+            var prepared = new Kinetic.Group({});
 
-            this.prepared.add(this.leftBar);
-            this.prepared.add(this.line1);
-            this.prepared.add(this.line2);
-            this.prepared.add(this.line3);
-            this.prepared.add(this.line4);
-            this.prepared.add(this.line5);
-            this.prepared.add(this.rightBar);
+            prepared.add(this.leftBar);
+            prepared.add(this.line1);
+            prepared.add(this.line2);
+            prepared.add(this.line3);
+            prepared.add(this.line4);
+            prepared.add(this.line5);
+            prepared.add(this.rightBar);
 
             if(typeof this.number !== 'undefined') {
                 var number = new Kinetic.Text({
                     x: startX + 3 * scale,
-                    y: startY - 13 * scale,
+                    y: this.line1_y - 13 * scale,
                     text: this.number.toString(),
                     fontSize: 10 * scale,
                     fontFamily: 'Arial',
                     fill: 'black'
                 });
 
-                this.prepared.add(number);
+                prepared.add(number);
             }
 
-            return this.prepared;
+            prepared.layer2draw = "background";
+
+            return prepared;
         },
 
         initBar: function(type, x, y, isLeft) {
@@ -282,8 +209,11 @@ Euterpe.Measure = (function() {
             var dotDiameter = 3 * this.scale;
             var m = isLeft ? 1: -1;
 
-            var barHeight = this.linePadding * 4 +
-                this.lineWidth * 5 - (this.lineWidth / 2) + (this.lineWidth / 2);
+            var linePadding = Euterpe.global.linePadding;
+            var lineWidth = Euterpe.global.lineWidth;
+
+            var barHeight = linePadding * 4 +
+                lineWidth * 5 - (lineWidth / 2) + (lineWidth / 2);
 
             var offset = 5 * this.scale;
 

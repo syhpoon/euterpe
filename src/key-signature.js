@@ -32,17 +32,13 @@ Euterpe.KeySignature = (function() {
         KeySignature.super.call(this, config);
 
         var locations = {
-            "sharp": [1, 2.5, -0.5, 2, 3.5, 1.5, 3],
-            "flat": [3, 1.5, 3.5, 2, 4, 2.5, 4.5]
+            "sharp": [0, 1.5, -0.5, 1, 2.5, 0.5, 2],
+            "flat": [2, 0.5, 2.5, 1, 3, 1.5, 3.5]
         };
 
         for(var i=0; i < this.amount; i++) {
             var cfg = {
-                location: {
-                    "Euterpe.Measure": {
-                        line: locations[this.type][i]
-                    }
-                }
+                location: locations[this.type][i]
             };
 
             this.add(this.type === "sharp" ?

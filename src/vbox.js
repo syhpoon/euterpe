@@ -33,23 +33,15 @@ Euterpe.VBox = (function() {
         },
 
         render: function(origX, y, scale) {
-            var self = this;
-
-            var itemCb = function(item, x, y, scale) {
-                // Get Y coordinate relative to our own container (Measure)
-                var _y = Euterpe.getItemY(self.parentContainer, item,
-                                          origX, y, scale);
+            var cb = function(item, x, y, scale) {
+                var _y = Euterpe.getY(item, scale, y);
 
                 item.Y = _y;
 
                 return item.render(origX, _y, scale);
             };
 
-            var contCb = function(item, x, y, scale) {
-                return item.render(origX, y, scale);
-            };
-
-            this.prepared = this.baseRender(origX, y, scale, itemCb, contCb);
+            this.prepared = this.baseRender(origX, y, scale, cb, cb);
 
             return this.prepared;
         }

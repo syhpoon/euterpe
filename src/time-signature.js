@@ -30,23 +30,17 @@ Euterpe.TimeSignature = (function() {
 
         this.add(
             new Euterpe.TimeSignatureShape(numerator,
-                {
-                    "Euterpe.Measure": {
-                        raw: function(container, _item, _y, scale) {
-                            return container.line1.y() + 2 * scale;
-                        }
-                    }
-                }));
+                function(scale, y) {
+                        return Euterpe.getY(0, scale, y) + 2 * scale;
+                }
+            ));
 
         this.add(
             new Euterpe.TimeSignatureShape(denominator,
-                {
-                    "Euterpe.Measure": {
-                        raw: function(container, _item, _y, scale) {
-                            return container.line3.y() + 2 * scale;
-                        }
-                    }
-                }));
+                function(scale, y) {
+                    return Euterpe.getY(2, scale, y) + 2 * scale;
+                }
+            ));
     }
 
     Euterpe.extend(Euterpe.VBox, TimeSignature);

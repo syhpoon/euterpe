@@ -14,7 +14,6 @@ Euterpe.Sharp = (function() {
      *
      * @constructor
      * @param {Object} config - Configuration parameters
-     * @param {Object} [config.location] - Location of the sharp
      */
 
     function Sharp(config) {
@@ -22,11 +21,7 @@ Euterpe.Sharp = (function() {
         Sharp.super.call(this, "Euterpe.Sharp", config);
 
         this.realWidth = 9;
-
         this.realHeight = 20;
-
-        /** @public */
-        this.location = Euterpe.getConfig(config, "location", undefined);
     }
 
     Euterpe.extend(Euterpe.Node, Sharp, {

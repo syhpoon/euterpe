@@ -22,16 +22,6 @@ Euterpe.Flat = (function() {
     }
 
     Euterpe.extend(Euterpe.Node, Flat, {
-        events: {
-            "ready": "onReady"
-        },
-
-        onReady: function() {
-            if(this.prepared) {
-                this.prepared.moveToBottom();
-            }
-        },
-
         render: function(x, y, scale) {
             this.prepared = new Kinetic.Group({});
             this.realHeight = 30 * scale;

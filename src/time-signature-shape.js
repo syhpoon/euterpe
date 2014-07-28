@@ -19,9 +19,9 @@ Euterpe.TimeSignatureShape = (function() {
     function TimeSignatureShape(digit, location) {
         this.digit = digit.toString();
         this.realWidth = 22.4;
-        this.location = location;
 
-        TimeSignatureShape.super.call(this, "Euterpe.TimeSignatureShape");
+        TimeSignatureShape.super.call(this, "Euterpe.TimeSignatureShape",
+                                      {location: location});
     }
 
     Euterpe.extend(Euterpe.Node, TimeSignatureShape, {

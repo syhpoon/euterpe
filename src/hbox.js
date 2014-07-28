@@ -24,20 +24,7 @@ Euterpe.HBox = (function() {
 
     Euterpe.extend(Euterpe.Container, HBox, {
         render: function(x, y, scale) {
-            var self = this;
-            var _y;
-
-            var itemCb = function(item, x, y, scale) {
-                _y = Euterpe.getItemY(self.parentContainer, item, x, y, scale);
-
-                return item.render(x, _y, scale);
-            };
-
-            var contCb = function(item, x, y, scale) {
-                return item.render(x, y, scale);
-            };
-
-            this.prepared = this.baseRender(x, y, scale, itemCb, contCb);
+            this.prepared = this.baseRender(x, y, scale);
 
             return this.prepared;
         }

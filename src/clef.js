@@ -18,22 +18,14 @@ Euterpe.TrebleClef = (function() {
     function TrebleClef(config) {
         this.realWidth = 36.8;
 
+        config.location = 0;
         TrebleClef.super.call(this, "Euterpe.TrebleClef", config);
     }
 
     Euterpe.extend(Euterpe.Node, TrebleClef, {
-        events: {
-            "ready": "onReady"
-        },
-
-        onReady: function() {
-            this.prepared.moveToBottom();
-        },
-
         render: function(x, y, scale) {
             this.startX = x;
-            // TODO: Replace with location
-            this.startY = this.parentContainer.line1.y() - 27 * scale;
+            this.startY = y - 27 * scale;
             this.scale = 0.125 * scale;
             var self = this;
 
