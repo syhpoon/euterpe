@@ -19,21 +19,6 @@ var root = new Euterpe.Score({
                 new Euterpe.TrebleClef({leftMargin: margin}),
                 new Euterpe.TimeSignature(4, 4, {
                     leftMargin: margin
-                }),
-                new Euterpe.Note({
-                    leftMargin: margin,
-                    beamDirection: "up",
-                    type: "half",
-                    flags: 1,
-                    location: 6
-                }),
-                new Euterpe.Note({
-                    leftMargin: margin,
-                    rightMargin: margin,
-                    beamDirection: "up",
-                    type: "half",
-                    flags: 1,
-                    location: 7
                 })
             ]
         })

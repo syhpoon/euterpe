@@ -48,7 +48,7 @@ Euterpe.Rest = (function() {
             case "eighth":
                 this.realWidth = 20;
                 break;
-            case "sixteen":
+            case "sixteenth":
                 this.realWidth = 20;
                 break;
             case "thirty-second":
@@ -101,7 +101,7 @@ Euterpe.Rest = (function() {
                 case "eighth":
                     this.prepared = this.initEighth();
                     break;
-                case "sixteen":
+                case "sixteenth":
                     this.prepared = this.initSixteen();
                     break;
                 case "thirty-second":
@@ -126,12 +126,11 @@ Euterpe.Rest = (function() {
          */
         initLong: function(){
             /** @public  */
-            this.startY = this.getLineY(2)
+            this.startY = this.getLineY(2);
             this.height = this.getLineY(4) - this.startY;
 
             return this.simpleRestShape();
         },
-
 
         /**
          * Make a double whole rest
@@ -140,9 +139,9 @@ Euterpe.Rest = (function() {
          */
         initDoubleWhole: function(){
             /** @public  */
-            this.startY = this.getLineY(2)
+            this.startY = this.getLineY(2);
             this.height = this.getLineY(3) - this.startY;
-            return this.simpleRestShape()
+            return this.simpleRestShape();
         },
 
         /**
@@ -152,10 +151,10 @@ Euterpe.Rest = (function() {
          */
         initWhole: function(){
             /** @public  */
-            this.startY = this.getLineY(2)
+            this.startY = this.getLineY(2);
             this.height = this.getLineY(3) - this.startY;
-            this.height = this.basicWidth * scale
-            return this.simpleRestShape()
+            this.height = this.basicWidth * scale;
+            return this.simpleRestShape();
         },
 
         /**
@@ -167,7 +166,7 @@ Euterpe.Rest = (function() {
             /** @public  */
             this.height = this.basicWidth * scale;
             this.startY = this.getLineY(3) - this.height;
-            return this.simpleRestShape()
+            return this.simpleRestShape();
         },
 
         /**
@@ -180,10 +179,10 @@ Euterpe.Rest = (function() {
             this.startY = this.getLineY(1.5);
             this.scale = 0.125 * scale;
 
-            var shape = new Kinetic.Shape({
-                sceneFunc: function(ctx) {
+            return new Kinetic.Shape({
+                sceneFunc: function (ctx) {
                     ctx.translate(self.startX, self.startY);
-                    ctx.scale(self.scale,self.scale);
+                    ctx.scale(self.scale, self.scale);
 
                     ctx.beginPath();
                     ctx.moveTo(100.2, 80.7);
@@ -207,9 +206,7 @@ Euterpe.Rest = (function() {
                 fill: 'black',
                 stroke: 'black',
                 strokeWidth: 0
-            })
-
-            return shape;
+            });
         },
 
         /**
@@ -222,8 +219,8 @@ Euterpe.Rest = (function() {
             this.startY = this.getLineY(2) + 3 * scale;
             this.scale = 0.125 * scale;
 
-            var shape = new Kinetic.Shape({
-                sceneFunc: function(ctx) {
+            return new Kinetic.Shape({
+                sceneFunc: function (ctx) {
                     ctx.translate(self.startX, self.startY);
                     ctx.scale(self.scale, self.scale);
 
@@ -256,11 +253,8 @@ Euterpe.Rest = (function() {
                 fill: 'black',
                 stroke: 'black',
                 strokeWidth: 0
-            })
-
-            return shape;
+            });
         },
-
 
         /**
          * Make a sixteenth rest
@@ -272,10 +266,10 @@ Euterpe.Rest = (function() {
             this.startY = this.getLineY(2) + 3 * scale;
             this.scale = 0.125 * scale;
 
-            var shape = new Kinetic.Shape({
-                sceneFunc: function(ctx) {
+            return new Kinetic.Shape({
+                sceneFunc: function (ctx) {
                     ctx.translate(self.startX, self.startY);
-                    ctx.scale(self.scale,self.scale);
+                    ctx.scale(self.scale, self.scale);
 
                     ctx.beginPath();
                     ctx.moveTo(132.4, 0.0);
@@ -320,9 +314,7 @@ Euterpe.Rest = (function() {
                 fill: 'black',
                 stroke: 'black',
                 strokeWidth: 0
-            })
-
-            return shape;
+            });
         },
 
         /**
@@ -335,10 +327,10 @@ Euterpe.Rest = (function() {
             this.startY = this.getLineY(1) + 3 * scale;
             this.scale = 0.125 * scale;
 
-            var shape = new Kinetic.Shape({
-                sceneFunc: function(ctx) {
+            return new Kinetic.Shape({
+                sceneFunc: function (ctx) {
                     ctx.translate(self.startX, self.startY);
-                    ctx.scale(self.scale,self.scale);
+                    ctx.scale(self.scale, self.scale);
 
                     ctx.beginPath();
                     ctx.moveTo(154.4, 0.0);
@@ -396,9 +388,7 @@ Euterpe.Rest = (function() {
                 fill: 'black',
                 stroke: 'black',
                 strokeWidth: 0
-            })
-
-            return shape;
+            });
         },
 
         /**
@@ -411,10 +401,10 @@ Euterpe.Rest = (function() {
             this.startY = this.getLineY(1) + 3 * scale;
             this.scale = 0.125 * scale;
 
-            var shape = new Kinetic.Shape({
-                sceneFunc: function(ctx) {
+            return new Kinetic.Shape({
+                sceneFunc: function (ctx) {
                     ctx.translate(self.startX, self.startY);
-                    ctx.scale(self.scale,self.scale);
+                    ctx.scale(self.scale, self.scale);
                     ctx.beginPath();
                     ctx.bezierCurveTo(89.0, 2.9, 80.5, 10.6, 76.7, 21.2);
                     ctx.bezierCurveTo(75.8, 24.6, 75.8, 25.4, 75.8, 30.1);
@@ -477,19 +467,15 @@ Euterpe.Rest = (function() {
                     ctx.bezierCurveTo(145.7, 42.1, 143.6, 42.1, 140.2, 40.8);
                     ctx.bezierCurveTo(136.4, 38.6, 135.1, 36.5, 132.5, 25.0);
                     ctx.bezierCurveTo(130.0, 13.5, 126.9, 8.4, 120.6, 4.1);
-                    ctx.bezierCurveTo(114.6, 0.3, 107.0, -0.9, 100.1, 0.7)
+                    ctx.bezierCurveTo(114.6, 0.3, 107.0, -0.9, 100.1, 0.7);
                     ctx.closePath();
                     ctx.fillStrokeShape(this);
                 },
                 fill: 'black',
                 stroke: 'black',
                 strokeWidth: 0
-            })
-
-            return shape;
+            });
         },
-
-
 
         /**
          * Get Y coordinate by measure line number
@@ -497,12 +483,7 @@ Euterpe.Rest = (function() {
          * @private
          */
         getLineY: function(lineNumber){
-            // should be used with Euterpe.Measure container only
-            if (this.parentContainer.name &&
-                this.parentContainer.name == 'Euterpe.Measure'){
-                return this.parentContainer.getItemY(this, {line: lineNumber},
-                    this.startX, this.startY, this.scale);
-            }
+            return Euterpe.getY(lineNumber, this.scale, this.startY);
         },
 
         /**
@@ -520,7 +501,7 @@ Euterpe.Rest = (function() {
                 strokeWidth: 0
             });
         }
-    })
+    });
 
     return Rest;
 })();

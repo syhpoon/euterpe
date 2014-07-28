@@ -91,18 +91,29 @@ Euterpe.Measure = (function() {
 
         /** @private **/
         addLedgerLine: function(item, pos, x, width, baseY, lines) {
+            var found = false;
+
             while(true) {
                 if((pos > 0 && pos <= 4) || (pos === 0)) {
                     break;
                 }
 
+                found = false;
+
                 var _y = Euterpe.getY(pos, scale, baseY);
 
                 if(item.name === 'Euterpe.Note') {
                     // Check if this line is already defined
-                    if(!_.find(lines, function(line) {
-                        return line[0] === x && line[1] === _y;
-                    })) {
+                    for(var i=0; i < lines.length; i++) {
+                        var line = lines[i];
+
+                        if(line[0] === x && line[1] === _y) {
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if(!found) {
                         lines.push([x, _y, width]);
                     }
                 }
