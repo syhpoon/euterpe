@@ -28,19 +28,8 @@ Euterpe.TimeSignature = (function() {
 
         TimeSignature.super.call(this, config);
 
-        this.add(
-            new Euterpe.TimeSignatureShape(numerator,
-                function(scale, y) {
-                        return Euterpe.getY(0, scale, y) + 2 * scale;
-                }
-            ));
-
-        this.add(
-            new Euterpe.TimeSignatureShape(denominator,
-                function(scale, y) {
-                    return Euterpe.getY(2, scale, y) + 2 * scale;
-                }
-            ));
+        this.add(new Euterpe.TimeSignatureShape(numerator, 0));
+        this.add(new Euterpe.TimeSignatureShape(denominator, 2));
     }
 
     Euterpe.extend(Euterpe.VBox, TimeSignature);

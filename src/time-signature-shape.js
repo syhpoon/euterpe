@@ -17,19 +17,26 @@ Euterpe.TimeSignatureShape = (function() {
      * @constructor
      */
     function TimeSignatureShape(digit, location) {
+        this.yoffset = 2;
+        var heights = {
+            4: [0, 24 + this.yoffset]
+        };
+
         this.digit = digit.toString();
         this.realWidth = 22.4;
+        this.realHeight = heights[digit];
 
         TimeSignatureShape.super.call(this, "Euterpe.TimeSignatureShape",
                                       {location: location});
     }
 
     Euterpe.extend(Euterpe.Node, TimeSignatureShape, {
+
         render: function(startX, startY, scale) {
             var self = this;
             this.scale = scale;
             this.startX = startX;
-            this.startY = startY;
+            this.startY = startY + this.yoffset * scale;
 
             if(this.digit === "4") {
                 this.prepared = new Kinetic.Shape({

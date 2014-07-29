@@ -38,21 +38,32 @@ Euterpe.Note = (function() {
 
         Note.super.call(this, "Euterpe.Note", config);
 
+        this.headHeight = 13.3;
+        this.realHeight = [this.headHeight / 2, this.headHeight / 2];
+
         if(this.type === "whole") {
             this.realWidth = this.headWidth = 21.2;
         }
         else {
             this.realWidth = this.headWidth = 14;
+
+            if(this.beamDir === "up") {
+                this.realHeight = [this.beamRealHeight, this.headHeight / 2];
+            }
+            else if(this.beamDir === "down") {
+                this.realHeight = [this.headHeight / 2, this.beamRealHeight];
+            }
         }
 
         this.dotWidth = 4.5;
         this.dotMargin = 2.5;
 
         this.realWidth += (this.dotMargin + this.dotWidth) * this.dots;
-
     }
 
     Euterpe.extend(Euterpe.Node, Note, {
+        beamRealHeight: 35,
+
         /**
          * Render object
          * @param {Number} x
@@ -75,7 +86,7 @@ Euterpe.Note = (function() {
             this.beamWidth = 1.3 * scale;
 
             /** @public */
-            this.beamHeight = 35 * scale;
+            this.beamHeight = this.beamRealHeight * scale;
 
             switch(this.type) {
                 case "whole":

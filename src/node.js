@@ -25,6 +25,15 @@ Euterpe.Node = (function() {
         return this.realWidth * scale + (excludeMargins ? 0: margins);
     };
 
+    Node.prototype.getRealHeight = function(scale) {
+        if(typeof this.realHeight === 'undefined') {
+            return 0;
+        }
+        else {
+            return this.realHeight[0] * scale + this.realHeight[1] * scale;
+        }
+    };
+
     Node.prototype.clone = function() {
         var cloned =  new this.constructor(this.config);
 

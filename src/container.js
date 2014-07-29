@@ -37,6 +37,42 @@ Euterpe.Container = (function() {
             return width;
         },
 
+        getRealHeight: function(scale) {
+            var collectCoords = function(item, acc) {
+                if(typeof item.realHeight !== 'undefined') {
+                    var y = Euterpe.getY(item, scale, 0);
+
+                    acc.push([y - item.realHeight[0] * scale,
+                              y + item.realHeight[1] * scale]);
+                }
+
+                if(item.isContainer) {
+                    _.each(item.items,
+                        function(itm) { collectCoords(itm, acc); });
+                }
+            };
+
+            var coords = [];
+            var upperY, lowerY, up, low;
+
+            collectCoords(this, coords);
+
+            for(var i=0; i < coords.length; i++) {
+                up = coords[i][0];
+                low = coords[i][1];
+
+                if(typeof upperY === 'undefined' || up < upperY) {
+                    upperY = up;
+                }
+
+                if(typeof lowerY === 'undefined' || low > lowerY) {
+                    lowerY = low;
+                }
+            }
+
+            return Math.abs(upperY - lowerY);
+        },
+
         isContainer: true,
 
         add: function(item) {

@@ -28,6 +28,7 @@ Euterpe.Measure = (function() {
 
         this.leftBarWidth = this.widths[this.leftBarType];
         this.rightBarWidth = this.widths[this.rightBarType];
+        this.realHeight = [0, 57.3];
     }
 
     Euterpe.extend(Euterpe.Container, Measure, {
@@ -91,7 +92,7 @@ Euterpe.Measure = (function() {
 
         /** @private **/
         addLedgerLine: function(item, pos, x, width, baseY, lines) {
-            var found = false;
+            var found;
 
             while(true) {
                 if((pos > 0 && pos <= 4) || (pos === 0)) {

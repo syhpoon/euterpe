@@ -23,6 +23,8 @@ Euterpe.TrebleClef = (function() {
     }
 
     Euterpe.extend(Euterpe.Node, TrebleClef, {
+        realHeight: [26.3, 82],
+
         render: function(x, y, scale) {
             this.startX = x;
             this.startY = y - 27 * scale;
