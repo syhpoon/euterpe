@@ -36,8 +36,9 @@ Euterpe.Text = (function() {
             fontFamily: this.fontFamily
         });
 
+        var h = tmp.height() / scale;
         this.realWidth = tmp.width();
-        this.realHeight = tmp.height();
+        this.realHeight = [h / 2, h / 2];
 
         Text.super.call(this, "Euterpe.Text", config);
     }
@@ -46,7 +47,7 @@ Euterpe.Text = (function() {
         render: function(x, y, scale) {
             this.prepared = new Kinetic.Text({
                 x: x,
-                y: y - this.realHeight / 2,
+                y: y - (this.realHeight[0] * scale + this.realHeight[1] * scale) / 2,
                 text: this.text,
                 fontSize: this.fontSize * scale,
                 fontFamily: this.fontFamily,
