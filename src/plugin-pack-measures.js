@@ -33,11 +33,14 @@ Euterpe.PluginPackMeasures = (function() {
 
             var f = function(a, o) { return a + o.getRealWidth(scale);};
             var newLine;
+            var height = 0;
 
             if(root.items.length > 0) {
-                newLine = function(state) {
-                    state.x = Euterpe.select("#"+root.items[0].id)[0].X;
-                    state.y += 200 * scale;
+                newLine = function(h) {
+                    return function(state) {
+                        state.x = Euterpe.select("#"+root.items[0].id)[0].X;
+                        state.y += h;
+                    };
                 };
             }
 
@@ -45,7 +48,6 @@ Euterpe.PluginPackMeasures = (function() {
                 var item = root.items[i];
 
                 if(i === 0) {
-
                     // Also save clef, we need to replicate it on the first
                     // measure of every line
                     clef = Euterpe.select("Euterpe.TrebleClef", item)[0];
@@ -70,23 +72,44 @@ Euterpe.PluginPackMeasures = (function() {
                         i === root.items.length - 1) ? [item]: tmp;
 
                     var width = _.reduce(subset, f, 0);
-
                     var marginsCount = this.calcMargins(subset);
 
                     this.fit(subset,
                         (this.totalWidth - width) / marginsCount * scale);
 
                     acc = acc.concat(tmp);
+                    height = _.max(_.map(tmp, function(obj) {
+                        return obj.getRealHeight(scale);
+                    }));
+
                     tmp.length = 0;
 
-                    acc.push(newLine);
+                    acc.push(height);
+
+                    height = 0;
                 }
                 else {
                     barType = 'none';
                 }
             }
 
-            root.items = acc;
+            var prev = null;
+
+            for(var j=acc.length-1; j >= 0; j--) {
+                var obj = acc[j];
+
+                if(typeof obj === 'number') {
+                    if(prev === null) {
+                        acc[j] = null;
+                        prev = obj;
+                    }
+                    else {
+                        acc[j] = newLine(obj + prev / 4);
+                    }
+                }
+            }
+
+            root.items = _.filter(acc, function(obj) { return obj !== null});
 
             return root;
         },
