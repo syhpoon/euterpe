@@ -11,7 +11,7 @@
 Euterpe.PluginAboveBelow = (function() {
     /**
      * PluginAboveBelow [plugin]
-     * Adds attributes above, aboveLeft, below, belowLeft to notes and measures
+     * Adds attributes above, aboveRight, below, belowRight to notes and measures
      *
      * @constructor
      * @param {Object} config - Configuration parameters
@@ -101,18 +101,18 @@ Euterpe.PluginAboveBelow = (function() {
                     }
                 }
 
-                if(_.isArray(cfg.aboveLeft) || _.isArray(cfg.belowLeft)) {
+                if(_.isArray(cfg.aboveRight) || _.isArray(cfg.belowRight)) {
                     if(!right) {
                         right = new Euterpe.VBox({});
                     }
 
-                    if(cfg.aboveLeft) {
-                        this.processMeasure(cfg.aboveLeft,
+                    if(cfg.aboveRight) {
+                        this.processMeasure(cfg.aboveRight,
                                             scale, "above", right);
                     }
 
-                    if(cfg.belowLeft) {
-                        this.processMeasure(cfg.belowLeft,
+                    if(cfg.belowRight) {
+                        this.processMeasure(cfg.belowRight,
                             scale, "below", right);
                     }
 
