@@ -17,7 +17,6 @@ Euterpe.Sharp = (function() {
      */
 
     function Sharp(config) {
-
         Sharp.super.call(this, "Euterpe.Sharp", config);
 
         this.realWidth = 9;

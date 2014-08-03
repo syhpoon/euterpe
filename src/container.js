@@ -37,7 +37,7 @@ Euterpe.Container = (function() {
             return width;
         },
 
-        getRealHeight: function(scale) {
+        getRealHeight: function(scale, raw) {
             var collectCoords = function(item, acc) {
                 if(typeof item.realHeight !== 'undefined') {
                     var y = Euterpe.getY(item, scale, 0);
@@ -70,7 +70,12 @@ Euterpe.Container = (function() {
                 }
             }
 
-            return Math.abs(upperY - lowerY);
+            if(raw) {
+                return [Math.abs(upperY), Math.abs(lowerY)];
+            }
+            else {
+                return Math.abs(upperY - lowerY);
+            }
         },
 
         isContainer: true,

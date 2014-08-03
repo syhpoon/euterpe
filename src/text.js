@@ -37,7 +37,7 @@ Euterpe.Text = (function() {
         });
 
         var h = tmp.height() / scale;
-        this.realWidth = tmp.width();
+        this.realWidth = tmp.width() / scale;
         this.realHeight = [h / 2, h / 2];
 
         Text.super.call(this, "Euterpe.Text", config);
