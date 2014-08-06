@@ -279,3 +279,48 @@ Euterpe.select = function(selector, root) {
     return _.flatten(r);
 };
 
+/**
+ * Replace an item with provided id
+ *
+ * @param {Object} root - Root object
+ * @param {String} id - Id of the item to replace
+ * @param {Object} obj - Item to replace with
+ */
+Euterpe.replace = function(root, id, obj) {
+    for(var i=0; i < root.items.length; i++) {
+        var item = root.items[i];
+
+        if(item.id == id) {
+            root.items[i] = obj;
+
+            return true;
+        }
+
+        if(item.isContainer) {
+            if(Euterpe.replace(item, id, obj)) {
+                break;
+            }
+        }
+    }
+
+    return false;
+};
+
+/**
+ * Get top-most node parent, excluding Measure
+ *
+ * @param {Object} node
+ * @returns {Object}
+ */
+Euterpe.getTopParent = function(node) {
+    while(true) {
+        if(typeof node.parentContainer === "undefined" ||
+            node.parentContainer.name === "Euterpe.Measure") {
+
+            return node;
+        }
+        else {
+            node = node.parentContainer;
+        }
+    }
+};

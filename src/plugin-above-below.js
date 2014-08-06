@@ -11,36 +11,63 @@
 Euterpe.PluginAboveBelow = (function() {
     /**
      * PluginAboveBelow [plugin]
-     * Adds attributes above, aboveRight, below, belowRight to notes and measures
+     * Adds attributes above, aboveRight, below, belowRight to measures
+     * Adds attributes above, below to notes
      *
      * @constructor
      * @param {Object} config - Configuration parameters
      */
     var PluginAboveBelow = function(config) {
-
         PluginAboveBelow.super.call(this, "Euterpe.PluginAboveBelow", config);
     };
 
     Euterpe.extend(Euterpe.Plugin, PluginAboveBelow, {
         /** @private **/
         roundLine: function(val) {
-            var d = val - Math.floor(val);
+            var d, r;
 
-            if(d <= 0.49) {
-                return Math.floor(val) + 0.5;
+            if(val < 0) {
+                d = val - Math.ceil(val);
+
+                if(d === 0) {
+                    r = val;
+                }
+                else if(d >= -0.5) {
+                    r = Math.ceil(val) - 0.5;
+                }
+                else {
+                    r = Math.floor(val);
+                }
+
+                return r;
             }
             else {
-                return Math.ceil(val);
+                d = val - Math.floor(val);
+
+                if(d === 0) {
+                    r = val;
+                }
+                else if(d <= 0.5) {
+                    r = Math.floor(val) + 0.5;
+                }
+                else {
+                    r = Math.ceil(val);
+                }
+
+                return r;
             }
         },
 
-        processMeasure: function(items, scale, pos, vbox) {
-            var lineH = Euterpe.global.linePadding + Euterpe.global.lineWidth;
+        /** @private **/
+        place: function(items, scale, pos, vbox, startLoc) {
             var loc = 0, prevLoc;
             var h;
             var up, down;
 
-            if(pos === "above") {
+            if(typeof startLoc === "number") {
+                prevLoc = startLoc;
+            }
+            else if(pos === "above") {
                 prevLoc = 0;
             }
             else if(pos === "below") {
@@ -50,9 +77,9 @@ Euterpe.PluginAboveBelow = (function() {
             for(var j=0; j < items.length; j++) {
                 var item = items[j];
 
-                h = item.getRealHeight(1, true);
-                up = (h[0] * scale) / lineH;
-                down = (h[1] * scale) / lineH;
+                h = item.getRealHeight(scale, true);
+                up = h[0] / this.lineH;
+                down = h[1] / this.lineH;
 
                 if(pos === "above") {
                     loc = prevLoc - this.roundLine(down);
@@ -69,6 +96,7 @@ Euterpe.PluginAboveBelow = (function() {
         },
 
         process: function(root, scale) {
+            this.lineH = Euterpe.global.linePadding + Euterpe.global.lineWidth;
             var measures = Euterpe.select("Euterpe.Measure", root);
 
             for(var i=0; i < measures.length; i++) {
@@ -76,6 +104,8 @@ Euterpe.PluginAboveBelow = (function() {
                 var cfg = measure.config;
                 var left, leftAdded = false;
                 var right, rightAdded = false;
+
+                this.processNotes(measure, scale);
 
                 if(_.isArray(cfg.above) || _.isArray(cfg.below)) {
                     if(!left) {
@@ -86,13 +116,11 @@ Euterpe.PluginAboveBelow = (function() {
                     }
 
                     if(cfg.above) {
-                        this.processMeasure(cfg.above,
-                                            scale, "above", left);
+                        this.place(cfg.above, scale, "above", left);
                     }
 
                     if(cfg.below) {
-                        this.processMeasure(cfg.below,
-                                            scale, "below", left);
+                        this.place(cfg.below, scale, "below", left);
                     }
 
                     if(!leftAdded) {
@@ -107,13 +135,11 @@ Euterpe.PluginAboveBelow = (function() {
                     }
 
                     if(cfg.aboveRight) {
-                        this.processMeasure(cfg.aboveRight,
-                                            scale, "above", right);
+                        this.place(cfg.aboveRight, scale, "above", right);
                     }
 
                     if(cfg.belowRight) {
-                        this.processMeasure(cfg.belowRight,
-                            scale, "below", right);
+                        this.place(cfg.belowRight, scale, "below", right);
                     }
 
                     if(!rightAdded) {
@@ -124,6 +150,57 @@ Euterpe.PluginAboveBelow = (function() {
             }
 
             return root;
+        },
+
+        processNotes: function(measure, scale) {
+            var notes = Euterpe.select("Euterpe.Note", measure);
+
+            for(var i=0; i < notes.length; i++) {
+                var note = notes[i];
+                var cfg = note.config;
+
+                if(_.isArray(cfg.above) || _.isArray(cfg.below)) {
+                    var vbox;
+                    var needReplace = false;
+
+                    if(note.parentContainer.name !== "Euterpe.VBox") {
+                        vbox = new Euterpe.VBox({
+                            items: [note],
+                            leftMargin: cfg.leftMargin,
+                            rightMargin: cfg.rightMargin
+                        });
+
+                        note.config.leftMargin = undefined;
+                        note.config.rightMargin = undefined;
+                        needReplace = true;
+                    }
+                    else {
+                        vbox = note.parentContainer;
+                    }
+
+                    var p = Euterpe.getTopParent(note);
+                    var y = Euterpe.getY(p, scale, 0);
+                    var h = p.getRealHeight(scale, true);
+
+                    if(cfg.above) {
+                        var up = this.roundLine((y - h[0]) / this.lineH);
+
+                        this.place(cfg.above, scale, "above", vbox,
+                            up > 0 ? 0: up);
+                    }
+
+                    if(cfg.below) {
+                        var down = this.roundLine((y + h[1]) / this.lineH);
+
+                        this.place(cfg.below, scale, "below", vbox,
+                            down < 4 ? 4: down);
+                    }
+
+                    if(needReplace) {
+                        Euterpe.replace(measure, note.id, vbox);
+                    }
+                }
+            }
         }
     });
 

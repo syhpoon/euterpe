@@ -30,7 +30,7 @@ Euterpe.Node = (function() {
             return 0;
         }
         else if(raw) {
-            return this.realHeight;
+            return [this.realHeight[0] * scale, this.realHeight[1] * scale];
         }
         else {
             return this.realHeight[0] * scale + this.realHeight[1] * scale;

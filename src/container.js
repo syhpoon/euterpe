@@ -71,7 +71,7 @@ Euterpe.Container = (function() {
             }
 
             if(raw) {
-                return [Math.abs(upperY), Math.abs(lowerY)];
+                return [upperY * -1, lowerY];
             }
             else {
                 return Math.abs(upperY - lowerY);
