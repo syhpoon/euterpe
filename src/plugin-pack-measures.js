@@ -84,7 +84,7 @@ Euterpe.PluginPackMeasures = (function() {
 
                     tmp.length = 0;
 
-                    acc.push(height);
+                    acc.push([height, item.getRealHeight(scale, true)]);
 
                     height = 0;
                 }
@@ -96,15 +96,18 @@ Euterpe.PluginPackMeasures = (function() {
             var prev = null;
 
             for(var j=acc.length-1; j >= 0; j--) {
-                var obj = acc[j];
-
-                if(typeof obj === 'number') {
+                if(_.isArray(acc[j])) {
                     if(prev === null) {
+                        prev = acc[j];
                         acc[j] = null;
-                        prev = obj;
                     }
                     else {
-                        acc[j] = newLine(obj + prev / 4);
+                        var curUp = acc[j][1][1];
+                        var prevUp = prev[1][0];
+
+                        acc[j] = newLine(curUp + prevUp + 10 * scale);
+
+                        prev = acc[j];
                     }
                 }
             }
