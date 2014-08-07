@@ -2,8 +2,9 @@ var scale = 3;
 var margin = 20;
 var width = 1300;
 
-/*
 Euterpe.plugins.add(new Euterpe.PluginNoteBar());
+Euterpe.plugins.add(new Euterpe.PluginAboveBelow());
+/*
 Euterpe.plugins.add(new Euterpe.PluginPackMeasures({
     measuresPerLine: 1,
     totalWidth: width - 100
@@ -31,7 +32,7 @@ var stage = new Kinetic.Stage({
     height: 700
 });
 
-Euterpe.render(root, 0, 130, scale, stage);
+Euterpe.render(root, 0, 250, scale, stage);
 
 stage.draw();
 
