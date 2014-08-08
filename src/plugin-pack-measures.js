@@ -105,9 +105,8 @@ Euterpe.PluginPackMeasures = (function() {
                         var curUp = acc[j][1][1];
                         var prevUp = prev[1][0];
 
-                        acc[j] = newLine(curUp + prevUp + 10 * scale);
-
                         prev = acc[j];
+                        acc[j] = newLine(curUp + prevUp + 10 * scale);
                     }
                 }
             }
