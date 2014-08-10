@@ -38,9 +38,23 @@ Euterpe.Container = (function() {
         },
 
         getRealHeight: function(scale, raw) {
+            var baseY = 0;
+
             var collectCoords = function(item, acc) {
+
                 if(typeof item.realHeight !== 'undefined') {
-                    var y = Euterpe.getY(item, scale, 0);
+                    var y = Euterpe.getY(item, scale, baseY);
+
+                    if(Euterpe.isModifier(item.modifier)) {
+                        var mod = item.modifier;
+
+                        if(Euterpe.isModifierOfType(mod, "y", "relative")) {
+                            baseY += Euterpe.getModifierValue(mod, "y");
+                        }
+                        else if(Euterpe.isModifierOfType(mod, "y", "absolute")) {
+                            baseY = Euterpe.getModifierValue(mod, "y");
+                        }
+                    }
 
                     acc.push([y - item.realHeight[0] * scale,
                               y + item.realHeight[1] * scale]);
@@ -117,12 +131,22 @@ Euterpe.Container = (function() {
                 var item = this.items[i];
                 var width = 0;
 
+                // Check if item contains any modifiers
+                if(Euterpe.isModifier(item.modifier)) {
+                    var mod = item.modifier;
+
+                    if(Euterpe.isModifierOfType(mod, "y", "relative")) {
+                        y += Euterpe.getModifierValue(mod, "y");
+                    }
+                    else if(Euterpe.isModifierOfType(mod, "y", "absolute")) {
+                        y = Euterpe.getModifierValue(mod, "y");
+                    }
+                }
+
                 if(typeof item === 'function') {
                     item(state);
 
                     x = state.x;
-                    y = state.y;
-                    scale = state.scale;
                 }
                 else if(item.isContainer) {
                     item.parentContainer = this;

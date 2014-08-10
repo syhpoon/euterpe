@@ -181,21 +181,29 @@ Euterpe.extend = function(base, sub, extend) {
  * @param {Object} root - Root item
  * @param {Number} x - X coordinate
  * @param {Number} y - Y coordinate
+ * @param {Number} width - Canvas width
  * @param {Number} scale - Scale factor
- * @param stage
+ * @param {String} containerId - Id of the 'canvas' element
+ * @returns {Kinetic.Stage} - Stage object
  */
-Euterpe.render = function(root, x, y, scale, stage) {
+Euterpe.render = function(root, x, y, width, scale, containerId) {
     Euterpe.global.root = root;
-    Euterpe.global.stage = stage;
     Euterpe.global.background = new Kinetic.Layer({});
     Euterpe.global.foreground = new Kinetic.Layer({});
     Euterpe.global.linePadding = 13 * scale;
     Euterpe.global.lineWidth = scale;
 
-    stage.add(Euterpe.global.foreground);
-    stage.add(Euterpe.global.background);
-
     var processed = Euterpe.plugins.fold(root, scale);
+    var totalHeight = y + root.getRealHeight(scale);
+
+    Euterpe.stage = new Kinetic.Stage({
+        container: containerId,
+        width: width,
+        height: totalHeight
+    });
+
+    Euterpe.stage.add(Euterpe.global.foreground);
+    Euterpe.stage.add(Euterpe.global.background);
 
     var rendered = _.flatten(
         processed.baseRender(x + root.leftMargin * scale, y, scale));
@@ -210,6 +218,8 @@ Euterpe.render = function(root, x, y, scale, stage) {
     }
 
     Euterpe.events.fire("ready");
+
+    return Euterpe.stage;
 };
 
 /**
@@ -323,4 +333,56 @@ Euterpe.getTopParent = function(node) {
             node = node.parentContainer;
         }
     }
+};
+
+/**
+ * Build new modifier object
+ *
+ * @namespace Euterpe
+ * @param {String} coord - Coordinate (x | y)
+ * @param {String} type - Modifier type (relative | absolute)
+ * @param {Number} value - Value
+ * @returns {Object}
+ */
+Euterpe.buildModifier = function(coord, type, value) {
+    var obj = {
+        isModifier: true
+    };
+
+    obj[coord] = {
+        type: type,
+        value: value
+    };
+
+    return obj;
+};
+
+Euterpe.isModifierOfType = function(modifier, coord, type) {
+    if(!Euterpe.isModifier(modifier) || typeof modifier[coord] === 'undefined') {
+        return false;
+    }
+
+    return modifier[coord].type === type;
+};
+
+Euterpe.getModifierValue = function(modifier, coord) {
+    if(!Euterpe.isModifier(modifier) || typeof modifier[coord] === 'undefined') {
+        return undefined;
+    }
+
+    return modifier[coord].value;
+};
+
+/**
+ * Check if object is a modifier instance
+ *
+ * @param object
+ * @returns {boolean}
+ */
+Euterpe.isModifier = function(object) {
+    if(typeof object !== 'object' || !object.isModifier) {
+        return false;
+    }
+
+    return true;
 };

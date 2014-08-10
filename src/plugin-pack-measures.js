@@ -32,14 +32,19 @@ Euterpe.PluginPackMeasures = (function() {
             var barType = 'single';
 
             var f = function(a, o) { return a + o.getRealWidth(scale);};
+            var fUp = function(obj) {
+                return obj.getRealHeight(scale, true)[0];
+            };
+            var fDown = function(obj) {
+                return obj.getRealHeight(scale, true)[1];
+            };
+
             var newLine;
-            var height = 0;
 
             if(root.items.length > 0) {
-                newLine = function(h) {
+                newLine = function() {
                     return function(state) {
                         state.x = Euterpe.select("#"+root.items[0].id)[0].X;
-                        state.y += h;
                     };
                 };
             }
@@ -78,15 +83,13 @@ Euterpe.PluginPackMeasures = (function() {
                         (this.totalWidth - width) / marginsCount * scale);
 
                     acc = acc.concat(tmp);
-                    height = _.max(_.map(tmp, function(obj) {
-                        return obj.getRealHeight(scale);
-                    }));
+
+                    var hUp = _.max(_.map(tmp, fUp));
+                    var hDown = _.max(_.map(tmp, fDown));
 
                     tmp.length = 0;
 
-                    acc.push([height, item.getRealHeight(scale, true)]);
-
-                    height = 0;
+                    acc.push([hUp, hDown]);
                 }
                 else {
                     barType = 'none';
@@ -94,6 +97,7 @@ Euterpe.PluginPackMeasures = (function() {
             }
 
             var prev = null;
+            var prevItem = null;
 
             for(var j=acc.length-1; j >= 0; j--) {
                 if(_.isArray(acc[j])) {
@@ -102,16 +106,22 @@ Euterpe.PluginPackMeasures = (function() {
                         acc[j] = null;
                     }
                     else {
-                        var curUp = acc[j][1][1];
-                        var prevUp = prev[1][0];
+                        var curDown = acc[j][1];
+                        var prevUp = prev[0];
 
                         prev = acc[j];
-                        acc[j] = newLine(curUp + prevUp + 10 * scale);
+                        acc[j] = newLine();
+
+                        prevItem.modifier = Euterpe.buildModifier(
+                            "y", "relative", curDown + prevUp + 10 * scale);
                     }
+                }
+                else {
+                    prevItem = acc[j];
                 }
             }
 
-            root.items = _.filter(acc, function(obj) { return obj !== null});
+            root.items = _.filter(acc, function(obj) { return obj !== null; });
 
             return root;
         },

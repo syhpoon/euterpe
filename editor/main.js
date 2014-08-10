@@ -26,13 +26,7 @@ var root = new Euterpe.Score({
     ]
 });
 
-var stage = new Kinetic.Stage({
-    container: 'canvas',
-    width: width,
-    height: 700
-});
-
-Euterpe.render(root, 0, 250, scale, stage);
+var stage = Euterpe.render(root, 0, 250, width, scale, 'canvas');
 
 stage.draw();
 
