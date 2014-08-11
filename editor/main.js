@@ -2,8 +2,11 @@ var scale = 3;
 var margin = 20;
 var width = 1300;
 
-Euterpe.plugins.add(new Euterpe.PluginNoteBar());
-Euterpe.plugins.add(new Euterpe.PluginAboveBelow());
+Euterpe.plugins.add(
+    new Euterpe.PluginNoteBar(),
+    new Euterpe.PluginNoteText({rightMargin: 5}),
+    new Euterpe.PluginAboveBelow()
+);
 /*
 Euterpe.plugins.add(new Euterpe.PluginPackMeasures({
     measuresPerLine: 1,
