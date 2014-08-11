@@ -166,12 +166,12 @@ Euterpe.PluginAboveBelow = (function() {
                     if(note.parentContainer.name !== "Euterpe.VBox") {
                         vbox = new Euterpe.VBox({
                             items: [note],
-                            leftMargin: cfg.leftMargin,
-                            rightMargin: cfg.rightMargin
+                            leftMargin: note.leftMargin,
+                            rightMargin: note.rightMargin
                         });
 
-                        note.config.leftMargin = undefined;
-                        note.config.rightMargin = undefined;
+                        note.leftMargin = 0;
+                        note.rightMargin = 0;
                         needReplace = true;
                     }
                     else {

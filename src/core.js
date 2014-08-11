@@ -7,8 +7,18 @@
 
 function Euterpe() {}
 
+/** Constants **/
+Euterpe.const = {
+    LOG_DEBUG: 1,
+    LOG_INFO: 2,
+    LOG_WARNING: 3,
+    LOG_ERROR: 4
+};
+
 /** Global configuration **/
-Euterpe.global = {};
+Euterpe.global = {
+    loglevel: Euterpe.const.LOG_INFO
+};
 
 /**
  * Events repository
@@ -68,13 +78,14 @@ Euterpe.events = {
 
 /**
  * Plugins repository
- *
  */
 Euterpe.plugins = {
     plugins: [],
 
-    add: function(plugin) {
-        this.plugins.push(plugin);
+    add: function() {
+        var self = this;
+
+        _.each(arguments, function(plugin) { self.plugins.push(plugin)});
     },
 
     fold: function(root, scale) {
@@ -187,6 +198,8 @@ Euterpe.extend = function(base, sub, extend) {
  * @returns {Kinetic.Stage} - Stage object
  */
 Euterpe.render = function(root, x, y, width, scale, containerId) {
+    Euterpe.initLog();
+
     Euterpe.global.root = root;
     Euterpe.global.background = new Kinetic.Layer({});
     Euterpe.global.foreground = new Kinetic.Layer({});
@@ -385,4 +398,43 @@ Euterpe.isModifier = function(object) {
     }
 
     return true;
+};
+
+/**
+ * Init logging subsystem
+ */
+Euterpe.initLog = function() {
+    var console = window.console || {};
+    var stub = function() {};
+
+    Euterpe.log = {
+        debug: stub,
+        info: stub,
+        warn: stub,
+        error: stub
+    };
+
+    if(Euterpe.const.LOG_DEBUG >= Euterpe.global.loglevel) {
+        if(console.log) {
+            Euterpe.log.debug = console.debug.bind(console);
+        }
+    }
+
+    if(Euterpe.const.LOG_INFO >= Euterpe.global.loglevel) {
+        if(console.info) {
+            Euterpe.log.info = console.info.bind(console);
+        }
+    }
+
+    if(Euterpe.const.LOG_WARNING >= Euterpe.global.loglevel) {
+        if(console.warn) {
+            Euterpe.log.warn = console.warn.bind(console);
+        }
+    }
+
+    if(Euterpe.const.LOG_ERROR >= Euterpe.global.loglevel) {
+        if(console.error) {
+            Euterpe.log.error = console.error.bind(console);
+        }
+    }
 };

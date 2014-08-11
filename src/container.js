@@ -5,6 +5,8 @@
  * @copyright MuzMates 2014
  */
 
+Euterpe.ContainerDepth = 0;
+
 /**
  * Base container superclass
  * @namespace Euterpe
@@ -94,10 +96,42 @@ Euterpe.Container = (function() {
 
         isContainer: true,
 
+        /**
+         * Append an item
+         *
+         * @param item
+         */
         add: function(item) {
             item.parentContainer = this;
 
             this.items.push(item);
+        },
+
+        /**
+         * Prepend an item
+         *
+         * @param item
+         */
+        prepend: function(item) {
+            item.parentContainer = this;
+
+            this.items.unshift(item);
+        },
+
+        /**
+         * Insert an item before another item
+         *
+         * @param {String} beforeId
+         * @param {Object} item
+         */
+        insertBefore: function(beforeId, item) {
+            for(var i=0; i < this.items.length; i++) {
+                var cur = this.items[i];
+
+                if(cur.id === beforeId) {
+                    return this.items.splice(i, 0, item);
+                }
+            }
         },
 
         /**
@@ -110,6 +144,8 @@ Euterpe.Container = (function() {
          * @returns {Array}
          */
         baseRender: function(x, y, scale, itemcb, containercb) {
+            Euterpe.ContainerDepth += 1;
+
             var acc = [];
             var state = {
                 x: x,
@@ -130,6 +166,9 @@ Euterpe.Container = (function() {
             for(var i=0; i < this.items.length; i++) {
                 var item = this.items[i];
                 var width = 0;
+
+                Euterpe.log.debug(
+                    new Array(Euterpe.ContainerDepth).join("  "), item);
 
                 // Check if item contains any modifiers
                 if(Euterpe.isModifier(item.modifier)) {
@@ -173,6 +212,8 @@ Euterpe.Container = (function() {
                     x += width;
                 }
             }
+
+            Euterpe.ContainerDepth -= 1;
 
             return acc;
         },
