@@ -355,10 +355,11 @@ Euterpe.getTopParent = function(node) {
  * @param {String} coord - Coordinate (x | y)
  * @param {String} type - Modifier type (relative | absolute)
  * @param {Number} value - Value
+ * @param {Object} [mod] - Existing modifier to update
  * @returns {Object}
  */
-Euterpe.buildModifier = function(coord, type, value) {
-    var obj = {
+Euterpe.buildModifier = function(coord, type, value, mod) {
+    var obj = mod || {
         isModifier: true
     };
 

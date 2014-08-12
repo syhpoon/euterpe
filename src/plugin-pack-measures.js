@@ -39,16 +39,6 @@ Euterpe.PluginPackMeasures = (function() {
                 return obj.getRealHeight(scale, true)[1];
             };
 
-            var newLine;
-
-            if(root.items.length > 0) {
-                newLine = function() {
-                    return function(state) {
-                        state.x = Euterpe.select("#"+root.items[0].id)[0].X;
-                    };
-                };
-            }
-
             for(var i=0; i < root.items.length; i++) {
                 var item = root.items[i];
 
@@ -86,10 +76,13 @@ Euterpe.PluginPackMeasures = (function() {
 
                     var hUp = _.max(_.map(tmp, fUp));
                     var hDown = _.max(_.map(tmp, fDown));
+                    var w = _.reduce(tmp, function(acc, val) {
+                        return acc + val.getRealWidth(scale);
+                    }, 0);
 
                     tmp.length = 0;
 
-                    acc.push([hUp, hDown]);
+                    acc.push([hUp, hDown, w]);
                 }
                 else {
                     barType = 'none';
@@ -108,12 +101,16 @@ Euterpe.PluginPackMeasures = (function() {
                     else {
                         var curDown = acc[j][1];
                         var prevUp = prev[0];
+                        var wd = prev[2];
 
                         prev = acc[j];
-                        acc[j] = newLine();
+                        acc[j] = null;
 
                         prevItem.modifier = Euterpe.buildModifier(
                             "y", "relative", curDown + prevUp + 10 * scale);
+
+                        prevItem.modifier = Euterpe.buildModifier(
+                            "x", "relative", wd * -1, prevItem.modifier);
                     }
                 }
                 else {

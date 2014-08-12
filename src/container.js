@@ -180,14 +180,16 @@ Euterpe.Container = (function() {
                     else if(Euterpe.isModifierOfType(mod, "y", "absolute")) {
                         y = Euterpe.getModifierValue(mod, "y");
                     }
+
+                    if(Euterpe.isModifierOfType(mod, "x", "relative")) {
+                        x += Euterpe.getModifierValue(mod, "x");
+                    }
+                    else if(Euterpe.isModifierOfType(mod, "x", "absolute")) {
+                        x = Euterpe.getModifierValue(mod, "x");
+                    }
                 }
 
-                if(typeof item === 'function') {
-                    item(state);
-
-                    x = state.x;
-                }
-                else if(item.isContainer) {
+                if(item.isContainer) {
                     item.parentContainer = this;
 
                     width = item.getRealWidth(scale);
