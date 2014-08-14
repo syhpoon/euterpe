@@ -9,7 +9,7 @@ Euterpe.Node = (function() {
     var Node = function(name, config) {
         this.id = Euterpe.randomString(20);
         this.name = name;
-        this.config = config;
+        this.config = config || {};
 
         this.leftMargin = Euterpe.getConfig(config, "leftMargin", 0);
         this.rightMargin = Euterpe.getConfig(config, "rightMargin", 0);

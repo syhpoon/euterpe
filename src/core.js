@@ -314,6 +314,8 @@ Euterpe.replace = function(root, id, obj) {
         var item = root.items[i];
 
         if(item.id == id) {
+            obj.parentContainer = root;
+
             root.items[i] = obj;
 
             return true;

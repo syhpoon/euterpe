@@ -97,11 +97,24 @@ Euterpe.Container = (function() {
         isContainer: true,
 
         /**
+         * Clear items
+         */
+        clear: function() {
+            this.items.length = 0;
+        },
+
+        /**
          * Append an item
          *
          * @param item
          */
         add: function(item) {
+            var self = this;
+
+            if(_.isArray(item)) {
+                return _.each(item, function(itm) {self.add(itm);});
+            }
+
             item.parentContainer = this;
 
             this.items.push(item);

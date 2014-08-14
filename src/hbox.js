@@ -14,11 +14,8 @@ Euterpe.HBox = (function() {
      *
      * @constructor
      * @param {Object} config - Configuration parameters
-     * @param {Number} [config.commonY] - Common Y item index
      */
     var HBox = function(config) {
-        this.commonY = Euterpe.getConfig(config, "commonY");
-
         HBox.super.call(this, "Euterpe.HBox", config);
     };
 

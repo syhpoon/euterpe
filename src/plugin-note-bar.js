@@ -71,7 +71,8 @@ Euterpe.PluginNoteBar = (function() {
                     }
                 }
 
-                m.items = acc;
+                m.clear();
+                m.add(acc);
             }
 
             return root;

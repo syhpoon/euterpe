@@ -70,7 +70,8 @@ Euterpe.PluginPackMeasures = (function() {
                     var marginsCount = this.calcMargins(subset);
 
                     this.fit(subset,
-                        (this.totalWidth - width) / marginsCount * scale);
+                        (this.totalWidth - width) / marginsCount.count * scale,
+                        marginsCount.left, marginsCount.right);
 
                     acc = acc.concat(tmp);
 
@@ -123,49 +124,108 @@ Euterpe.PluginPackMeasures = (function() {
             return root;
         },
 
-        calcMargins: function(items) {
+        calcMargins: function(measures) {
             var count = 0;
+            var left = {};
+            var right = {};
 
-            for(var i=0; i < items.length; i++) {
-                var itm = items[i];
+            for(var i=0; i < measures.length; i++) {
+                var mcount = 0;
+                var measure = measures[i];
+                var notes = Euterpe.select("Euterpe.Note", measure);
 
-                if(this.canChangeMargins(itm)) {
-                    if(itm.leftMargin) {
-                        count += 1;
+                for(var j=0; j < notes.length; j++) {
+                    var itm = this.findLeftmostMargin(measure.id, notes[j]);
+
+                    if(typeof itm !== 'undefined' && !left[itm.id]) {
+                        mcount += 1;
+                        left[itm.id] = true;
                     }
 
-                    if(itm.rightMargin) {
-                        count += 1;
-                    }
+                    itm = this.findRightmostMargin(measure.id, notes[j]);
 
-                    if(itm.isContainer) {
-                        count += this.calcMargins(itm.items);
+                    if(typeof itm !== 'undefined' && !right[itm.id]) {
+                        mcount += 1;
+                        right[itm.id] = true;
                     }
+                }
+
+                count += mcount;
+            }
+
+            return {
+                count: count,
+                left: left,
+                right: right
+            };
+        },
+
+        findLeftmostMargin: function(rootId, item) {
+            if(item.leftMargin) {
+                return item;
+            }
+
+            var parent = item.parentContainer;
+            var idx = this.getItemIndex(parent, item.id);
+
+            for(var i=idx; i >= 0; i--) {
+                if(parent.items[i].leftMargin) {
+                    return parent.items[i];
                 }
             }
 
-            return count;
+            if(parent.id === rootId) {
+                return undefined;
+            }
+
+            return this.findLeftmostMargin(rootId, parent);
         },
 
-        canChangeMargins: function(item) {
-            return Euterpe.select("Euterpe.Note", item).length > 0;
+        findRightmostMargin: function(rootId, item) {
+            if(item.rightMargin) {
+                return item;
+            }
+
+            var parent = item.parentContainer;
+            var idx = this.getItemIndex(parent, item.id);
+
+            for(var i=idx; i > parent.items.length; i++) {
+                if(parent.items[i].rightMargin) {
+                    return parent.items[i];
+                }
+            }
+
+            if(parent.id === rootId) {
+                return undefined;
+            }
+
+            return this.findRightmostMargin(rootId, parent);
         },
 
-        fit: function(items, extra) {
+        getItemIndex: function(parent, childId) {
+            for(var i=0; i < parent.items.length; i++) {
+                if(parent.items[i].id === childId) {
+                    return i;
+                }
+            }
+
+            return undefined;
+        },
+
+        fit: function(items, extra, left, right) {
             for(var i=0; i < items.length; i++) {
                 var itm = items[i];
 
-                if(this.canChangeMargins(itm)) {
-                    if(itm.leftMargin) {
-                        itm.leftMargin += extra;
-                    }
-                    if(itm.rightMargin) {
-                        itm.rightMargin += extra;
-                    }
+                if(left[itm.id]) {
+                    itm.leftMargin += extra;
+                }
 
-                    if(itm.isContainer) {
-                        this.fit(itm.items, extra);
-                    }
+                if(right[itm.id]) {
+                    itm.rightMargin += extra;
+                }
+
+                if(itm.isContainer) {
+                    this.fit(itm.items, extra, left, right);
                 }
             }
         }
