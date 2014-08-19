@@ -41,41 +41,36 @@ Euterpe.Container = (function() {
 
         getRealHeight: function(scale, raw) {
             var baseY = 0;
-
-            var collectCoords = function(item, acc) {
-
-                if(typeof item.realHeight !== 'undefined') {
-                    var y = Euterpe.getY(item, scale, baseY);
-
-                    if(Euterpe.isModifier(item.modifier)) {
-                        var mod = item.modifier;
-
-                        if(Euterpe.isModifierOfType(mod, "y", "relative")) {
-                            baseY += Euterpe.getModifierValue(mod, "y");
-                        }
-                        else if(Euterpe.isModifierOfType(mod, "y", "absolute")) {
-                            baseY = Euterpe.getModifierValue(mod, "y");
-                        }
-                    }
-
-                    acc.push([y - item.realHeight[0] * scale,
-                              y + item.realHeight[1] * scale]);
-                }
-
-                if(item.isContainer) {
-                    _.each(item.items,
-                        function(itm) { collectCoords(itm, acc); });
-                }
-            };
-
-            var coords = [];
             var upperY, lowerY, up, low;
+            var y;
 
-            collectCoords(this, coords);
+            if(typeof this.realHeight !== 'undefined') {
+                y = Euterpe.getY(this, scale, baseY);
 
-            for(var i=0; i < coords.length; i++) {
-                up = coords[i][0];
-                low = coords[i][1];
+                upperY = this.realHeight[0] * scale;
+                lowerY = this.realHeight[1] * scale;
+            }
+
+            for(var i=0; i < this.items.length; i++) {
+                var item = this.items[i];
+
+                y = Euterpe.getY(item, scale, baseY);
+
+                if(Euterpe.isModifier(item.modifier)) {
+                    var mod = item.modifier;
+
+                    if(Euterpe.isModifierOfType(mod, "y", "relative")) {
+                        baseY += Euterpe.getModifierValue(mod, "y");
+                    }
+                    else if(Euterpe.isModifierOfType(mod, "y", "absolute")) {
+                        baseY = Euterpe.getModifierValue(mod, "y");
+                    }
+                }
+
+                var h = item.getRealHeight(scale, true);
+
+                up = y - h[0];
+                low = y + h[1];
 
                 if(typeof upperY === 'undefined' || up < upperY) {
                     upperY = up;

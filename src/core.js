@@ -207,7 +207,11 @@ Euterpe.render = function(root, x, y, width, scale, containerId) {
     Euterpe.global.lineWidth = scale;
 
     var processed = Euterpe.plugins.fold(root, scale);
-    var totalHeight = y + root.getRealHeight(scale);
+    var h = root.getRealHeight(scale, true);
+
+    y += h[0];
+
+    var totalHeight = y + h[1];
 
     Euterpe.stage = new Kinetic.Stage({
         container: containerId,

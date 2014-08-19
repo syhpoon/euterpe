@@ -17,6 +17,7 @@ Euterpe.Measure = (function() {
      * @param {Number} config.number - Measure number
      * @param {String} [config.leftBarType=single] - Left bar type (none|single|double|double bold|repeat)
      * @param {String} [config.rightBarType=single] - Right bar type (none|single|double|double bold|repeat)
+     * @param {Number} [config.numberOfLine=5] - Number of visible lines
      */
     function Measure(config) {
         Measure.super.call(this, "Euterpe.Measure", config);
@@ -24,14 +25,16 @@ Euterpe.Measure = (function() {
         this.leftBarType = Euterpe.getConfig(config, "leftBarType", "single");
         this.rightBarType = Euterpe.getConfig(config, "rightBarType", "single");
         this.number = Euterpe.getConfig(config, "number", undefined);
+        this.numberOfLines = Euterpe.getConfig(config, "numberOfLines", 5);
         this.prepared = [];
 
         this.leftBarWidth = this.widths[this.leftBarType];
         this.rightBarWidth = this.widths[this.rightBarType];
-        this.realHeight = [0, 57.3];
     }
 
     Euterpe.extend(Euterpe.Container, Measure, {
+        realHeight: [0, 57.3],
+
         widths: {
             "none": 0,
             "single": 2.5,
@@ -75,7 +78,7 @@ Euterpe.Measure = (function() {
                     var d;
 
                     // Line below
-                    if(note.config.location > 4) {
+                    if(note.config.location > (this.numberOfLines - 1)) {
                         d = Math.floor(note.config.location);
 
                         this.addLedgerLine(note, d, note.X, width, y, lines);
@@ -147,17 +150,13 @@ Euterpe.Measure = (function() {
             this.measureLength = this.getRealWidth(scale);
 
             this.line1_y = Euterpe.getY(0, scale, y);
-            this.line2_y = Euterpe.getY(1, scale, y);
-            this.line3_y = Euterpe.getY(2, scale, y);
-            this.line4_y = Euterpe.getY(3, scale, y);
-            this.line5_y = Euterpe.getY(4, scale, y);
 
             var barY = this.line1_y - (Euterpe.global.lineWidth / 2);
 
             var lb = this.initBar(this.leftBarType, x, barY, true);
             var startX = lb.startX;
             var rb = this.initBar(this.rightBarType,
-                                  startX + this.measureLength, barY, false);
+                startX + this.measureLength, barY, false);
 
             this.leftBar = lb.bar;
             this.rightBar = rb.bar;
@@ -170,30 +169,24 @@ Euterpe.Measure = (function() {
                 y: this.line1_y
             });
 
-            this.line2 = this.line1.clone({
-                y: this.line2_y
-            });
-            
-            this.line3 = this.line1.clone({
-                y: this.line3_y
-            });
-
-            this.line4 = this.line1.clone({
-                y: this.line4_y
-            });
-            
-            this.line5 = this.line1.clone({
-                y: this.line5_y
-            });
-
             var prepared = new Kinetic.Group({});
 
             prepared.add(this.leftBar);
             prepared.add(this.line1);
-            prepared.add(this.line2);
-            prepared.add(this.line3);
-            prepared.add(this.line4);
-            prepared.add(this.line5);
+
+            for(var i=2; i < this.numberOfLines + 1; i++) {
+                var idx = "line_" + i;
+                var idx_y = idx + "_y";
+
+                this[idx_y] = Euterpe.getY(i - 1, scale, y);
+
+                this[idx] = this.line1.clone({
+                    y: this[idx_y]
+                });
+
+                prepared.add(this[idx]);
+            }
+            
             prepared.add(this.rightBar);
 
             if(typeof this.number !== 'undefined') {
@@ -224,10 +217,10 @@ Euterpe.Measure = (function() {
             var linePadding = Euterpe.global.linePadding;
             var lineWidth = Euterpe.global.lineWidth;
 
-            var barHeight = linePadding * 4 +
-                lineWidth * 5 - (lineWidth / 2) + (lineWidth / 2);
+            var barHeight = linePadding * (this.numberOfLines - 1) +
+                lineWidth * this.numberOfLines - (lineWidth / 2) + (lineWidth / 2);
 
-            var offset = 5 * this.scale;
+            var offset = this.numberOfLines * this.scale;
 
             if(type === "single") {
                 startX = x + (barWidth / 2);
