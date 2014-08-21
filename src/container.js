@@ -54,20 +54,9 @@ Euterpe.Container = (function() {
             for(var i=0; i < this.items.length; i++) {
                 var item = this.items[i];
 
-                y = Euterpe.getY(item, scale, baseY);
-
-                if(Euterpe.isModifier(item.modifier)) {
-                    var mod = item.modifier;
-
-                    if(Euterpe.isModifierOfType(mod, "y", "relative")) {
-                        baseY += Euterpe.getModifierValue(mod, "y");
-                    }
-                    else if(Euterpe.isModifierOfType(mod, "y", "absolute")) {
-                        baseY = Euterpe.getModifierValue(mod, "y");
-                    }
-                }
-
                 var h = item.getRealHeight(scale, true);
+                y = Euterpe.getY(item, scale, baseY);
+                baseY = Euterpe.applyModifier(item, baseY);
 
                 up = y - h[0];
                 low = y + h[1];
@@ -85,7 +74,7 @@ Euterpe.Container = (function() {
                 return [upperY * -1, lowerY];
             }
             else {
-                return Math.abs(upperY - lowerY);
+                return lowerY - upperY;
             }
         },
 

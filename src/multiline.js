@@ -34,7 +34,47 @@ Euterpe.Multiline = (function() {
         bracketExtraUp: 5,
         bracketExtraDown: 5,
 
+        getRealWidth: function(scale, excludeMargins) {
+            var width = Euterpe.Container.prototype.getRealWidth.call(
+                this, scale, excludeMargins);
+
+            return width + this.joinerWidth * scale;
+        },
+
         getRealHeight: function(scale, raw) {
+            var yup;
+            var yoff = 0;
+
+            for(var i=0; i < this.items.length; i++) {
+                var item = this.items[i];
+
+                var h = item.getRealHeight(scale, true);
+                yoff = Euterpe.applyModifier(item, yoff);
+
+                var rh = h[1] + h[0];
+
+                if(typeof yup === 'undefined') {
+                    yup = h[0] + yoff;
+                }
+
+                yoff += (rh + this.lineMargin * scale);
+            }
+
+            if(this.type === 'bracket') {
+                yup += this.bracketExtraUp * scale;
+                yoff += (this.bracketExtraUp * scale +
+                    this.bracketExtraDown * scale);
+            }
+
+            if(raw) {
+                return [yup, yoff - yup];
+            }
+            else {
+                return yoff;
+            }
+        },
+
+        zgetRealHeight: function(scale, raw) {
             var yup;
             var ydown;
             var yoff = 0;
@@ -43,6 +83,8 @@ Euterpe.Multiline = (function() {
                 var item = this.items[i];
 
                 var h = item.getRealHeight(scale, true);
+                yoff = Euterpe.applyModifier(item, yoff);
+
                 var up = h[0] + yoff;
                 var down = h[1] + yoff;
 
@@ -66,7 +108,7 @@ Euterpe.Multiline = (function() {
                 return [yup, ydown];
             }
             else {
-                return Math.abs(yup + ydown);
+                return yup + ydown;
             }
         },
 
@@ -82,13 +124,25 @@ Euterpe.Multiline = (function() {
             }
 
             var cb = function(item, x, y, scale) {
+                var h = item.getRealHeight(scale, true);
+
+                if(yoff !== 0) {
+                    yoff += h[0];
+                }
+
                 var _y = Euterpe.getY(item, scale, y) + yoff;
 
                 item.Y = _y;
                 item.X = origX;
 
-                yoff += (item.getRealHeight(scale, true)[1]
-                         + self.lineMargin * scale);
+                if(yoff === 0) {
+                    yoff = h[1];
+                }
+                else {
+                    yoff += h[1];
+                }
+
+                yoff += self.lineMargin * scale;
 
                 return item.render(origX, _y, scale);
             };

@@ -407,6 +407,21 @@ Euterpe.isModifier = function(object) {
     return true;
 };
 
+Euterpe.applyModifier = function(item, baseY) {
+    if(Euterpe.isModifier(item.modifier)) {
+        var mod = item.modifier;
+
+        if(Euterpe.isModifierOfType(mod, "y", "relative")) {
+            baseY += Euterpe.getModifierValue(mod, "y");
+        }
+        else if(Euterpe.isModifierOfType(mod, "y", "absolute")) {
+            baseY = Euterpe.getModifierValue(mod, "y");
+        }
+    }
+
+    return baseY;
+};
+
 /**
  * Init logging subsystem
  */
