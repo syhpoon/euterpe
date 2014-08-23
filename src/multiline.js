@@ -14,11 +14,11 @@ Euterpe.Multiline = (function() {
      *
      * @constructor
      * @param {Object} config - Configuration parameters
-     * @param {String} [config.type='bracket'] - 'bracket' or 'brace'
+     * @param {String} [config.type] - 'bracket' or 'brace'
      * @param {Number} [config.lineMargin=0] - A margin between lines
      */
     function Multiline(config) {
-        this.type = Euterpe.getConfig(config, "type", "bracket");
+        this.type = Euterpe.getConfig(config, "type", undefined);
         this.lineMargin = Euterpe.getConfig(config, "lineMargin", 0);
 
         if(this.type === "bracket") {

@@ -16,28 +16,26 @@ Euterpe.PluginPackMeasures = (function() {
      * @param {Object} config - Configuration parameters
      * @param {Number} config.totalWidth - Desired total width
      * @param {Number} [config.measuresPerLine=3] - How many measures per line to pack
+     * @param {Number} [config.lineMargin=5] - Margin between lines
      */
     var PluginPackMeasures = function(config) {
         this.totalWidth = Euterpe.getConfig(config, "totalWidth");
         this.measuresPerLine = Euterpe.getConfig(config, "measuresPerLine", 3);
+        this.lineMargin = Euterpe.getConfig(config, "lineMargin", 5);
 
         PluginPackMeasures.super.call(this, "Euterpe.PluginPackMeasures", config);
     };
 
     Euterpe.extend(Euterpe.Plugin, PluginPackMeasures, {
         process: function(root, scale) {
-            var acc = [];
             var tmp = [];
             var clef = null;
             var barType = 'single';
+            var multi = new Euterpe.Multiline({
+                lineMargin: this.lineMargin * scale
+            });
 
             var f = function(a, o) { return a + o.getRealWidth(scale);};
-            var fUp = function(obj) {
-                return obj.getRealHeight(scale, true)[0];
-            };
-            var fDown = function(obj) {
-                return obj.getRealHeight(scale, true)[1];
-            };
 
             for(var i=0; i < root.items.length; i++) {
                 var item = root.items[i];
@@ -47,12 +45,11 @@ Euterpe.PluginPackMeasures = (function() {
                     // measure of every line
                     clef = Euterpe.select("Euterpe.TrebleClef", item)[0];
                 }
-
-                item.leftBarType = barType;
-
-                if(tmp.length === 0 && acc.length !== 0) {
+                else if(tmp.length === 0) {
                     item.items.splice(0, 0, clef.clone());
                 }
+
+                item.leftBarType = barType;
 
                 tmp.push(item);
 
@@ -73,53 +70,17 @@ Euterpe.PluginPackMeasures = (function() {
                         (this.totalWidth - width) / marginsCount.count * scale,
                         marginsCount.left, marginsCount.right);
 
-                    acc = acc.concat(tmp);
-
-                    var hUp = _.max(_.map(tmp, fUp));
-                    var hDown = _.max(_.map(tmp, fDown));
-                    var w = _.reduce(tmp, function(acc, val) {
-                        return acc + val.getRealWidth(scale);
-                    }, 0);
+                    multi.add(new Euterpe.HBox({items: tmp}));
 
                     tmp.length = 0;
-
-                    acc.push([hUp, hDown, w]);
                 }
                 else {
                     barType = 'none';
                 }
             }
 
-            var prev = null;
-            var prevItem = null;
-
-            for(var j=acc.length-1; j >= 0; j--) {
-                if(_.isArray(acc[j])) {
-                    if(prev === null) {
-                        prev = acc[j];
-                        acc[j] = null;
-                    }
-                    else {
-                        var curDown = acc[j][1];
-                        var prevUp = prev[0];
-                        var wd = prev[2];
-
-                        prev = acc[j];
-                        acc[j] = null;
-
-                        prevItem.modifier = Euterpe.buildModifier(
-                            "y", "relative", curDown + prevUp + 10 * scale);
-
-                        prevItem.modifier = Euterpe.buildModifier(
-                            "x", "relative", wd * -1, prevItem.modifier);
-                    }
-                }
-                else {
-                    prevItem = acc[j];
-                }
-            }
-
-            root.items = _.filter(acc, function(obj) { return obj !== null; });
+            root.clear();
+            root.add(multi);
 
             return root;
         },
