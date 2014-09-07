@@ -61,7 +61,7 @@ Euterpe.PluginPackMeasures = (function() {
                     barType = 'single';
 
                     var subset = (tmp.length === 1 &&
-                        i === root.items.length - 1) ? [item]: tmp;
+                                  i === root.items.length - 1) ? [item]: tmp;
 
                     var width = _.reduce(subset, f, 0);
                     var marginsCount = this.calcMargins(subset);
