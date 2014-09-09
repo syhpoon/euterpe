@@ -16,7 +16,7 @@ Euterpe.Container = (function() {
         this.id = Euterpe.randomString(20);
         this.items = [];
         this.name = name;
-        this.config = config;
+        this.config = config || {};
         this.leftMargin = Euterpe.getConfig(config, "leftMargin", 0);
         this.rightMargin = Euterpe.getConfig(config, "rightMargin", 0);
 
@@ -85,6 +85,15 @@ Euterpe.Container = (function() {
          */
         clear: function() {
             this.items.length = 0;
+        },
+
+        /**
+         * Get number of items
+         *
+         * @returns {Number}
+         */
+        size: function() {
+            return this.items.length;
         },
 
         /**

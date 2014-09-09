@@ -37,6 +37,8 @@ Euterpe.PluginPackMeasures = (function() {
 
             var f = function(a, o) { return a + o.getRealWidth(scale);};
 
+            var items = this.iterateItems(this.findTopLevel(root));
+
             for(var i=0; i < root.items.length; i++) {
                 var item = root.items[i];
 
@@ -83,6 +85,40 @@ Euterpe.PluginPackMeasures = (function() {
             root.add(multi);
 
             return root;
+        },
+
+        /** @private */
+        iterateItems: function(root) {
+            var acc = [];
+
+            if(root.name === 'Euterpe.Multiline') {
+            }
+            else {
+                acc = _.map(root.items, function(x) { return [x];});
+            }
+
+            return acc;
+        },
+
+        /** @private */
+        findTopLevel: function(root) {
+            for(var i=0; i < root.items.length; i++) {
+                var item = root.items[i];
+
+                if(item.name === 'Euterpe.Measure' ||
+                    item.name === 'Euterpe.Multiline') {
+                    return item;
+                }
+                else if(item.isContainer) {
+                    var r = this.findTopLevel(item);
+
+                    if(r != null) {
+                        return r;
+                    }
+                }
+            }
+
+            return null;
         },
 
         calcMargins: function(measures) {

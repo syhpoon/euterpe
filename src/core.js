@@ -336,7 +336,7 @@ Euterpe.replace = function(root, id, obj) {
 };
 
 /**
- * Get top-most node parent, excluding Measure
+ * Get top-most node parent, excluding Measure and Tab
  *
  * @param {Object} node
  * @returns {Object}
@@ -344,8 +344,27 @@ Euterpe.replace = function(root, id, obj) {
 Euterpe.getTopParent = function(node) {
     while(true) {
         if(typeof node.parentContainer === "undefined" ||
-            node.parentContainer.name === "Euterpe.Measure") {
+            node.parentContainer.name === "Euterpe.Measure" ||
+            node.parentContainer.name === "Euterpe.Tab") {
 
+            return node;
+        }
+        else {
+            node = node.parentContainer;
+        }
+    }
+};
+
+/**
+ * Get root node parent (Measure or Tab)
+ *
+ * @param {Object} node
+ * @returns {Object}
+ */
+Euterpe.getRootParent = function(node) {
+    while(true) {
+        if(typeof node === "undefined" ||
+            node.name === "Euterpe.Measure" || node.name === "Euterpe.Tab") {
             return node;
         }
         else {
@@ -459,4 +478,33 @@ Euterpe.initLog = function() {
             Euterpe.log.error = console.error.bind(console);
         }
     }
+};
+
+/**
+ * Get distance from the beginning of given container
+ */
+Euterpe.getDistance = function(container, item, scale) {
+    var d = 0;
+
+    for(var i=0; i < container.items.length; i++) {
+        var obj = container.items[i];
+
+        if(obj.id === item.id) {
+            break;
+        }
+        else if(obj.isContainer && Euterpe.select("#"+item.id, obj).length > 0) {
+            d += obj.leftMargin * scale;
+
+            //HACK!
+            if(obj.name === 'Euterpe.VBox') break;
+
+            d += Euterpe.getDistance(obj, item, scale);
+            break;
+        }
+        else {
+            d += obj.getRealWidth(scale);
+        }
+    }
+
+    return d;
 };

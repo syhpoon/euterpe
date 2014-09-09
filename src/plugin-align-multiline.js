@@ -28,10 +28,25 @@ Euterpe.PluginAlignMultiline = (function() {
 
             for(var i=0; i < multilines.length; i++) {
                 this.processMultiline(multilines[i], scale);
-                //this.alignObjects(multilines[i]);
             }
 
             return root;
+        },
+
+        /** @private **/
+        compareRoots: function(a, b) {
+            var eq = 0;
+
+            for(var i=0; i < a.length; i++) {
+                if(i >= b.length) {
+                    return false;
+                }
+                else if(a[i].id === b[i].id) {
+                    eq += 1;
+                }
+            }
+
+            return eq === b.length;
         },
 
         /** @private **/
@@ -44,16 +59,25 @@ Euterpe.PluginAlignMultiline = (function() {
                                 function(x) {return parseInt(x)})
                                .sort(function(a,b) {return a - b;});
 
+            var roots = null;
+
             for(var i=0; i < columns.length; i++) {
                 var j;
                 var c = columns[i];
-                var col = items[c];
+                var col = items[c][1];
                 var maxW = _.max(_.map(col, function(x) {return x[2];}));
                 var offset = 0;
-                var parent;
-                var item;
-                var width;
-                var distance;
+                var parent, item, width, distance;
+
+                if(roots !== null && !this.compareRoots(roots, items[c][0])) {
+                    this.alignObjects(roots);
+
+                    roots = null
+                }
+
+                if(roots === null) {
+                    roots = items[c][0];
+                }
 
                 // Get the column offset
                 for(j=0; j < col.length; j++) {
@@ -63,7 +87,6 @@ Euterpe.PluginAlignMultiline = (function() {
                     distance = Euterpe.getDistance(parent, item, 1) +
                         item.leftMargin;
 
-                    console.log(c, item.name, distance);
                     if(distance > offset) {
                         offset = distance;
                     }
@@ -76,23 +99,36 @@ Euterpe.PluginAlignMultiline = (function() {
                     width = col[j][2];
                     var wDiff = maxW - width;
 
-                    // Need to compensate width difference
-                    /*
-                    if(wDiff > 0) {
-                        // Center align
-                        item.leftMargin += wDiff / 2;
-                        item.rightMargin += wDiff / 2;
-                    }
-                    */
-
                     distance = Euterpe.getDistance(parent, item, 1)
                         + item.leftMargin;
 
                     if(distance < offset) {
                         item.leftMargin += (offset - distance);
                     }
+
+                    // Need to compensate width difference
+                    if(wDiff > 0) {
+                        // Center align
+                        item.leftMargin += wDiff / 2;
+                        item.rightMargin += wDiff / 2;
+                    }
                 }
             }
+
+            if(roots !== null) {
+                this.alignObjects(roots);
+            }
+        },
+
+        /** @private **/
+        contains: function(list, obj) {
+            for(var i=0; i < list.length; i++) {
+                if(list[i].id === obj.id) {
+                    return true;
+                }
+            }
+
+            return false;
         },
 
         /** @private **/
@@ -104,12 +140,17 @@ Euterpe.PluginAlignMultiline = (function() {
                     var col = item.config.column;
 
                     if(typeof acc[col] === 'undefined') {
-                        acc[col] = [];
+                        acc[col] = [[], []];
                     }
 
-                    acc[col].push([top ? top: item, item,
-                                   item.getRealWidth(1, true)]);
+                    var p = Euterpe.getRootParent(item);
 
+                    if(!this.contains(acc[col][0], p)) {
+                        acc[col][0].push(p);
+                    }
+
+                    acc[col][1].push([top ? top: item,
+                                      item, item.getRealWidth(1, true)]);
                 }
 
                 // We do not want to process any nested Multilines here
@@ -121,49 +162,25 @@ Euterpe.PluginAlignMultiline = (function() {
         },
 
         /** @private **/
-        alignObjects: function(ml) {
-            var objects = [];
-            var i, j;
-            var names = ["Euterpe.Measure", "Euterpe.Tab"];
-
-            // Collect all objects from lines
-            for(i=0; i < ml.items.length; i++) {
-                var item = ml.items[i];
-
-                var m = [];
-
-                if(item.name in names) {
-                    m = [item];
-                }
-                else {
-                    for(var z=0; z < names.length; z++) {
-                        m = m.concat(Euterpe.select(names[z], item));
-                    }
-                }
-
-                for(j=0; j < m.length; j++) {
-                    if(! _.isArray(objects[j])) {
-                        objects[j] = [];
-                    }
-
-                    objects[j].push([m[j], m[j].getRealWidth(1)]);
-                }
-            }
+        alignObjects: function(objects) {
+            var i;
+            var widths = {};
 
             for(i=0; i < objects.length; i++) {
-                var ms = objects[i];
-                var maxW = _.max(_.map(ms, function(mx) { return mx[1]; }));
+                widths[objects[i].id] = objects[i].getRealWidth(1);
+            }
 
-                for(j=0; j < ms.length; j++) {
-                    var obj = ms[j][0];
-                    var width = ms[j][1];
+            var maxW = _.max(_.values(widths));
 
-                    if(width < maxW) {
-                        var last = obj.items[obj.items.length - 1];
+            for(i=0; i < objects.length; i++) {
+                var obj = objects[i];
+                var width = widths[obj.id];
 
-                        if(typeof last !== 'undefined') {
-                            last.rightMargin += (maxW - width);
-                        }
+                if(width < maxW) {
+                    var last = obj.items[obj.items.length - 1];
+
+                    if(typeof last !== 'undefined') {
+                        last.rightMargin += (maxW - width);
                     }
                 }
             }

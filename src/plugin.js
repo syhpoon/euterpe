@@ -11,7 +11,7 @@
 Euterpe.Plugin = (function() {
     var Plugin = function(name, config) {
         this.name = name;
-        this.config = config;
+        this.config = config || {};
     };
 
     Plugin.prototype.isPlugin = true;
