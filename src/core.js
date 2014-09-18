@@ -223,7 +223,7 @@ Euterpe.render = function(root, x, y, width, scale, containerId) {
     Euterpe.stage.add(Euterpe.global.background);
 
     var rendered = _.flatten(
-        processed.baseRender(x + root.leftMargin * scale, y, scale));
+        processed.render(x + root.leftMargin * scale, y, scale));
 
     for(var i=0; i < rendered.length; i++) {
         if(rendered[i].layer2draw === 'background') {
@@ -371,74 +371,6 @@ Euterpe.getRootParent = function(node) {
             node = node.parentContainer;
         }
     }
-};
-
-/**
- * Build new modifier object
- *
- * @namespace Euterpe
- * @param {String} coord - Coordinate (x | y)
- * @param {String} type - Modifier type (relative | absolute)
- * @param {Number} value - Value
- * @param {Object} [mod] - Existing modifier to update
- * @returns {Object}
- */
-Euterpe.buildModifier = function(coord, type, value, mod) {
-    var obj = mod || {
-        isModifier: true
-    };
-
-    obj[coord] = {
-        type: type,
-        value: value
-    };
-
-    return obj;
-};
-
-Euterpe.isModifierOfType = function(modifier, coord, type) {
-    if(!Euterpe.isModifier(modifier) || typeof modifier[coord] === 'undefined') {
-        return false;
-    }
-
-    return modifier[coord].type === type;
-};
-
-Euterpe.getModifierValue = function(modifier, coord) {
-    if(!Euterpe.isModifier(modifier) || typeof modifier[coord] === 'undefined') {
-        return undefined;
-    }
-
-    return modifier[coord].value;
-};
-
-/**
- * Check if object is a modifier instance
- *
- * @param object
- * @returns {boolean}
- */
-Euterpe.isModifier = function(object) {
-    if(typeof object !== 'object' || !object.isModifier) {
-        return false;
-    }
-
-    return true;
-};
-
-Euterpe.applyModifier = function(item, baseY) {
-    if(Euterpe.isModifier(item.modifier)) {
-        var mod = item.modifier;
-
-        if(Euterpe.isModifierOfType(mod, "y", "relative")) {
-            baseY += Euterpe.getModifierValue(mod, "y");
-        }
-        else if(Euterpe.isModifierOfType(mod, "y", "absolute")) {
-            baseY = Euterpe.getModifierValue(mod, "y");
-        }
-    }
-
-    return baseY;
 };
 
 /**

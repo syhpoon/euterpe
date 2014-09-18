@@ -45,7 +45,7 @@ Euterpe.Note = (function() {
             this.realWidth = this.headWidth = 21.2;
         }
         else {
-            this.realWidth = this.headWidth = 14;
+            this.realWidth = this.headWidth = 13.6;
 
             if(this.beamDir === "up") {
                 this.realHeight = [this.beamRealHeight, this.headHeight / 2];
@@ -59,6 +59,10 @@ Euterpe.Note = (function() {
         this.dotMargin = 2.5;
 
         this.realWidth += (this.dotMargin + this.dotWidth) * this.dots;
+
+        if(this.flags > 0) {
+            this.realWidth += 13.6;
+        }
     }
 
     Euterpe.extend(Euterpe.Node, Note, {

@@ -56,7 +56,6 @@ Euterpe.Container = (function() {
 
                 var h = item.getRealHeight(scale, true);
                 y = Euterpe.getY(item, scale, baseY);
-                baseY = Euterpe.applyModifier(item, baseY);
 
                 up = y - h[0];
                 low = y + h[1];

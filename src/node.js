@@ -14,15 +14,32 @@ Euterpe.Node = (function() {
         this.leftMargin = Euterpe.getConfig(config, "leftMargin", 0);
         this.rightMargin = Euterpe.getConfig(config, "rightMargin", 0);
 
-        Euterpe.events.setEventHandlers(this);
+        this.leftItems = Euterpe.getConfig(config, "leftItems", []);
+        this.rightItems = Euterpe.getConfig(config, "rightItems", []);
     };
 
     Node.prototype.isNode = true;
 
-    Node.prototype.getRealWidth = function(scale, excludeMargins) {
+    /**
+     * Get the width of left items
+     * @param scale
+     */
+    Node.prototype.getLeftWidth = function(scale) {
+        return this.reduceWidth(this.leftItems, scale);
+    };
+
+    /**
+     * Get the width of right items
+     * @param scale
+     */
+    Node.prototype.getRightWidth = function(scale) {
+        return this.reduceWidth(this.rightItems, scale);
+    };
+
+    Node.prototype.getRealWidth = function(scale, bare) {
         var margins = Euterpe.getMargins(this, scale);
 
-        return this.realWidth * scale + (excludeMargins ? 0: margins);
+        return this.realWidth * scale + (bare ? 0: margins);
     };
 
     Node.prototype.getRealHeight = function(scale, raw) {
@@ -43,6 +60,14 @@ Euterpe.Node = (function() {
         cloned.parentContainer = this.parentContainer;
 
         return cloned;
+    };
+
+    /** @private */
+    Node.prototype.reduceWidth = function(list, scale) {
+        return _.reduce(list,
+            function(acc, x) {
+                return acc + x.getRealWidth(scale);
+            }, 0);
     };
 
     return Node;
