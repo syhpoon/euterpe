@@ -88,10 +88,10 @@ Euterpe.plugins = {
         _.each(arguments, function(plugin) { self.plugins.push(plugin)});
     },
 
-    fold: function(root, scale) {
+    fold: function(root, scale, extra) {
         return _.reduce(this.plugins,
             function(obj, plugin) {
-                return plugin.process(obj, scale);
+                return plugin.process(obj, scale, extra);
             }, root);
     }
 };
@@ -206,7 +206,8 @@ Euterpe.render = function(root, x, y, width, scale, containerId) {
     Euterpe.global.linePadding = 13 * scale;
     Euterpe.global.lineWidth = scale;
 
-    var processed = Euterpe.plugins.fold(root, scale);
+    var extra = [];
+    var processed = Euterpe.plugins.fold(root, scale, extra);
     var h = root.getRealHeight(scale, true);
 
     y += h[0];
@@ -225,6 +226,7 @@ Euterpe.render = function(root, x, y, width, scale, containerId) {
     var rendered = _.flatten(
         processed.render(x + root.leftMargin * scale, y, scale));
 
+    // Render main tree
     for(var i=0; i < rendered.length; i++) {
         if(rendered[i].layer2draw === 'background') {
             Euterpe.global.background.add(rendered[i]);
@@ -234,7 +236,23 @@ Euterpe.render = function(root, x, y, width, scale, containerId) {
         }
     }
 
-    Euterpe.events.fire("ready");
+    // Render extra
+    for(var j=0; j < extra.length; j++) {
+        var f = extra[j];
+        var result = f(processed, scale);
+
+        if(typeof result === 'undefined') {
+            continue;
+        }
+
+        if(result.layer2draw === 'background') {
+            Euterpe.global.background.add(result);
+        }
+        else {
+            Euterpe.global.foreground.add(result);
+        }
+
+    }
 
     return Euterpe.stage;
 };

@@ -21,108 +21,75 @@ Euterpe.PluginNoteBar = (function() {
     };
 
     Euterpe.extend(Euterpe.Plugin, PluginNoteBar, {
-        process: function(root) {
-            var measures = Euterpe.select("Euterpe.Measure", root);
+        process: function(root, scale, extra) {
+            var columns = Euterpe.select("Euterpe.Column", root);
 
-            var f0 = function(obj) {return obj[0];};
-            var f1 = function(obj) {return obj[1];};
+            var ids = [];
+            var current = [];
 
-            for(var i=0; i < measures.length; i++) {
-                var m = measures[i];
-                var acc = [];
-                var tmp = [];
+            for(var i=0; i < columns.length; i++) {
+                var column = columns[i];
 
-                for(var j=0; j < m.items.length; j++) {
-                    var itm = m.items[j];
-                    var hasBar = false;
+                for(var j=0; j < column.items.length; j++) {
+                    var item = column.items[j];
+                    var cfg = item.config || {};
 
-                    var notes = Euterpe.select("Euterpe.Note", itm);
+                    if(cfg.bar === 'begin' || cfg.bar === 'cont' ||
+                        cfg.bar === 'end') {
+                        item.flags = 0;
+                        current.push(item.id);
 
-                    if(notes.length > 0) {
-                        for(var k=0; k < notes.length; k++) {
-                            var note = notes[k];
-                            var cfg = note.config || {};
+                        if(cfg.bar === 'end') {
+                            ids.push(_.clone(current));
 
-                            if(cfg.bar === 'begin' ||
-                                cfg.bar === 'cont' || cfg.bar === 'end') {
-                                hasBar = true;
-                                note.__note_bar_flags = note.flags;
-                                note.flags = 0;
-
-                                tmp.push([note.id, itm]);
-
-                                if(cfg.bar === 'end') {
-                                    var hbox = new Euterpe.HBox({
-                                        items: _.map(tmp, f1)
-                                    });
-
-                                    hbox.add(new Bar(_.map(tmp, f0)));
-
-                                    tmp.length = 0;
-
-                                    acc.push(hbox);
-                                }
-                            }
+                            current.length = 0;
                         }
+
+                        continue;
                     }
 
-                    if(!hasBar) {
-                        acc.push(itm);
-                    }
                 }
+            }
 
-                m.clear();
-                m.add(acc);
+            for(var k=0; k < ids.length; k++) {
+               extra.push(this.bind(ids[k]));
             }
 
             return root;
-        }
-    });
+        },
 
-    /**
-     * Draw a bar between notes
-     *
-     * @private
-     * @param {[Euterpe.Note]} notes to join with bar
-     */
-    function Bar(notes) {
-        this.notes = notes;
-        this.realWidth = 0;
+        /** @private */
+        bind: function(ids) {
+            return function(root, scale) {
+                var first = Euterpe.select("#"+ids[0])[0];
+                var last = Euterpe.select("#"+ids[1])[0];
 
-        Bar.super.call(this, "Euterpe.PluginNoteBar.Bar");
-    }
+                var bar = new Kinetic.Shape({
+                    sceneFunc: function(ctx) {
+                        var sx = first.beam.x();
+                        var sy = first.beam.y() - first.beamHeight;
+                        var lx = last.beam.x();
+                        var ly = last.beam.y() - last.beamHeight;
+                        var width = 4 * scale;
 
-    Euterpe.extend(Euterpe.Node, Bar, {
-        render: function(_x, _y, scale) {
-            this.scale = scale;
-            var first = Euterpe.select("#"+this.notes[0])[0];
-            var last = Euterpe.select("#"+this.notes[1])[0];
+                        ctx.beginPath();
+                        ctx.moveTo(sx, sy);
+                        ctx.lineTo(lx, ly);
+                        ctx.lineTo(lx, ly + width);
+                        ctx.lineTo(sx, sy + width);
+                        ctx.moveTo(sx, sy);
 
-            this.bar = new Kinetic.Shape({
-                sceneFunc: function(ctx) {
-                    var sx = first.beam.x();
-                    var sy = first.beam.y() - first.beamHeight;
-                    var lx = last.beam.x();
-                    var ly = last.beam.y() - last.beamHeight;
-                    var width = 4 * scale;
+                        ctx.closePath();
 
-                    ctx.beginPath();
-                    ctx.moveTo(sx, sy);
-                    ctx.lineTo(lx, ly);
-                    ctx.lineTo(lx, ly + width);
-                    ctx.lineTo(sx, sy + width);
-                    ctx.moveTo(sx, sy);
+                        ctx.fillStrokeShape(this);
+                    },
+                    fill: 'black',
+                    stroke: 'black',
+                    strokeWidth: 0
+                });
 
-                    ctx.closePath();
-
-                    ctx.fillStrokeShape(this);
-                },
-                fill: 'black',
-                stroke: 'black',
-                strokeWidth: 0
-            });
-
-            return this.bar;
+                return bar;
+            };
         }
     });
 
