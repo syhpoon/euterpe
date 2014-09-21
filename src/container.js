@@ -108,6 +108,7 @@ Euterpe.Container = (function() {
             }
 
             item.parentContainer = this;
+            item.parent = this;
 
             this.items.push(item);
         },

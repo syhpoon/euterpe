@@ -40,8 +40,6 @@ Euterpe.Column = (function() {
             for(var i=0; i < this.items.length; i++) {
                 var node = this.items[i];
 
-                node.parent = this;
-
                 node.X = x + node.leftMargin * scale;
                 node.Y = Euterpe.getY(node, scale, y);
 

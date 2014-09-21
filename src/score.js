@@ -30,7 +30,6 @@ Euterpe.Score = (function() {
             for(var i=0; i < this.items.length; i++) {
                 var row = this.items[i];
 
-                row.parent = this;
                 row.X = x;
                 row.Y = y;
 

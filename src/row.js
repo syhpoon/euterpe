@@ -42,8 +42,6 @@ Euterpe.Row = (function() {
             for(var i=0; i < this.items.length; i++) {
                 var column = this.items[i];
 
-                column.parent = this;
-
                 column.X = x + column.leftMargin * scale;
                 column.Y = y;
 

@@ -444,11 +444,8 @@ Euterpe.getDistance = function(container, item, scale) {
         }
         else if(obj.isContainer && Euterpe.select("#"+item.id, obj).length > 0) {
             d += obj.leftMargin * scale;
-
-            //HACK!
-            if(obj.name === 'Euterpe.VBox') break;
-
             d += Euterpe.getDistance(obj, item, scale);
+
             break;
         }
         else {

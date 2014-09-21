@@ -46,27 +46,32 @@ Euterpe.Note = (function() {
         }
         else {
             this.realWidth = this.headWidth = 13.6;
+        }
 
+        this.dotWidth = 4.5;
+        this.dotMargin = 2.5;
+
+        this.calculateWidth();
+    }
+
+    Euterpe.extend(Euterpe.Node, Note, {
+        beamRealHeight: 35,
+
+        /** @private */
+        calculateWidth: function() {
             if(this.beamDir === "up") {
                 this.realHeight = [this.beamRealHeight, this.headHeight / 2];
             }
             else if(this.beamDir === "down") {
                 this.realHeight = [this.headHeight / 2, this.beamRealHeight];
             }
-        }
 
-        this.dotWidth = 4.5;
-        this.dotMargin = 2.5;
+            this.realWidth += (this.dotMargin + this.dotWidth) * this.dots;
 
-        this.realWidth += (this.dotMargin + this.dotWidth) * this.dots;
-
-        if(this.flags > 0) {
-            this.realWidth += 13.6;
-        }
-    }
-
-    Euterpe.extend(Euterpe.Node, Note, {
-        beamRealHeight: 35,
+            if(this.flags > 0) {
+                this.realWidth += 13.6;
+            }
+        },
 
         /**
          * Render object
