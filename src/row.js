@@ -56,7 +56,98 @@ Euterpe.Row = (function() {
 
             rendered.push(this.renderSelf(origX, y, scale, totalWidth));
 
+            if(this.type === "measure") {
+                var lines = [];
+
+                this.prepareLedgerLines(
+                    lines,
+                    Euterpe.select("Euterpe.Note", this),
+                    y, scale);
+
+                rendered.push(this.renderLedgerLines(lines, scale));
+            }
+
             return rendered;
+        },
+
+        /** @private */
+        prepareLedgerLines: function(lines, notes, y, scale) {
+            for(var i=0; i < notes.length; i++) {
+                var note = notes[i];
+
+                if(typeof note.config.location === 'number') {
+                    var width = note.headWidth * scale;
+                    var d;
+
+                    // Line below
+                    if(note.config.location > (this.numberOfLines - 1)) {
+                        d = Math.floor(note.config.location);
+
+                        this.addLedgerLine(note, d, note.X, width, y, lines);
+                    }
+                    // Line above
+                    else if(note.config.location < 0) {
+                        d = Math.ceil(note.config.location);
+
+                        this.addLedgerLine(note, d, note.X, width, y, lines);
+                    }
+                }
+            }
+        },
+
+        /** @private **/
+        addLedgerLine: function(item, pos, x, width, baseY, lines) {
+            var found;
+
+            while(true) {
+                if((pos > 0 && pos <= 4) || (pos === 0)) {
+                    break;
+                }
+
+                found = false;
+
+                var _y = Euterpe.getY(pos, scale, baseY);
+
+                if(item.name === 'Euterpe.Note') {
+                    // Check if this line is already defined
+                    for(var i=0; i < lines.length; i++) {
+                        var line = lines[i];
+
+                        if(line[0] === x && line[1] === _y) {
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if(!found) {
+                        lines.push([x, _y, width]);
+                    }
+                }
+
+                pos += (pos > 0 ? -1: 1);
+            }
+        },
+
+        /** @private */
+        renderLedgerLines: function(lines, scale) {
+            var r = [];
+
+            for(var i=0; i < lines.length; i++) {
+                var x = lines[i][0];
+                var y = lines[i][1];
+                var shift = 5 * scale;
+                var width = lines[i][2] + shift * 2;
+
+                r.push(new Kinetic.Line({
+                    points: [0, 0, width, 0],
+                    stroke: 'black',
+                    strokeWidth: Euterpe.global.lineWidth,
+                    x: x - shift,
+                    y: y
+                }));
+            }
+
+            return r;
         },
 
         /** @private */

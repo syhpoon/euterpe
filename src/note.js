@@ -51,14 +51,14 @@ Euterpe.Note = (function() {
         this.dotWidth = 4.5;
         this.dotMargin = 2.5;
 
-        this.calculateWidth();
+        this.calculateSize();
     }
 
     Euterpe.extend(Euterpe.Node, Note, {
         beamRealHeight: 35,
 
         /** @private */
-        calculateWidth: function() {
+        calculateSize: function() {
             if(this.beamDir === "up") {
                 this.realHeight = [this.beamRealHeight, this.headHeight / 2];
             }

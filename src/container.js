@@ -19,6 +19,8 @@ Euterpe.Container = (function() {
         this.config = config || {};
         this.leftMargin = Euterpe.getConfig(config, "leftMargin", 0);
         this.rightMargin = Euterpe.getConfig(config, "rightMargin", 0);
+        this.leftItems = [];
+        this.rightItems = [];
 
         // Try to populate items if were defined in config
         if(typeof config !== 'undefined' && _.isArray(config.items)) {

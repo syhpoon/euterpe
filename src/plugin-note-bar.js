@@ -50,8 +50,6 @@ Euterpe.PluginNoteBar = (function() {
 
                             current.length = 0;
                         }
-
-                        continue;
                     }
 
                 }
@@ -118,7 +116,7 @@ Euterpe.PluginNoteBar = (function() {
 
                     if(diff !== 0) {
                         ids[i].beamRealHeight += diff * dir / scale;
-                        ids[i].calculateWidth();
+                        ids[i].calculateSize();
                     }
                 }
             }
