@@ -20,6 +20,7 @@ Euterpe.plugins.add(
 );
 
 var root = new Euterpe.Score({
+    lineMargin: 5,
     items: [
         new Euterpe.Row({
             type: "measure",
@@ -391,6 +392,68 @@ var root = new Euterpe.Score({
 
                 new Euterpe.Bar({
                     rightType: "double"
+                })
+            ]
+        }),
+
+        new Euterpe.Row({
+            type: "measure",
+            items: [
+                new Euterpe.Bar({
+                    leftType: "double bold",
+                    number: 3
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Note({
+                            leftItems: [
+                                new Euterpe.Flat({}),
+                                new Euterpe.Sharp({}),
+                                new Euterpe.Text({
+                                    text: "ABCZZZZZZZZZZZZZZ"
+                                })
+                            ],
+                            rightItems: [
+                                new Euterpe.Flat({}),
+                                new Euterpe.Sharp({}),
+                                new Euterpe.Text({
+                                    text: "ABCZZZZZZZZZZZZZZ"
+                                })
+                            ],
+                            beamDirection: "up",
+                            type: "quarter",
+                            flags: -1,
+                            location: 0,
+                            tab_text: "0",
+                            tab_location: 2
+                        }),
+                        new Euterpe.Note({
+                            leftItems: [
+                                new Euterpe.Sharp({}),
+                                new Euterpe.Text({
+                                    text: "12345"
+                                }),
+                                new Euterpe.Flat({})
+                            ],
+                            rightItems: [
+                                new Euterpe.Sharp({}),
+                                new Euterpe.Text({
+                                    text: "12345"
+                                }),
+                                new Euterpe.Flat({})
+                            ],
+                            beamDirection: "up",
+                            type: "quarter",
+                            flags: -1,
+                            location: 2,
+                            tab_text: "0",
+                            tab_location: 2
+                        })
+                    ]
+                }),
+                new Euterpe.Bar({
+                    rightType: "double bold"
                 })
             ]
         })
