@@ -23,9 +23,10 @@ Euterpe.Column = (function() {
         // Override width calculation
         getRealWidth: function(scale, bare) {
             var margins = Euterpe.getMargins(this, scale);
+            var items = this.collectItems();
 
             var w = _.max(
-                _.map(this.items,
+                _.map(items,
                     function(item) {
                         var left = 0;
                         var right = 0;
@@ -43,17 +44,40 @@ Euterpe.Column = (function() {
             return w + (bare ? 0: margins);
         },
 
+        getRealHeight: function(scale, raw) {
+            var items = this.collectItems();
+
+            return Euterpe.getRealHeight(this, items, scale, raw);
+        },
+
+        /** @private */
+        collectItems: function() {
+            var items = this.items;
+
+            if(_.isArray(this.config.aboveItems)) {
+                items = this.config.aboveItems.concat(this.items);
+            }
+
+            if(_.isArray(this.config.belowItems)) {
+                items = items.concat(this.config.belowItems);
+            }
+
+            return items;
+        },
+
         render: function(x, y, scale) {
             var rendered = [];
             var node;
             var i;
             var maxw = 0;
-            var w = this.renderSideItems(this.items, scale, rendered, x, y, true);
+            var items = this.collectItems();
+
+            var w = this.renderSideItems(items, scale, rendered, x, y, true);
 
             x += w;
 
-            for(i=0; i < this.items.length; i++) {
-                node = this.items[i];
+            for(i=0; i < items.length; i++) {
+                node = items[i];
 
                 node.X = x;
                 node.Y = Euterpe.getY(node, scale, y);

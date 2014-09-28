@@ -11,8 +11,7 @@
 Euterpe.PluginAboveBelow = (function() {
     /**
      * PluginAboveBelow [plugin]
-     * Adds attributes above, aboveRight, below, belowRight to measures
-     * Adds attributes above, below to notes
+     * Calculates correct locations for above/below column items
      *
      * @constructor
      * @param {Object} config - Configuration parameters
@@ -59,10 +58,9 @@ Euterpe.PluginAboveBelow = (function() {
         },
 
         /** @private **/
-        place: function(items, scale, pos, vbox, startLoc) {
+        place: function(items, scale, pos, startLoc) {
             var loc = 0, prevLoc;
-            var h;
-            var up, down;
+            var h, up, down;
 
             if(typeof startLoc === "number") {
                 prevLoc = startLoc;
@@ -91,116 +89,36 @@ Euterpe.PluginAboveBelow = (function() {
                 }
 
                 item.config.location = loc;
-                vbox.add(item);
             }
         },
 
         process: function(root, scale) {
             this.lineH = Euterpe.global.linePadding + Euterpe.global.lineWidth;
-            var measures = Euterpe.select("Euterpe.Measure", root);
 
-            for(var i=0; i < measures.length; i++) {
-                var measure = measures[i];
-                var cfg = measure.config;
-                var left, leftAdded = false;
-                var right, rightAdded = false;
+            var columns = Euterpe.select("Euterpe.Column", root);
 
-                this.processNotes(measure, scale);
+            for(var i=0; i < columns.length; i++) {
+                var column = columns[i];
+                var cfg = column.config;
 
-                if(_.isArray(cfg.above) || _.isArray(cfg.below)) {
-                    if(!left) {
-                        // Margin here because of measure number
-                        left = new Euterpe.VBox({
-                            leftMargin: 4 * scale
-                        });
-                    }
+                var h = column.getRealHeight(scale, true);
+                var up = this.roundLine(h[0] / this.lineH * -1);
+                var down = this.roundLine(h[1] / this.lineH);
 
-                    if(cfg.above) {
-                        this.place(cfg.above, scale, "above", left);
-                    }
-
-                    if(cfg.below) {
-                        this.place(cfg.below, scale, "below", left);
-                    }
-
-                    if(!leftAdded) {
-                        measure.items.unshift(left);
-                        leftAdded = true;
-                    }
+                if(down < 4) {
+                    down = 4;
                 }
 
-                if(_.isArray(cfg.aboveRight) || _.isArray(cfg.belowRight)) {
-                    if(!right) {
-                        right = new Euterpe.VBox({});
-                    }
+                if(_.isArray(cfg.aboveItems)) {
+                    this.place(cfg.aboveItems, scale, "above", up);
+                }
 
-                    if(cfg.aboveRight) {
-                        this.place(cfg.aboveRight, scale, "above", right);
-                    }
-
-                    if(cfg.belowRight) {
-                        this.place(cfg.belowRight, scale, "below", right);
-                    }
-
-                    if(!rightAdded) {
-                        measure.items.push(right);
-                        rightAdded = true;
-                    }
+                if(_.isArray(cfg.belowItems)) {
+                    this.place(cfg.belowItems, scale, "below", down);
                 }
             }
 
             return root;
-        },
-
-        processNotes: function(measure, scale) {
-            var notes = Euterpe.select("Euterpe.Note", measure);
-
-            for(var i=0; i < notes.length; i++) {
-                var note = notes[i];
-                var cfg = note.config;
-
-                if(_.isArray(cfg.above) || _.isArray(cfg.below)) {
-                    var vbox;
-                    var needReplace = false;
-
-                    if(note.parentContainer.name !== "Euterpe.VBox") {
-                        vbox = new Euterpe.VBox({
-                            items: [note],
-                            leftMargin: note.leftMargin,
-                            rightMargin: note.rightMargin
-                        });
-
-                        note.leftMargin = 0;
-                        note.rightMargin = 0;
-                        needReplace = true;
-                    }
-                    else {
-                        vbox = note.parentContainer;
-                    }
-
-                    var p = Euterpe.getTopParent(note);
-                    var y = Euterpe.getY(p, scale, 0);
-                    var h = p.getRealHeight(scale, true);
-
-                    if(cfg.above) {
-                        var up = this.roundLine((y - h[0]) / this.lineH);
-
-                        this.place(cfg.above, scale, "above", vbox,
-                            up > 0 ? 0: up);
-                    }
-
-                    if(cfg.below) {
-                        var down = this.roundLine((y + h[1]) / this.lineH);
-
-                        this.place(cfg.below, scale, "below", vbox,
-                            down < 4 ? 4: down);
-                    }
-
-                    if(needReplace) {
-                        Euterpe.replace(measure, note.id, vbox);
-                    }
-                }
-            }
         }
     });
 

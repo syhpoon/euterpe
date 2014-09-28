@@ -42,41 +42,7 @@ Euterpe.Container = (function() {
         },
 
         getRealHeight: function(scale, raw) {
-            var baseY = 0;
-            var upperY, lowerY, up, low;
-            var y;
-
-            if(typeof this.realHeight !== 'undefined') {
-                y = Euterpe.getY(this, scale, baseY);
-
-                upperY = this.realHeight[0] * scale;
-                lowerY = this.realHeight[1] * scale;
-            }
-
-            for(var i=0; i < this.items.length; i++) {
-                var item = this.items[i];
-
-                var h = item.getRealHeight(scale, true);
-                y = Euterpe.getY(item, scale, baseY);
-
-                up = y - h[0];
-                low = y + h[1];
-
-                if(typeof upperY === 'undefined' || up < upperY) {
-                    upperY = up;
-                }
-
-                if(typeof lowerY === 'undefined' || low > lowerY) {
-                    lowerY = low;
-                }
-            }
-
-            if(raw) {
-                return [upperY * -1, lowerY];
-            }
-            else {
-                return lowerY - upperY;
-            }
+            return Euterpe.getRealHeight(this, this.items, scale, raw);
         },
 
         isContainer: true,
@@ -155,11 +121,6 @@ Euterpe.Container = (function() {
             Euterpe.ContainerDepth += 1;
 
             var acc = [];
-            var state = {
-                x: x,
-                y: y,
-                scale: scale
-            };
 
             var cb = function(item, x, y, scale, idx) {
                 var _y = Euterpe.getY(item, scale, y);
@@ -177,25 +138,6 @@ Euterpe.Container = (function() {
 
                 Euterpe.log.debug(
                     new Array(Euterpe.ContainerDepth).join("  "), item);
-
-                // Check if item contains any modifiers
-                if(Euterpe.isModifier(item.modifier)) {
-                    var mod = item.modifier;
-
-                    if(Euterpe.isModifierOfType(mod, "y", "relative")) {
-                        y += Euterpe.getModifierValue(mod, "y");
-                    }
-                    else if(Euterpe.isModifierOfType(mod, "y", "absolute")) {
-                        y = Euterpe.getModifierValue(mod, "y");
-                    }
-
-                    if(Euterpe.isModifierOfType(mod, "x", "relative")) {
-                        x += Euterpe.getModifierValue(mod, "x");
-                    }
-                    else if(Euterpe.isModifierOfType(mod, "x", "absolute")) {
-                        x = Euterpe.getModifierValue(mod, "x");
-                    }
-                }
 
                 if(item.isContainer) {
                     item.parentContainer = this;
@@ -229,7 +171,7 @@ Euterpe.Container = (function() {
         },
 
         render: function(x, y, scale) {
-            this.baseRender(x, y, scale);
+            return Euterpe.baseRender(this.items, x, y, scale);
         }
     };
 

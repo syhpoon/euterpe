@@ -208,7 +208,7 @@ Euterpe.render = function(root, x, y, width, scale, containerId) {
 
     var extra = [];
     var processed = Euterpe.plugins.fold(root, scale, extra);
-    var h = root.getRealHeight(scale, true);
+    var h = processed.getRealHeight(scale, true);
 
     y += h[0];
 
@@ -454,4 +454,78 @@ Euterpe.getDistance = function(container, item, scale) {
     }
 
     return d;
+};
+
+/**
+ * Calculate container real height
+ * @param {Object} base - Base container object
+ * @param {Array} items - List of items
+ * @param {Number} scale
+ * @param {Bool} raw
+ * @returns {*}
+ */
+
+Euterpe.getRealHeight = function(base, items, scale, raw) {
+    var baseY = 0;
+    var upperY, lowerY, up, low;
+    var y;
+
+    if(typeof base.realHeight !== 'undefined') {
+        y = Euterpe.getY(base, scale, baseY);
+
+        upperY = base.realHeight[0] * scale;
+        lowerY = base.realHeight[1] * scale;
+    }
+
+    for(var i=0; i < items.length; i++) {
+        var item = items[i];
+
+        var h = item.getRealHeight(scale, true);
+        y = Euterpe.getY(item, scale, baseY);
+
+        up = y - h[0];
+        low = y + h[1];
+
+        if(typeof upperY === 'undefined' || up < upperY) {
+            upperY = up;
+        }
+
+        if(typeof lowerY === 'undefined' || low > lowerY) {
+            lowerY = low;
+        }
+    }
+
+    if(raw) {
+        return [upperY * -1, lowerY];
+    }
+    else {
+        return lowerY - upperY;
+    }
+};
+
+/**
+ * Base rendering algorithm
+ * @param items
+ * @param x
+ * @param y
+ * @param scale
+ * @returns {Array}
+ */
+Euterpe.baseRender = function(items, x, y, scale) {
+    var rendered = [];
+    var node;
+    var i;
+
+    for(i=0; i < items.length; i++) {
+        node = items[i];
+
+        node.X = x;
+        node.Y = Euterpe.getY(node, scale, y);
+
+        rendered.push(node.render(node.X, node.Y, scale));
+
+        x += node.getRealWidth(scale);
+    }
+
+    return rendered;
 };

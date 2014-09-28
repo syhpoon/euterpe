@@ -46,7 +46,7 @@ Euterpe.KeySignature = (function() {
         }
     }
 
-    Euterpe.extend(Euterpe.HBox, KeySignature);
+    Euterpe.extend(Euterpe.Container, KeySignature);
 
     return KeySignature;
 })();

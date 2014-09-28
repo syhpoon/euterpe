@@ -14,10 +14,12 @@ Euterpe.Bar = (function() {
      *
      * @constructor
      * @param {Object} config - Configuration parameters
+     * @param {Number} [config.number] - Bar number
      */
     function Bar(config) {
         this.leftType = Euterpe.getConfig(config, "leftType", "none");
         this.rightType = Euterpe.getConfig(config, "rightType", "none");
+        this.number = Euterpe.getConfig(config, "number", undefined);
 
         this.leftWidth = this.widths[this.leftType];
         this.rightWidth = this.widths[this.rightType];
