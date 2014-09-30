@@ -14,25 +14,30 @@ Euterpe.Row = (function() {
      *
      * @constructor
      * @param {Object} config - Configuration parameters
-     * @param {Number} config.type - Row type ('measure' | 'tab')
+     * @param {Number} config.type - Row type 'measure' or 'tab'
+     * @param {String} [config.group] - Grooup id
+     * @param {String} [config.groupType] - Group type 'bracket' or 'brace'
      */
     function Row(config) {
         Row.super.call(this, "Euterpe.Row", config);
 
         this.type = Euterpe.getConfig(config, "type");
+        this.group = Euterpe.getConfig(config, "group", undefined);
+        this.groupType = Euterpe.getConfig(config, "groupType", undefined);
 
         if(this.type === 'measure') {
             this.numberOfLines = 5;
+            this.realHeight = [0, 57.3];
         }
         else if(this.type === 'tab') {
             this.numberOfLines = 6;
+            this.realHeight = [0, 71.5];
         }
 
         this.prepared = [];
     }
 
     Euterpe.extend(Euterpe.Container, Row, {
-        realHeight: [0, 57.3],
 
         render: function(x, y, scale) {
             var rendered = [];

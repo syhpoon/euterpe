@@ -74,44 +74,6 @@ Euterpe.Multiline = (function() {
             }
         },
 
-        zgetRealHeight: function(scale, raw) {
-            var yup;
-            var ydown;
-            var yoff = 0;
-
-            for(var i=0; i < this.items.length; i++) {
-                var item = this.items[i];
-
-                var h = item.getRealHeight(scale, true);
-                yoff = Euterpe.applyModifier(item, yoff);
-
-                var up = h[0] + yoff;
-                var down = h[1] + yoff;
-
-                if(typeof yup === 'undefined' || up < yup) {
-                    yup = up;
-                }
-
-                if(typeof ydown === 'undefined' || down > ydown) {
-                    ydown = down;
-                }
-
-                yoff += (h[1] + this.lineMargin * scale);
-            }
-
-            if(this.type === 'bracket') {
-                yup += this.bracketExtraUp * scale;
-                ydown += this.bracketExtraDown * scale;
-            }
-
-            if(raw) {
-                return [yup, ydown];
-            }
-            else {
-                return yup + ydown;
-            }
-        },
-
         render: function(origX, y, scale) {
             var yoff = 0;
             var self = this;
