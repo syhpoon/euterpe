@@ -1,4 +1,4 @@
-var scale = 2;
+var scale = 1;
 var margin = 40;
 var width = 1300;
 
@@ -6,12 +6,12 @@ var width = 1300;
 
 Euterpe.plugins.add(
     new Euterpe.PluginNoteBar(),
-    new Euterpe.PluginNoteText({rightMargin: 5}),
-    new Euterpe.PluginAccidentals({rightMargin: 5}),
-    new Euterpe.PluginAboveBelow(),
+    new Euterpe.PluginAccidentals(),
+    new Euterpe.PluginNoteText(),
+    new Euterpe.PluginAboveBelow()
+    /*
     new Euterpe.PluginTab(),
     new Euterpe.PluginAlignMultiline()
-    /*
     new Euterpe.PluginPackMeasures({
         measuresPerLine: 4,
         totalWidth: width - 100
@@ -20,38 +20,151 @@ Euterpe.plugins.add(
 );
 
 var root = new Euterpe.Score({
-    leftMargin: margin,
     items: [
-        new Euterpe.Measure({
-            number: 1,
+        new Euterpe.Row({
+            group: "1",
+            groupType: "bracket",
+            type: "measure",
             items: [
-                new Euterpe.TrebleClef({leftMargin: margin}),
+                new Euterpe.Bar({
+                    leftType: "single"
+                }),
 
-                new Euterpe.TimeSignature(4, 4, {leftMargin: margin}),
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.TrebleClef({})
+                    ]
+                }),
 
-                new Euterpe.VBox({
-                    leftMargin: margin,
-                    rightMargin: margin,
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.TimeSignature(4, 4, {})
+                    ]
+                }),
+
+                new Euterpe.Column({
                     items: [
                         new Euterpe.Note({
-                            beamDirection: "up",
+                            beamDirection: "down",
                             type: "quarter",
-                            flags: 1,
-                            location: 0.5,
-                            tab_text: "0",
-                            tab_location: 2
-                        }),
-
-                        new Euterpe.Note({
-                            leftMargin: margin,
-                            beamDirection: "up",
-                            type: "quarter",
-                            flags: 1,
-                            location: 2,
-                            tab_text: "2",
-                            tab_location: 3
+                            location: 1
                         })
                     ]
+                }),
+
+                new Euterpe.Bar({
+                    rightType: "single"
+                })
+            ]
+        }),
+
+        new Euterpe.Row({
+            group: "1",
+            type: "tab",
+            items: [
+                new Euterpe.Bar({
+                    leftType: "single"
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Text({
+                            text: "0",
+                            location: 3
+                        }),
+
+                        new Euterpe.Text({
+                            text: "1",
+                            location: 4
+                        })
+                    ]
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Text({
+                            text: "1",
+                            location: 1
+                        })
+                    ]
+                }),
+
+                new Euterpe.Bar({
+                    rightType: "single"
+                })
+            ]
+        }),
+
+        new Euterpe.Row({
+            group: "1",
+            groupType: "bracket",
+            type: "measure",
+            items: [
+                new Euterpe.Bar({
+                    leftType: "single"
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.TrebleClef({})
+                    ]
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.TimeSignature(4, 4, {})
+                    ]
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Note({
+                            beamDirection: "down",
+                            type: "quarter",
+                            location: 1
+                        })
+                    ]
+                }),
+
+                new Euterpe.Bar({
+                    rightType: "single"
+                })
+            ]
+        }),
+
+        new Euterpe.Row({
+            group: "2",
+            type: "tab",
+            items: [
+                new Euterpe.Bar({
+                    leftType: "single"
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Text({
+                            text: "0",
+                            location: 3
+                        }),
+
+                        new Euterpe.Text({
+                            text: "1",
+                            location: 4
+                        })
+                    ]
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Text({
+                            text: "1",
+                            location: 1
+                        })
+                    ]
+                }),
+
+                new Euterpe.Bar({
+                    rightType: "single"
                 })
             ]
         })

@@ -24,7 +24,6 @@ Euterpe.Bar = (function() {
         this.leftWidth = this.widths[this.leftType];
         this.rightWidth = this.widths[this.rightType];
         this.realWidth = this.leftWidth + this.rightWidth;
-        this.realHeight = [16.3, 9];
 
         Bar.super.call(this, "Euterpe.Bar", config);
     }
@@ -36,6 +35,14 @@ Euterpe.Bar = (function() {
             "double": 7,
             "double bold": 13,
             "repeat": 24
+        },
+
+        getRealHeight: function(scale, raw) {
+            if(typeof this.realHeight === 'undefined') {
+                this.realHeight = this.parent.realHeight;
+            }
+
+            return Euterpe.Node.prototype.getRealHeight.call(this, scale, raw);
         },
 
         render: function(x, y, scale) {

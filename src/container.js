@@ -75,7 +75,6 @@ Euterpe.Container = (function() {
                 return _.each(item, function(itm) {self.add(itm);});
             }
 
-            item.parentContainer = this;
             item.parent = this;
 
             this.items.push(item);

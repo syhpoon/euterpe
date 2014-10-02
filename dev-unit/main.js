@@ -5,11 +5,11 @@ var width = 1300;
 //Euterpe.global.loglevel = Euterpe.const.LOG_DEBUG;
 
 Euterpe.plugins.add(
-    new Euterpe.PluginNoteBar()
+    new Euterpe.PluginNoteBar(),
+    new Euterpe.PluginAccidentals(),
+    new Euterpe.PluginNoteText(),
+    new Euterpe.PluginAboveBelow()
     /*
-     new Euterpe.PluginNoteText({rightMargin: 5}),
-     new Euterpe.PluginAccidentals({rightMargin: 5}),
-     new Euterpe.PluginAboveBelow(),
      new Euterpe.PluginTab(),
      new Euterpe.PluginAlignMultiline()
      new Euterpe.PluginPackMeasures({
@@ -23,6 +23,8 @@ var root = new Euterpe.Score({
     lineMargin: 5,
     items: [
         new Euterpe.Row({
+            group: "1",
+            groupType: "bracket",
             type: "measure",
             items: [
                 new Euterpe.Bar({
@@ -397,6 +399,8 @@ var root = new Euterpe.Score({
         }),
 
         new Euterpe.Row({
+            group: "1",
+            groupType: "bracket",
             type: "measure",
             items: [
                 new Euterpe.Bar({
@@ -453,7 +457,62 @@ var root = new Euterpe.Score({
                     ]
                 }),
                 new Euterpe.Bar({
-                    rightType: "double bold"
+                    rightType: "double bold",
+                    leftType: "repeat"
+                }),
+
+                new Euterpe.Column({
+                    aboveItems: [
+                        new Euterpe.Sharp({}),
+                        new Euterpe.StringNumber({string: 1}),
+                        new Euterpe.Text({text: "ZZZ"})
+                    ],
+                    belowItems: [
+                        new Euterpe.Text({text: "ABC"}),
+                        new Euterpe.Sharp({}),
+                        new Euterpe.Text({text: "WTF"}),
+                        new Euterpe.StringNumber({string: 1})
+                    ],
+                    items: [
+                        new Euterpe.Note({
+                            beamDirection: "up",
+                            type: "quarter",
+                            location: 0
+                        }),
+                        new Euterpe.Note({
+                            beamDirection: "down",
+                            type: "quarter",
+                            location: 5
+                        })
+                    ]
+                }),
+                new Euterpe.Column({
+                    aboveItems: [
+                        new Euterpe.Sharp({}),
+                        new Euterpe.StringNumber({string: 4})
+                    ],
+                    belowItems: [
+                        new Euterpe.Text({text: "ABC"}),
+                        new Euterpe.Sharp({}),
+                        new Euterpe.Text({text: "WTF111111111111111111111111"}),
+                        new Euterpe.StringNumber({string: 1})
+                    ],
+                    items: [
+                        new Euterpe.Note({
+                            beamDirection: "up",
+                            type: "quarter",
+                            location: 2
+                        }),
+                        new Euterpe.Note({
+                            beamDirection: "down",
+                            type: "quarter",
+                            location: 3
+                        })
+                    ]
+                }),
+
+                new Euterpe.Bar({
+                    rightType: "repeat"
                 })
             ]
         })

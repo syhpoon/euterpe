@@ -30,27 +30,7 @@ Euterpe.Score = (function() {
         bracketExtraDown: 5,
 
         getRealHeight: function(scale, raw) {
-            var groups = this.getGroups();
-
-            var h = this.doGetRealHeight(this.items, scale, raw);
-
-            for(var i=0; i < groups.length; i++) {
-                var group = groups[i];
-
-                if(group.groupType === "bracket") {
-                    if(raw) {
-                        h[0] += this.bracketExtraUp * scale;
-                        h[1] += this.bracketExtraDown * scale;
-                    }
-                    else {
-                        h += (this.bracketExtraUp * scale +
-                              this.bracketExtraDown * scale);
-
-                    }
-                }
-            }
-
-            return h;
+            return this.doGetRealHeight(this.items, scale, raw);
         },
 
         render: function(origX, y, scale) {
@@ -80,8 +60,7 @@ Euterpe.Score = (function() {
 
             for(i=0; i < this.items.length; i++) {
                 var row = this.items[i];
-
-                var h = row.getRealHeight(scale, true);
+                var h = this.doGetRealHeight([row], scale, true);
 
                 if(yoff !== 0) {
                     yoff += h[0];
@@ -100,13 +79,7 @@ Euterpe.Score = (function() {
                     gid++;
                 }
 
-                if(yoff === 0) {
-                    yoff = h[1];
-                }
-                else {
-                    yoff += h[1];
-                }
-
+                yoff += h[1];
                 yoff += self.lineMargin * scale;
 
                 rendered.push(row.render(origX, _y, scale));
@@ -120,8 +93,9 @@ Euterpe.Score = (function() {
             var groups = [];
             var curGroup = null;
             var curGroupType = null;
-            var id = null;
+            var first = null;
             var tmp = [];
+            var last = null;
 
             for(var i=0; i < this.items.length; i++) {
                 var row = this.items[i];
@@ -130,13 +104,14 @@ Euterpe.Score = (function() {
                     if(curGroup !== row.group) {
                         if(curGroup !== null) {
                             groups.push({
-                                first: id,
+                                first: first,
+                                last: last,
                                 groupType: curGroupType,
                                 items: _.clone(tmp)
                             });
                         }
 
-                        id = row.id;
+                        first = row.id;
                         curGroup = row.group;
                         curGroupType = row.groupType;
                         tmp.length = 0;
@@ -144,11 +119,14 @@ Euterpe.Score = (function() {
 
                     tmp.push(row);
                 }
+
+                last = row.id;
             }
 
             if(tmp.length > 0) {
                 groups.push({
-                    first: id,
+                    first: first,
+                    last: last,
                     groupType: curGroupType,
                     items: tmp
                 });
@@ -158,14 +136,33 @@ Euterpe.Score = (function() {
         },
 
         /** @private */
-        doGetRealHeight: function(items, scale, raw, groupType) {
+        doGetRealHeight: function(items, scale, raw) {
             var yup;
             var yoff = 0;
+            var groups = this.getGroups();
+
+            var isGroupFirst = function(item) {
+                return _.find(groups,
+                    function(o) { return o.first === item.id; });
+            };
+
+            var isGroupLast = function(item) {
+                return _.find(groups,
+                    function(o) { return o.last === item.id; });
+            };
 
             for(var i=0; i < items.length; i++) {
                 var item = items[i];
 
                 var h = item.getRealHeight(scale, true);
+
+                if(isGroupFirst(item)) {
+                    h[0] += this.bracketExtraUp * scale;
+                }
+                if(isGroupLast(item)) {
+                    h[1] += this.bracketExtraDown * scale;
+                }
+
                 var rh = h[1] + h[0];
 
                 if(typeof yup === 'undefined') {
@@ -173,12 +170,6 @@ Euterpe.Score = (function() {
                 }
 
                 yoff += (rh + this.lineMargin * scale);
-            }
-
-            if(groupType === 'bracket') {
-                yup += this.bracketExtraUp * scale;
-                yoff += (this.bracketExtraUp * scale +
-                    this.bracketExtraDown * scale);
             }
 
             if(raw) {
@@ -193,7 +184,7 @@ Euterpe.Score = (function() {
         renderBracket: function(x, y, scale, rows) {
             var exUp = this.bracketExtraUp * scale;
             var exDown = this.bracketExtraDown * scale;
-            var h = this.doGetRealHeight(rows, scale, true, "bracket");
+            var h = this.doGetRealHeight(rows, scale, true);
             var up = h[0] - exUp;
             var down = h[1] - exDown;
 
