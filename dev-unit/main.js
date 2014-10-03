@@ -1,4 +1,4 @@
-var scale = 2;
+var scale = 1;
 var margin = 40;
 var width = 1300;
 
