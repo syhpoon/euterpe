@@ -32,7 +32,9 @@ Euterpe.TimeSignature = (function() {
         this.add(new Euterpe.TimeSignatureShape(denominator, 2));
     }
 
-    Euterpe.extend(Euterpe.Column, TimeSignature);
+    Euterpe.extend(Euterpe.Column, TimeSignature, {
+        name: "Euterpe.TimeSignature"
+    });
 
     return TimeSignature;
 })();

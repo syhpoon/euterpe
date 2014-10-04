@@ -38,7 +38,6 @@ Euterpe.Row = (function() {
     }
 
     Euterpe.extend(Euterpe.Container, Row, {
-
         render: function(x, y, scale) {
             var rendered = [];
             var totalWidth = 0;

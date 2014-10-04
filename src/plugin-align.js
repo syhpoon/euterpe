@@ -8,29 +8,62 @@
 /**
  * @namespace Euterpe
  */
-Euterpe.PluginAlignMultiline = (function() {
+Euterpe.PluginAlign = (function() {
     /**
-     * PluginAlignMultiline [plugin]
-     * Vertically align Multiline items
-     * Adds attributes "column" :: number() to Multiline items
+     * PluginAlign [plugin]
+     * Align and distribute columns
      *
      * @constructor
      * @param {Object} config - Configuration parameters
+     * @param {Number} config.totalWidth - Total sheet width
+     * @param {Number} [config.nodeMargin=5] - Left margin of non-column nodes
      */
-    var PluginAlignMultiline = function(config) {
-        PluginAlignMultiline.super.call(this,
-            "Euterpe.PluginAlignMultiline", config);
+    var PluginAlign = function(config) {
+        this.totalWidth = Euterpe.getConfig(config, "totalWidth");
+        this.nodeMargin = Euterpe.getConfig(config, "nodeMargin", 5);
+
+        PluginAlign.super.call(this, "Euterpe.PluginAlign", config);
     };
 
-    Euterpe.extend(Euterpe.Plugin, PluginAlignMultiline, {
+    Euterpe.extend(Euterpe.Plugin, PluginAlign, {
         process: function(root, scale) {
-            var multilines = Euterpe.select("Euterpe.Multiline", root);
+            for(var i=0; i < root.items.length; i++) {
+                var row = root.items[i];
+                var j;
 
-            for(var i=0; i < multilines.length; i++) {
-                this.processMultiline(multilines[i], scale);
+                // Step 1. Set margins for non-columns (nodes)
+                var nodes = this.collectNodes(row);
+
+                for(j=0; j < nodes.length; j++) {
+                    nodes[j].leftMargin = this.nodeMargin;
+                }
+
+                // Step 2. Set margins for columns
+                var rowWidth = row.getRealWidth(scale);
+                var cols = Euterpe.select("Euterpe.Column", row);
+                var diff = this.totalWidth - rowWidth;
+                // +1 here is for rightMargin of the last column
+                var margin = (diff / (cols.length + 1)) / scale;
+
+                for(j=0; j < cols.length; j++) {
+                    cols[j].leftMargin = margin;
+
+                    if(j == cols.length - 1) {
+                        cols[j].rightMargin = margin;
+                    }
+                }
             }
 
             return root;
+        },
+
+        /** @private */
+        collectNodes: function(row) {
+            return _.filter(row.items,
+                function(item) {
+                    return item.name !== 'Euterpe.Bar' &&
+                           item.name !== 'Euterpe.Column';
+                });
         },
 
         /** @private **/
@@ -188,5 +221,5 @@ Euterpe.PluginAlignMultiline = (function() {
 
     });
 
-    return PluginAlignMultiline;
+    return PluginAlign;
 }());
