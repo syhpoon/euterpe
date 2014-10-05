@@ -27,34 +27,130 @@ Euterpe.PluginAlign = (function() {
 
     Euterpe.extend(Euterpe.Plugin, PluginAlign, {
         process: function(root, scale) {
-            for(var i=0; i < root.items.length; i++) {
-                var row = root.items[i];
+            var i, row;
+
+            // Set margins for non-columns (nodes) and bars
+            for(i=0; i < root.items.length; i++) {
+                row = root.items[i];
                 var j;
 
-                // Step 1. Set margins for non-columns (nodes)
                 var nodes = this.collectNodes(row);
+                var bars = Euterpe.select("Euterpe.Bar", row);
 
                 for(j=0; j < nodes.length; j++) {
                     nodes[j].leftMargin = this.nodeMargin;
                 }
 
-                // Step 2. Set margins for columns
-                var rowWidth = row.getRealWidth(scale);
-                var cols = Euterpe.select("Euterpe.Column", row);
-                var diff = this.totalWidth - rowWidth;
-                // +1 here is for rightMargin of the last column
-                var margin = (diff / (cols.length + 1)) / scale;
-
-                for(j=0; j < cols.length; j++) {
-                    cols[j].leftMargin = margin;
-
-                    if(j == cols.length - 1) {
-                        cols[j].rightMargin = margin;
-                    }
+                for(j=1; j < bars.length; j++) {
+                    bars[j].leftMargin = this.nodeMargin;
                 }
             }
 
+            var groups = Euterpe.getGroups(root.items);
+
+            for(i=0; i < groups.length; i++) {
+                this.processGroup(groups[i], scale);
+            }
+
             return root;
+        },
+
+        /** @private */
+        align: function(row, scale) {
+            // Step 2. Set margins for columns
+            var rowWidth = row.getRealWidth(scale);
+            var cols = Euterpe.select("Euterpe.Column", row);
+            var diff = this.totalWidth - rowWidth;
+            var margin = (diff / cols.length) / scale;
+
+            for(var j=0; j < cols.length; j++) {
+                cols[j].leftMargin += margin;
+            }
+        },
+
+        /** @private */
+        getCols: function(items, i) {
+            return _.map(items, function(a) {return a[i]});
+        },
+
+        /** @private */
+        cleanGroup: function(group) {
+            var r = [];
+
+            for(var i=0; i < group.items.length; i++) {
+                var row = group.items[i];
+
+                r[i] = Euterpe.select("Euterpe.Column", row);
+            }
+
+            return r;
+        },
+
+        /** @private */
+        processGroup: function(group, scale) {
+            // Align the first row
+            this.align(group.items[0], scale);
+
+            var items = this.cleanGroup(group);
+            var i, j, d, w, col, cols;
+            var size = _.max(_.map(items, function(row) {
+                return row.length;
+            }));
+
+            for(i=0; i < size; i++) {
+                cols = this.getCols(items, i);
+                var colDist = {};
+                var colWidth = {};
+
+                var distance = 0;
+                var width = 0;
+
+                // First determine the biggest offset
+                for(j=0; j < cols.length; j++) {
+                    col = cols[j];
+
+                    if(typeof col === 'undefined') {
+                        continue;
+                    }
+
+                    d = Euterpe.getDistance(col.parent, col, scale)
+                        + col.leftMargin * scale;
+
+                    colDist[col.id] = d;
+
+                    if(d > distance) {
+                        distance = d;
+                    }
+
+                    w = col.getRealWidth(scale, true);
+
+                    colWidth[col.id] = w;
+
+                    if(w > width) {
+                        width = w;
+                    }
+                }
+
+                // Next add the difference to all required columns
+                for(j=0; j < cols.length; j++) {
+                    col = cols[j];
+
+                    if(typeof col === 'undefined') {
+                        continue;
+                    }
+
+                    d = colDist[col.id];
+                    w = colWidth[col.id];
+
+                    if(d < distance) {
+                        col.leftMargin += (distance - d) / scale;
+                    }
+
+                    if(w < width) {
+                        col.rightMargin += (width - w) / scale;
+                    }
+                }
+            }
         },
 
         /** @private */
@@ -64,161 +160,7 @@ Euterpe.PluginAlign = (function() {
                     return item.name !== 'Euterpe.Bar' &&
                            item.name !== 'Euterpe.Column';
                 });
-        },
-
-        /** @private **/
-        compareRoots: function(a, b) {
-            var eq = 0;
-
-            for(var i=0; i < a.length; i++) {
-                if(i >= b.length) {
-                    return false;
-                }
-                else if(a[i].id === b[i].id) {
-                    eq += 1;
-                }
-            }
-
-            return eq === b.length;
-        },
-
-        /** @private **/
-        processMultiline: function(ml, scale) {
-            var items = {};
-
-            this.collectItems(ml, items, scale);
-
-            var columns = _.map(_.keys(items),
-                                function(x) {return parseInt(x)})
-                               .sort(function(a,b) {return a - b;});
-
-            var roots = null;
-
-            for(var i=0; i < columns.length; i++) {
-                var j;
-                var c = columns[i];
-                var col = items[c][1];
-                var maxW = _.max(_.map(col, function(x) {return x[2];}));
-                var offset = 0;
-                var parent, item, width, distance;
-
-                if(roots !== null && !this.compareRoots(roots, items[c][0])) {
-                    this.alignObjects(roots);
-
-                    roots = null
-                }
-
-                if(roots === null) {
-                    roots = items[c][0];
-                }
-
-                // Get the column offset
-                for(j=0; j < col.length; j++) {
-                    parent = col[j][0];
-                    item = col[j][1];
-
-                    distance = Euterpe.getDistance(parent, item, 1) +
-                        item.leftMargin;
-
-                    if(distance > offset) {
-                        offset = distance;
-                    }
-                }
-
-                // Align column
-                for(j=0; j < col.length; j++) {
-                    parent = col[j][0];
-                    item = col[j][1];
-                    width = col[j][2];
-                    var wDiff = maxW - width;
-
-                    distance = Euterpe.getDistance(parent, item, 1)
-                        + item.leftMargin;
-
-                    if(distance < offset) {
-                        item.leftMargin += (offset - distance);
-                    }
-
-                    // Need to compensate width difference
-                    if(wDiff > 0) {
-                        // Center align
-                        item.leftMargin += wDiff / 2;
-                        item.rightMargin += wDiff / 2;
-                    }
-                }
-            }
-
-            if(roots !== null) {
-                this.alignObjects(roots);
-            }
-        },
-
-        /** @private **/
-        contains: function(list, obj) {
-            for(var i=0; i < list.length; i++) {
-                if(list[i].id === obj.id) {
-                    return true;
-                }
-            }
-
-            return false;
-        },
-
-        /** @private **/
-        collectItems: function(root, acc, scale, top) {
-            for(var i=0; i < root.items.length; i++) {
-                var item = root.items[i];
-
-                if(typeof item.config.column === 'number') {
-                    var col = item.config.column;
-
-                    if(typeof acc[col] === 'undefined') {
-                        acc[col] = [[], []];
-                    }
-
-                    var p = Euterpe.getRootParent(item);
-
-                    if(!this.contains(acc[col][0], p)) {
-                        acc[col][0].push(p);
-                    }
-
-                    acc[col][1].push([top ? top: item,
-                                      item, item.getRealWidth(1, true)]);
-                }
-
-                // We do not want to process any nested Multilines here
-                // because they will be processed in the previous step
-                if(item.isContainer && item.name !== 'Euterpe.Multiline') {
-                    this.collectItems(item, acc, scale, top ? top: item);
-                }
-            }
-        },
-
-        /** @private **/
-        alignObjects: function(objects) {
-            var i;
-            var widths = {};
-
-            for(i=0; i < objects.length; i++) {
-                widths[objects[i].id] = objects[i].getRealWidth(1);
-            }
-
-            var maxW = _.max(_.values(widths));
-
-            for(i=0; i < objects.length; i++) {
-                var obj = objects[i];
-                var width = widths[obj.id];
-
-                if(width < maxW) {
-                    var last = obj.items[obj.items.length - 1];
-
-                    if(typeof last !== 'undefined') {
-                        last.rightMargin += (maxW - width);
-                    }
-                }
-            }
         }
-
     });
 
     return PluginAlign;

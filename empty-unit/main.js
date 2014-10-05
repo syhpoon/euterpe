@@ -1,4 +1,4 @@
-var scale = 1;
+var scale = 1.5;
 var margin = 40;
 var width = 1300;
 
@@ -8,14 +8,13 @@ Euterpe.plugins.add(
     new Euterpe.PluginNoteBar(),
     new Euterpe.PluginAccidentals(),
     new Euterpe.PluginNoteText(),
-    new Euterpe.PluginAboveBelow()
+    new Euterpe.PluginAboveBelow(),
+    new Euterpe.PluginAlign({
+        totalWidth: width - 100,
+        nodeMargin: 20
+    })
     /*
     new Euterpe.PluginTab(),
-    new Euterpe.PluginAlignMultiline()
-    new Euterpe.PluginPackMeasures({
-        measuresPerLine: 4,
-        totalWidth: width - 100
-    })
     */
 );
 
@@ -30,67 +29,215 @@ var root = new Euterpe.Score({
                     leftType: "single"
                 }),
 
-                new Euterpe.Column({
-                    items: [
-                        new Euterpe.TrebleClef({})
-                    ]
-                }),
+                new Euterpe.TrebleClef({}),
+                new Euterpe.TimeSignature(4, 4, {}),
 
                 new Euterpe.Column({
                     items: [
-                        new Euterpe.TimeSignature(4, 4, {})
+                        new Euterpe.Note({
+                            bar: "begin",
+                            beamDirection: "up",
+                            type: "quarter",
+                            location: 0.5
+                        })
                     ]
                 }),
 
                 new Euterpe.Column({
                     items: [
                         new Euterpe.Note({
-                            beamDirection: "down",
+                            bar: "end",
+                            beamDirection: "up",
                             type: "quarter",
-                            location: 1
+                            location: 0
                         })
                     ]
                 }),
 
-                new Euterpe.Bar({
-                    rightType: "single"
-                })
-            ]
-        }),
-
-        new Euterpe.Row({
-            group: "1",
-            type: "tab",
-            items: [
                 new Euterpe.Bar({
                     leftType: "single"
                 }),
 
                 new Euterpe.Column({
                     items: [
-                        new Euterpe.Text({
-                            text: "0",
-                            location: 3
+                        new Euterpe.Note({
+                            beamDirection: "up",
+                            type: "quarter",
+                            location: 0.5
                         }),
-
-                        new Euterpe.Text({
-                            text: "1",
-                            location: 4
+                        new Euterpe.Note({
+                            beamDirection: "down",
+                            type: "half",
+                            location: 6
                         })
                     ]
                 }),
 
                 new Euterpe.Column({
                     items: [
-                        new Euterpe.Text({
-                            text: "1",
-                            location: 1
+                        new Euterpe.Note({
+                            text: "2",
+                            bar: "begin",
+                            beamDirection: "up",
+                            type: "quarter",
+                            location: 2.5
+                        })
+                    ]
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Note({
+                            bar: "end",
+                            beamDirection: "up",
+                            type: "quarter",
+                            location: 2
+                        })
+                    ]
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Note({
+                            bar: "begin",
+                            beamDirection: "up",
+                            type: "quarter",
+                            location: 1.5
+                        }),
+                        new Euterpe.Note({
+                            beamDirection: "down",
+                            type: "half",
+                            location: 6
+                        })
+                    ]
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Note({
+                            bar: "end",
+                            beamDirection: "up",
+                            type: "quarter",
+                            location: 2.5
+                        })
+                    ]
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Note({
+                            bar: "begin",
+                            beamDirection: "up",
+                            type: "quarter",
+                            location: 0.5
+                        })
+                    ]
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Note({
+                            bar: "end",
+                            beamDirection: "up",
+                            type: "quarter",
+                            location: 0
                         })
                     ]
                 }),
 
                 new Euterpe.Bar({
-                    rightType: "single"
+                    leftType: "single"
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Note({
+                            beamDirection: "up",
+                            type: "quarter",
+                            location: 0.5
+                        }),
+                        new Euterpe.Note({
+                            beamDirection: "down",
+                            type: "half",
+                            location: 7.5
+                        })
+                    ]
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Note({
+                            bar: "begin",
+                            beamDirection: "up",
+                            type: "quarter",
+                            location: 2
+                        })
+                    ]
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Note({
+                            bar: "end",
+                            beamDirection: "up",
+                            type: "quarter",
+                            location: 1.5
+                        })
+                    ]
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Note({
+                            text: "4",
+                            bar: "begin",
+                            beamDirection: "up",
+                            type: "quarter",
+                            location: 1
+                        }),
+                        new Euterpe.Note({
+                            beamDirection: "down",
+                            type: "half",
+                            location: 7.5
+                        })
+                    ]
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Note({
+                            bar: "end",
+                            beamDirection: "up",
+                            type: "quarter",
+                            location: 2
+                        })
+                    ]
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Note({
+                            bar: "begin",
+                            beamDirection: "up",
+                            type: "quarter",
+                            location: 0.5
+                        })
+                    ]
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Note({
+                            bar: "end",
+                            beamDirection: "up",
+                            type: "quarter",
+                            location: 0
+                        })
+                    ]
+                }),
+
+                new Euterpe.Bar({
+                    leftType: "single"
                 })
             ]
         }),
@@ -98,42 +245,6 @@ var root = new Euterpe.Score({
         new Euterpe.Row({
             group: "1",
             groupType: "bracket",
-            type: "measure",
-            items: [
-                new Euterpe.Bar({
-                    leftType: "single"
-                }),
-
-                new Euterpe.Column({
-                    items: [
-                        new Euterpe.TrebleClef({})
-                    ]
-                }),
-
-                new Euterpe.Column({
-                    items: [
-                        new Euterpe.TimeSignature(4, 4, {})
-                    ]
-                }),
-
-                new Euterpe.Column({
-                    items: [
-                        new Euterpe.Note({
-                            beamDirection: "down",
-                            type: "quarter",
-                            location: 1
-                        })
-                    ]
-                }),
-
-                new Euterpe.Bar({
-                    rightType: "single"
-                })
-            ]
-        }),
-
-        new Euterpe.Row({
-            group: "2",
             type: "tab",
             items: [
                 new Euterpe.Bar({
@@ -144,12 +255,116 @@ var root = new Euterpe.Score({
                     items: [
                         new Euterpe.Text({
                             text: "0",
-                            location: 3
+                            location: 0
+                        })
+                    ]
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Text({
+                            text: "1",
+                            location: 0
+                        })
+                    ]
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Text({
+                            text: "0",
+                            location: 0
                         }),
 
                         new Euterpe.Text({
-                            text: "1",
+                            text: "0",
                             location: 4
+                        })
+                    ]
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Text({
+                            text: "2",
+                            location: 2
+                        })
+                    ]
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Text({
+                            text: "0",
+                            location: 1
+                        })
+                    ]
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Text({
+                            text: "1",
+                            location: 1
+                        }),
+
+                        new Euterpe.Text({
+                            text: "0",
+                            location: 4
+                        })
+                    ]
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Text({
+                            text: "2",
+                            location: 2
+                        })
+                    ]
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Text({
+                            text: "0",
+                            location: 0
+                        })
+                    ]
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Text({
+                            text: "1",
+                            location: 0
+                        })
+                    ]
+                }),
+
+                new Euterpe.Bar({
+                    leftType: "single"
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Text({
+                            text: "0",
+                            location: 0
+                        }),
+
+                        new Euterpe.Text({
+                            text: "0",
+                            location: 5
+                        })
+                    ]
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Text({
+                            text: "0",
+                            location: 1
                         })
                     ]
                 }),
@@ -163,8 +378,49 @@ var root = new Euterpe.Score({
                     ]
                 }),
 
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Text({
+                            text: "3",
+                            location: 1
+                        }),
+
+                        new Euterpe.Text({
+                            text: "0",
+                            location: 5
+                        })
+                    ]
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Text({
+                            text: "0",
+                            location: 1
+                        })
+                    ]
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Text({
+                            text: "0",
+                            location: 0
+                        })
+                    ]
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Text({
+                            text: "1",
+                            location: 0
+                        })
+                    ]
+                }),
+
                 new Euterpe.Bar({
-                    rightType: "single"
+                    leftType: "single"
                 })
             ]
         })

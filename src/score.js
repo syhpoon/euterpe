@@ -40,7 +40,7 @@ Euterpe.Score = (function() {
             var i;
 
             // Check if there are groups out there
-            var groups = this.getGroups();
+            var groups = Euterpe.getGroups(this.items);
             var xOff = 0;
 
             // Find maximum X offset
@@ -89,57 +89,10 @@ Euterpe.Score = (function() {
         },
 
         /** @private */
-        getGroups: function() {
-            var groups = [];
-            var curGroup = null;
-            var curGroupType = null;
-            var first = null;
-            var tmp = [];
-            var last = null;
-
-            for(var i=0; i < this.items.length; i++) {
-                var row = this.items[i];
-
-                if(typeof row.group !== 'undefined') {
-                    if(curGroup !== row.group) {
-                        if(curGroup !== null) {
-                            groups.push({
-                                first: first,
-                                last: last,
-                                groupType: curGroupType,
-                                items: _.clone(tmp)
-                            });
-                        }
-
-                        first = row.id;
-                        curGroup = row.group;
-                        curGroupType = row.groupType;
-                        tmp.length = 0;
-                    }
-
-                    tmp.push(row);
-                }
-
-                last = row.id;
-            }
-
-            if(tmp.length > 0) {
-                groups.push({
-                    first: first,
-                    last: last,
-                    groupType: curGroupType,
-                    items: tmp
-                });
-            }
-
-            return groups;
-        },
-
-        /** @private */
         doGetRealHeight: function(items, scale, raw) {
             var yup;
             var yoff = 0;
-            var groups = this.getGroups();
+            var groups = Euterpe.getGroups(this.items);
 
             var isGroupFirst = function(item) {
                 return _.find(groups,

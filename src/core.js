@@ -529,3 +529,64 @@ Euterpe.baseRender = function(items, x, y, scale) {
 
     return rendered;
 };
+
+/**
+ * Get list of items groups
+ *
+ * @param items
+ * @returns {Array}
+ */
+Euterpe.getGroups = function(items) {
+    var groups = [];
+    var curGroup = null;
+    var curGroupType = null;
+    var first = null;
+    var tmp = [];
+    var last = null;
+
+    for(var i=0; i < items.length; i++) {
+        var row = items[i];
+
+        if(typeof row.group !== 'undefined') {
+            if(curGroup !== row.group) {
+                if(curGroup !== null) {
+                    groups.push({
+                        first: first,
+                        last: last,
+                        groupType: curGroupType,
+                        items: _.clone(tmp)
+                    });
+                }
+
+                first = row.id;
+                curGroup = row.group;
+                curGroupType = row.groupType;
+                tmp.length = 0;
+            }
+
+            tmp.push(row);
+        }
+        else {
+            groups.push({
+                first: undefined,
+                last: undefined,
+                groupType: undefined,
+                items: [row]
+            });
+        }
+
+        last = row.id;
+    }
+
+    if(tmp.length > 0) {
+        groups.push({
+            first: first,
+            last: last,
+            groupType: curGroupType,
+            items: tmp
+        });
+    }
+
+    return groups;
+};
+
