@@ -48,6 +48,30 @@ Euterpe.Container = (function() {
         isContainer: true,
 
         /**
+         * Get the maximum width of the left items
+         * @param scale
+         */
+        getLeftWidth: function(scale) {
+            var ws = _.map(this.items, function(obj) {
+                return obj.getLeftWidth(scale);
+            });
+
+            return _.max(ws);
+        },
+
+        /**
+         * Get the maximum width of the right items
+         * @param scale
+         */
+        getRightWidth: function(scale) {
+            var ws = _.map(this.items, function(obj) {
+                return obj.getRightWidth(scale);
+            });
+
+            return _.max(ws);
+        },
+
+        /**
          * Clear items
          */
         clear: function() {

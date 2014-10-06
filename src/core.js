@@ -21,62 +21,6 @@ Euterpe.global = {
 };
 
 /**
- * Events repository
- *
- * Possible events:
- *
- * ready - all objects have been prepared for rendering
- */
-Euterpe.events = {
-    handlers: [],
-
-    /**
-     * Add event handler
-     * @param {String} event - Event name
-     * @param {Function} handler - Handler function
-     * @param {Object} node - Node for 'this' pointer
-     */
-    addHandler: function(event, handler, node) {
-        if(!_.isArray(this.handlers[event])) {
-            this.handlers[event] = [];
-        }
-
-        this.handlers[event].push([node, handler]);
-    },
-
-    /**
-     * Set event handlers for object (both containers and nodes)
-     * @param {Object} obj
-     */
-    setEventHandlers: function(obj) {
-        var self = this;
-
-        // Set event handlers
-        if(typeof obj.events === 'object') {
-            _.each(_.keys(obj.events),
-                function(key) {
-                    self.addHandler(key, obj[obj.events[key]], obj);
-                });
-        }
-    },
-
-    /**
-     * Fire event
-     * @param {String} event - Event name to fire
-     */
-    fire: function(event) {
-        if(_.isArray(this.handlers[event])) {
-            _.each(this.handlers[event], function(evt) {
-                var node = evt[0];
-                var handler = evt[1];
-
-                handler.apply(node);
-            });
-        }
-    }
-};
-
-/**
  * Plugins repository
  */
 Euterpe.plugins = {
@@ -112,6 +56,15 @@ Euterpe.getConfig = function(config, name, defaultVal) {
     return typeof config[name] === 'undefined' ? defaultVal : config[name];
 };
 
+/**
+ * Get object relative Y coordinate
+ *
+ * @namespace Euterpe
+ * @param item
+ * @param scale
+ * @param y
+ * @returns {*}
+ */
 Euterpe.getY = function(item, scale, y) {
     var location;
 
@@ -162,8 +115,6 @@ Euterpe.getY = function(item, scale, y) {
 Euterpe.initNode = function(node, name) {
     node.isNode = true;
     node.nodeName = name;
-
-    Euterpe.events.setEventHandlers(node);
 };
 
 /**
@@ -354,44 +305,6 @@ Euterpe.replace = function(root, id, obj) {
 };
 
 /**
- * Get top-most node parent, excluding Measure and Tab
- *
- * @param {Object} node
- * @returns {Object}
- */
-Euterpe.getTopParent = function(node) {
-    while(true) {
-        if(typeof node.parentContainer === "undefined" ||
-            node.parentContainer.name === "Euterpe.Measure" ||
-            node.parentContainer.name === "Euterpe.Tab") {
-
-            return node;
-        }
-        else {
-            node = node.parentContainer;
-        }
-    }
-};
-
-/**
- * Get root node parent (Measure or Tab)
- *
- * @param {Object} node
- * @returns {Object}
- */
-Euterpe.getRootParent = function(node) {
-    while(true) {
-        if(typeof node === "undefined" ||
-            node.name === "Euterpe.Measure" || node.name === "Euterpe.Tab") {
-            return node;
-        }
-        else {
-            node = node.parentContainer;
-        }
-    }
-};
-
-/**
  * Init logging subsystem
  */
 Euterpe.initLog = function() {
@@ -464,7 +377,6 @@ Euterpe.getDistance = function(container, item, scale) {
  * @param {Bool} raw
  * @returns {*}
  */
-
 Euterpe.getRealHeight = function(base, items, scale, raw) {
     var baseY = 0;
     var upperY, lowerY, up, low;

@@ -17,10 +17,12 @@ Euterpe.PluginAlign = (function() {
      * @param {Object} config - Configuration parameters
      * @param {Number} config.totalWidth - Total sheet width
      * @param {Number} [config.nodeMargin=5] - Left margin of non-column nodes
+     * @param {Number} [config.sideMargin=3] - Left margin of side nodes
      */
     var PluginAlign = function(config) {
         this.totalWidth = Euterpe.getConfig(config, "totalWidth");
         this.nodeMargin = Euterpe.getConfig(config, "nodeMargin", 5);
+        this.sideMargin = Euterpe.getConfig(config, "sideMargin", 3);
 
         PluginAlign.super.call(this, "Euterpe.PluginAlign", config);
     };
@@ -29,7 +31,7 @@ Euterpe.PluginAlign = (function() {
         process: function(root, scale) {
             var i, row;
 
-            // Set margins for non-columns (nodes) and bars
+            // Set margins for non-columns (nodes), bars and side items
             for(i=0; i < root.items.length; i++) {
                 row = root.items[i];
                 var j;
@@ -44,6 +46,8 @@ Euterpe.PluginAlign = (function() {
                 for(j=1; j < bars.length; j++) {
                     bars[j].leftMargin = this.nodeMargin;
                 }
+
+                this.alignSideItems(row);
             }
 
             var groups = Euterpe.getGroups(root.items);
@@ -53,6 +57,28 @@ Euterpe.PluginAlign = (function() {
             }
 
             return root;
+        },
+
+        /** @private */
+        alignSideItems: function(row) {
+            var cols = Euterpe.select("Euterpe.Column", row);
+
+            for(var i=0; i < cols.length; i++) {
+                var col = cols[i];
+
+                for(var j=0; j < col.items.length; j++) {
+                    var item = col.items[j];
+                    var z;
+
+                    for(z=0; z < item.leftItems.length; z++) {
+                        item.leftItems[z].rightMargin = this.sideMargin;
+                    }
+
+                    for(z=0; z < item.rightItems.length; z++) {
+                        item.rightItems[z].leftMargin = this.sideMargin;
+                    }
+                }
+            }
         },
 
         /** @private */
@@ -114,7 +140,8 @@ Euterpe.PluginAlign = (function() {
                     }
 
                     d = Euterpe.getDistance(col.parent, col, scale)
-                        + col.leftMargin * scale;
+                        + col.leftMargin * scale
+                        + col.getLeftWidth(scale);
 
                     colDist[col.id] = d;
 
@@ -147,7 +174,10 @@ Euterpe.PluginAlign = (function() {
                     }
 
                     if(w < width) {
-                        col.rightMargin += (width - w) / scale;
+                        var m = (width - w) / scale / 2;
+
+                        col.rightMargin += m;
+                        col.leftMargin += m;
                     }
                 }
             }
