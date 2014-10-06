@@ -23,102 +23,50 @@ Euterpe.PluginTab = (function() {
 
     Euterpe.extend(Euterpe.Plugin, PluginTab, {
         process: function(root) {
-            var found = false;
-            var column = 1;
-            var multiline = new Euterpe.Multiline({
-                type: 'bracket',
-                lineMargin: 5
-            });
-            var mHbox = new Euterpe.HBox();
-            var tHbox = new Euterpe.HBox();
-
-            var measures = Euterpe.select("Euterpe.Measure", root);
-            var add = function(tab, rawItems) {
-                if(rawItems.length === 0) {
-                    return;
-                }
-                var multi = rawItems.length > 1;
-                var column = rawItems[0][1].config.column;
-
-                var items = _.map(rawItems,
-                    function(it) {
-                        return new Euterpe.Text({
-                            column: multi ? undefined: column,
-                            leftMargin: it[1].leftMargin,
-                            rightMargin: it[1].rightMargin,
-                            text: it[1].config.tab_text,
-                            location: it[1].config.tab_location || 0
-                        });
-                    });
-
-                if(items.length === 1) {
-                    items[0].config.column = column;
-
-                    tab.add(items);
-                }
-                else {
-                    var left = items[0].leftMargin;
-                    var right = items[items.length - 1].rightMargin;
-
-                    items[0].leftMargin = 0;
-                    items[items.length - 1].rightMargin = 0;
-
-                    tab.add(new Euterpe.VBox({
-                        leftMargin: left,
-                        rightMargin: right,
-                        column: column,
-                        items: items
-                    }));
-                }
-            };
-
-            for(var i=0; i < measures.length; i++) {
-                var measure = measures[i];
-                var tab = new Euterpe.Tab({
-                    leftBarType: measure.leftBarType
+            for(var i=0; i < root.items.length; i++) {
+                var row = root.items[i];
+                var tab = new Euterpe.Row({
+                    type: "tab"
                 });
 
-                var notes = Euterpe.select("Euterpe.Note", measure);
-                var dist = [];
-                var columns = {};
+                for(var j=0; j < row.items.length; j++) {
+                    var col = row.items[j];
 
-                for(var j=0; j < notes.length; j++) {
-                    var note = notes[j];
-                    var d = Euterpe.getDistance(measure, note, 1);
+                    if(col.name == 'Euterpe.Bar') {
+                        tab.add(col.clone());
 
-                    if(typeof columns[d] !== 'undefined') {
-                        note.config.column = columns[d];
-                    }
-                    else {
-                        note.config.column = column;
-                        columns[d] = column;
-                        column += 1;
+                        continue;
                     }
 
-                    if(typeof note.config.tab_text === "string") {
-                        found = true;
+                    var tcol = new Euterpe.Column({});
+                    var notes = Euterpe.select("Euterpe.Note", col);
 
-                        if(dist.length > 0 && dist[dist.length-1][0] != d) {
-                            add(tab, dist);
+                    for(var z=0; z < notes.length; z++) {
+                        var note = notes[z];
 
-                            dist.length = 0;
+                        if(typeof note.config.tab_location === 'number' &&
+                            typeof note.config.tab_text === 'string') {
+                            row.group = i.toString();
+                            row.groupType = "bracket";
+                            tab.group = row.group;
+                            tab.groupType = row.groupType;
+
+                            tcol.add(new Euterpe.Text({
+                                text: note.config.tab_text,
+                                location: note.config.tab_location
+                            }));
                         }
+                    }
 
-                        dist.push([d, note]);
+                    if(tab !== null && tcol.items.length > 0) {
+                        tab.add(tcol);
                     }
                 }
 
-                add(tab, dist);
+                if(typeof tab.group !== 'undefined') {
+                    root.items.splice(i+1, 0, tab);
+                }
 
-                mHbox.add(measure);
-                tHbox.add(tab);
-            }
-
-            if(found) {
-                multiline.add([mHbox, tHbox]);
-
-                root.clear();
-                root.add(multiline);
             }
 
             return root;
