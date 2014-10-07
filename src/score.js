@@ -35,7 +35,6 @@ Euterpe.Score = (function() {
 
         render: function(origX, y, scale) {
             var yoff = 0;
-            var self = this;
             var rendered = [];
             var i;
 
@@ -80,7 +79,6 @@ Euterpe.Score = (function() {
                 }
 
                 yoff += h[1];
-                yoff += self.lineMargin * scale;
 
                 rendered.push(row.render(origX, _y, scale));
             }
@@ -139,7 +137,7 @@ Euterpe.Score = (function() {
             var exDown = this.bracketExtraDown * scale;
             var h = this.doGetRealHeight(rows, scale, true);
             var up = h[0] - exUp;
-            var down = h[1] - exDown;
+            var down = h[1] - exDown - this.lineMargin * scale;
 
             return new Kinetic.Shape({
                 sceneFunc: function(ctx) {
