@@ -139,7 +139,7 @@ Euterpe.Column = (function() {
                         obj.config.location = node.config.location;
                     }
 
-                    obj.X = x + offset + w;
+                    obj.X = x + obj.leftMargin * scale + offset + w;
                     obj.Y = Euterpe.getY(obj, scale, y);
 
                     rendered.push(obj.render(obj.X, obj.Y, scale));
