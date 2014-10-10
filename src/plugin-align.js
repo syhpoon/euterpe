@@ -37,14 +37,9 @@ Euterpe.PluginAlign = (function() {
                 var j;
 
                 var nodes = this.collectNodes(row);
-                var bars = Euterpe.select("Euterpe.Bar", row);
 
                 for(j=0; j < nodes.length; j++) {
                     nodes[j].leftMargin = this.nodeMargin;
-                }
-
-                for(j=1; j < bars.length; j++) {
-                    bars[j].leftMargin = this.nodeMargin;
                 }
 
                 this.alignSideItems(row);
@@ -82,10 +77,24 @@ Euterpe.PluginAlign = (function() {
         },
 
         /** @private */
-        align: function(row, scale) {
-            // Step 2. Set margins for columns
+        getColsBars: function(row) {
+            var r = [];
+
+            for(var j=1; j < row.items.length; j++) {
+                var col = row.items[j];
+
+                if(col.name === "Euterpe.Column" || col.name === "Euterpe.Bar") {
+                    r.push(col);
+                }
+            }
+
+            return r;
+        },
+
+        /** @private */
+        stretchAlign: function(row, scale) {
             var rowWidth = row.getRealWidth(scale);
-            var cols = Euterpe.select("Euterpe.Column", row);
+            var cols = this.getColsBars(row);
             var diff = this.totalWidth - rowWidth;
             var margin = (diff / cols.length) / scale;
 
@@ -104,9 +113,7 @@ Euterpe.PluginAlign = (function() {
             var r = [];
 
             for(var i=0; i < group.items.length; i++) {
-                var row = group.items[i];
-
-                r[i] = Euterpe.select("Euterpe.Column", row);
+                r[i] = this.getColsBars(group.items[i]);
             }
 
             return r;
@@ -114,22 +121,18 @@ Euterpe.PluginAlign = (function() {
 
         /** @private */
         processGroup: function(group, scale) {
-            // Align the first row
-            this.align(group.items[0], scale);
-
             var items = this.cleanGroup(group);
-            var i, j, d, w, col, cols;
+            var i, j, col, cols;
             var size = _.max(_.map(items, function(row) {
                 return row.length;
             }));
 
+            // Align columns between themselves
             for(i=0; i < size; i++) {
                 cols = this.getCols(items, i);
                 var colDist = {};
                 var colWidth = {};
-
-                var distance = 0;
-                var width = 0;
+                var rightWidth = {};
 
                 // First determine the biggest offset
                 for(j=0; j < cols.length; j++) {
@@ -139,24 +142,16 @@ Euterpe.PluginAlign = (function() {
                         continue;
                     }
 
-                    d = Euterpe.getDistance(col.parent, col, scale)
-                        + col.leftMargin * scale
-                        + col.getLeftWidth(scale);
-
-                    colDist[col.id] = d;
-
-                    if(d > distance) {
-                        distance = d;
-                    }
-
-                    w = col.getRealWidth(scale, true);
-
-                    colWidth[col.id] = w;
-
-                    if(w > width) {
-                        width = w;
-                    }
+                    colDist[col.id] = Euterpe.getDistance(col.parent, col, scale)
+                                      + col.leftMargin * scale
+                                      + col.getLeftWidth(scale);
+                    colWidth[col.id] = col.getRealWidth(scale, true);
+                    rightWidth[col.id] = col.getRightWidth(scale);
                 }
+
+                var distance = _.max(_.values(colDist));
+                var width = _.max(_.values(colWidth));
+                var rwidth = _.max(_.values(rightWidth));
 
                 // Next add the difference to all required columns
                 for(j=0; j < cols.length; j++) {
@@ -166,21 +161,30 @@ Euterpe.PluginAlign = (function() {
                         continue;
                     }
 
-                    d = colDist[col.id];
-                    w = colWidth[col.id];
+                    var d = colDist[col.id];
+                    var w = colWidth[col.id];
+                    var rw = rightWidth[col.id];
 
                     if(d < distance) {
                         col.leftMargin += (distance - d) / scale;
                     }
 
                     if(w < width) {
-                        var m = (width - w) / scale / 2;
+                        col.rightMargin += (width - w) / scale;
+                    }
 
-                        col.rightMargin += m;
-                        col.leftMargin += m;
+                    if(rw < rwidth) {
+                        col.rightMargin += (rwidth - rw) / scale;
                     }
                 }
             }
+
+            // Stretch all the rows
+            var self = this;
+
+            _.each(group.items, function(row) {
+                self.stretchAlign(row, scale);
+            });
         },
 
         /** @private */
