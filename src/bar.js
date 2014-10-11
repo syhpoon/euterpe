@@ -20,6 +20,14 @@ Euterpe.Bar = (function() {
         this.leftType = Euterpe.getConfig(config, "leftType", "none");
         this.rightType = Euterpe.getConfig(config, "rightType", "none");
         this.number = Euterpe.getConfig(config, "number", undefined);
+        this.numberOffset = 0;
+        this.numberHeight = [0, 0];
+
+        if(typeof this.number !== 'undefined') {
+            this.numberItem = new Euterpe.Text({text: this.number.toString()});
+            this.numberOffset = 3;
+            this.numberHeight = this.numberItem.getRealHeight(scale, true);
+        }
 
         this.leftWidth = this.widths[this.leftType];
         this.rightWidth = this.widths[this.rightType];
@@ -39,7 +47,9 @@ Euterpe.Bar = (function() {
 
         getRealHeight: function(scale, raw) {
             if(typeof this.realHeight === 'undefined') {
-                this.realHeight = this.parent.realHeight;
+                this.realHeight = _.clone(this.parent.realHeight);
+                this.realHeight[0] += (this.numberHeight[0] + this.numberHeight[1]);
+                this.realHeight[0] += this.numberOffset;
             }
 
             return Euterpe.Node.prototype.getRealHeight.call(this, scale, raw);
@@ -59,7 +69,27 @@ Euterpe.Bar = (function() {
                               x + this.rightWidth * scale, barY, scale, true));
             }
 
+            if(typeof this.number !== 'undefined') {
+                rendered.push(this.renderNumber(x, y, scale));
+            }
+
             return rendered;
+        },
+
+        /** @private */
+        renderNumber: function(x, y, scale) {
+            var wItem = this.getRealWidth(scale, true);
+            var wText = this.numberItem.getRealWidth(scale, true);
+
+            var _x = x;
+
+            if(wItem > wText) {
+                _x += (wItem - wText / 2);
+            }
+
+            return this.numberItem.render(_x,
+                y - this.numberOffset * scale
+                  - this.numberHeight[1] * scale, scale);
         },
 
         /** @private */
