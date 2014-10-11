@@ -60,13 +60,13 @@ Euterpe.Bar = (function() {
             var top = Euterpe.getY(0, scale, y);
             var barY = top - (Euterpe.global.lineWidth / 2);
 
-            if(this.rightWidth > 0) {
-                rendered.push(this.initBar(this.rightType, x, barY, scale,false));
+            if(this.leftWidth > 0) {
+                rendered.push(this.initBar(this.leftType, x, barY, scale, false));
             }
 
-            if(this.leftWidth > 0) {
-                rendered.push(this.initBar(this.leftType,
-                              x + this.rightWidth * scale, barY, scale, true));
+            if(this.rightWidth > 0) {
+                rendered.push(this.initBar(this.rightType,
+                              x + this.leftWidth * scale, barY, scale, true));
             }
 
             if(typeof this.number !== 'undefined') {
@@ -78,22 +78,14 @@ Euterpe.Bar = (function() {
 
         /** @private */
         renderNumber: function(x, y, scale) {
-            var wItem = this.getRealWidth(scale, true);
-            var wText = this.numberItem.getRealWidth(scale, true);
 
-            var _x = x;
-
-            if(wItem > wText) {
-                _x += (wItem - wText / 2);
-            }
-
-            return this.numberItem.render(_x,
+            return this.numberItem.render(x + this.leftWidth * scale,
                 y - this.numberOffset * scale
                   - this.numberHeight[1] * scale, scale);
         },
 
         /** @private */
-        initBar: function(type, x, y, scale, isLeft) {
+        initBar: function(type, x, y, scale, isRight) {
             var lines = this.parent.numberOfLines;
             var bar = new Kinetic.Group({});
             var barWidth = 2 * scale;
@@ -176,7 +168,7 @@ Euterpe.Bar = (function() {
 
                 var objs = [];
 
-                if(isLeft) {
+                if(isRight) {
                     sw1 = bigWidth;
                     sw2 = barWidth;
                     sw3 = dotDiameter;

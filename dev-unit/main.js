@@ -23,7 +23,7 @@ var root = new Euterpe.Score({
             type: "measure",
             items: [
                 new Euterpe.Bar({
-                    leftType: "single",
+                    rightType: "single",
                     number: 1
                 }),
 
@@ -259,8 +259,8 @@ var root = new Euterpe.Score({
                 }),
 
                 new Euterpe.Bar({
-                    rightType: "single",
-                    leftType: "double",
+                    leftType: "single",
+                    rightType: "double",
                     number: 2
                 }),
 
@@ -445,7 +445,7 @@ var root = new Euterpe.Score({
                 }),
 
                 new Euterpe.Bar({
-                    rightType: "double"
+                    leftType: "double"
                 })
             ]
         }),
@@ -454,7 +454,7 @@ var root = new Euterpe.Score({
             type: "measure",
             items: [
                 new Euterpe.Bar({
-                    leftType: "double bold",
+                    rightType: "double bold",
                     number: 3
                 }),
 
@@ -507,8 +507,9 @@ var root = new Euterpe.Score({
                     ]
                 }),
                 new Euterpe.Bar({
-                    rightType: "double bold",
-                    leftType: "repeat"
+                    number: 4,
+                    leftType: "double bold",
+                    rightType: "repeat"
                 }),
 
                 new Euterpe.Column({
@@ -576,7 +577,7 @@ var root = new Euterpe.Score({
                 }),
 
                 new Euterpe.Bar({
-                    rightType: "repeat"
+                    leftType: "repeat"
                 })
             ]
         })
