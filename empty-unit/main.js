@@ -1,4 +1,4 @@
-var scale = 1;
+var scale = 5;
 var width = 1300;
 
 //Euterpe.global.loglevel = Euterpe.const.LOG_DEBUG;
@@ -17,17 +17,16 @@ Euterpe.plugins.add(
 );
 
 var root = new Euterpe.Score({
-    lineMargin: 50,
     items: [
         new Euterpe.Row({
             type: "measure",
             items: [
                 new Euterpe.Bar({
-                    number: 10,
+                    number: 1,
                     leftType: "single"
                 }),
 
-                //new Euterpe.TrebleClef({}),
+                new Euterpe.TrebleClef({}),
                 new Euterpe.TimeSignature(4, 4, {}),
 
                 new Euterpe.Column({
@@ -37,7 +36,7 @@ var root = new Euterpe.Score({
                             beamDirection: "up",
                             type: "quarter",
                             flags: 1,
-                            location: 4
+                            location: 3
                         })
                     ]
                 }),
