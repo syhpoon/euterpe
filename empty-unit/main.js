@@ -1,4 +1,4 @@
-var scale = 5;
+var scale = 4;
 var width = 1300;
 
 //Euterpe.global.loglevel = Euterpe.const.LOG_DEBUG;
@@ -23,7 +23,7 @@ var root = new Euterpe.Score({
             items: [
                 new Euterpe.Bar({
                     number: 1,
-                    leftType: "single"
+                    rightType: "single"
                 }),
 
                 new Euterpe.TrebleClef({}),
@@ -42,7 +42,7 @@ var root = new Euterpe.Score({
                 }),
 
                 new Euterpe.Bar({
-                    leftType: "single"
+                    rightType: "single"
                 })
             ]
         })

@@ -17,6 +17,12 @@ Euterpe.plugins.add(
 );
 
 var root = new Euterpe.Score({
+    title: 'Sample unit',
+    titleMargin: 50,
+    musicByMargin: 50,
+    tuningMargin: 50,
+    musicBy: 'Some dude',
+    tuning: 'Guitar standard tuning',
     lineMargin: 10,
     items: [
         new Euterpe.Row({

@@ -69,7 +69,7 @@ Euterpe.Note = (function() {
             this.realWidth += (this.dotMargin + this.dotWidth) * this.dots;
 
             if(this.flags > 0) {
-                this.realWidth += 13.6;
+                this.realWidth += 13.3;
             }
         },
 

@@ -17,10 +17,58 @@ Euterpe.Score = (function() {
      * @constructor
      * @param {Object} config - Configuration parameters
      * @param {Number} [config.lineMargin=0] - A margin between lines
+     * @param {String} [config.title] - Score title
+     * @param {String} [config.musicBy] - Music author
+     * @param {String} [config.tuning] - Tuning description
+     * @param {Number} [config.titleMargin=0] - Title margin
+     * @param {Number} [config.musicByMargin=0] - Music by margin
+     * @param {Number} [config.tuningMargin=0] - Tuning margin
      */
     function Score(config) {
         this.layer = config.layer;
         this.lineMargin = Euterpe.getConfig(config, "lineMargin", 0);
+        this.titleMargin = Euterpe.getConfig(config, "titleMargin", 0);
+        this.musicByMargin = Euterpe.getConfig(config, "musicByMargin", 0);
+        this.tuningMargin = Euterpe.getConfig(config, "tuningMargin", 0);
+        this.title = Euterpe.getConfig(config, "title", undefined);
+        this.musicBy = Euterpe.getConfig(config, "musicBy", undefined);
+        this.tuning = Euterpe.getConfig(config, "tuning", undefined);
+
+        this.titleHeight = 0;
+        this.musicByHeight = 0;
+        this.tuningHeight = 0;
+
+        if(typeof this.title !== 'undefined') {
+            this.titleText = new Euterpe.Text({
+                text: this.title,
+                fontSize: 40,
+                fontFamily: "Serif"
+            });
+
+            this.titleWidth = this.titleText.getRealWidth(scale);
+            this.titleHeight = this.titleText.getRealHeight(1);
+        }
+
+        if(typeof this.musicBy !== 'undefined') {
+            this.musicByText = new Euterpe.Text({
+                fontSize: 20,
+                text: "Music by " + this.musicBy,
+                fontFamily: "Serif"
+            });
+
+            this.musicByHeight = this.musicByText.getRealHeight(1);
+        }
+
+        if(typeof this.tuning !== 'undefined') {
+            this.tuningText = new Euterpe.Text({
+                fontSize: 15,
+                text: this.tuning,
+                fontFamily: "Serif",
+                fontStyle: 'italic'
+            });
+
+            this.tuningHeight = this.tuningText.getRealHeight(1);
+        }
 
         Score.super.call(this, "Euterpe.Score", config);
     }
@@ -30,7 +78,25 @@ Euterpe.Score = (function() {
         bracketExtraDown: 5,
 
         getRealHeight: function(scale, raw) {
-            return this.doGetRealHeight(this.items, scale, raw);
+            var h = this.doGetRealHeight(this.items, scale, raw);
+
+            var acc = 0;
+
+            acc += this.titleHeight * scale;
+            acc += this.titleMargin * scale;
+            acc += this.musicByHeight * scale;
+            acc += this.musicByMargin * scale;
+            acc += this.tuningHeight * scale;
+            acc += this.tuningMargin * scale;
+
+            if(raw) {
+                h[0] += acc;
+            }
+            else {
+               h += acc;
+            }
+
+            return h;
         },
 
         render: function(origX, y, scale) {
@@ -56,6 +122,8 @@ Euterpe.Score = (function() {
             origX += xOff * scale;
 
             var gid = 0;
+
+            y = this.renderMeta(origX, y, scale, rendered);
 
             for(i=0; i < this.items.length; i++) {
                 var row = this.items[i];
@@ -84,6 +152,68 @@ Euterpe.Score = (function() {
             }
 
             return rendered;
+        },
+
+        /** @private */
+        renderMeta: function(x, y, scale, rendered) {
+            var h = this.getRealHeight(scale, true);
+
+            y -= h[0];
+
+            var metaHeight = (this.titleHeight +
+                              this.musicByHeight +
+                              this.tuningHeight +
+                              this.titleMargin +
+                              this.musicByMargin +
+                              this.tuningMargin
+                             ) * scale;
+
+            // Render meta info
+            if(typeof this.title !== 'undefined') {
+                y += this.titleHeight * scale / 2;
+
+                rendered.push(this.renderText(this.titleText,
+                    this.titleWidth, x, y, scale, true));
+
+                y += this.titleHeight * scale / 2;
+                y += this.titleMargin * scale;
+            }
+
+            if(typeof this.musicBy !== 'undefined') {
+                y += this.musicByHeight * scale / 2;
+
+                rendered.push(this.renderText(
+                              this.musicByText, 0, x, y, scale));
+
+                y += this.musicByHeight * scale / 2;
+                y += this.musicByMargin * scale;
+            }
+
+            if(typeof this.tuning !== 'undefined') {
+                y += this.tuningHeight * scale / 2;
+
+                rendered.push(this.renderText(
+                    this.tuningText, 0, x, y, scale));
+
+                y += this.tuningHeight * scale / 2;
+                y += this.tuningMargin * scale;
+            }
+
+            y += (h[0] - metaHeight);
+
+            return y;
+        },
+
+        /** @private */
+        renderText: function(obj, width, x, y, scale, center) {
+            var _x = x;
+
+            if(center) {
+                var totalW = this.items[0].getRealWidth(scale);
+                _x = x + (totalW / 2 - width / 2);
+            }
+
+            return obj.render(_x, y, scale);
         },
 
         /** @private */

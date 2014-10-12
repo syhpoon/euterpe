@@ -18,12 +18,14 @@ Euterpe.Text = (function() {
      * @param {String} [config.color='black'] - Text color
      * @param {String} [config.fontFamily='Arial'] - Font family
      * @param {Number} [config.fontSize=10] - Font size
+     * @param {String} [config.fontStyle='normal'] - Font style (normal|bold|italic)
      */
     function Text(config) {
         this.text = Euterpe.getConfig(config, "text");
         this.color = Euterpe.getConfig(config, "color", "black");
         this.fontFamily = Euterpe.getConfig(config, "fontFamily", "Arial");
         this.fontSize = Euterpe.getConfig(config, "fontSize", 10);
+        this.fontStyle = Euterpe.getConfig(config, "fontStyle", "normal");
 
         // Dynamic width hack
         var tmp = new Kinetic.Text({
@@ -31,7 +33,8 @@ Euterpe.Text = (function() {
             y: 0,
             text: this.text,
             fontSize: this.fontSize * scale,
-            fontFamily: this.fontFamily
+            fontFamily: this.fontFamily,
+            fontStyle: this.fontStyle
         });
 
         var h = tmp.height() / scale;
@@ -49,6 +52,7 @@ Euterpe.Text = (function() {
                 text: this.text,
                 fontSize: this.fontSize * scale,
                 fontFamily: this.fontFamily,
+                fontStyle: this.fontStyle,
                 fill: this.color
             });
 
