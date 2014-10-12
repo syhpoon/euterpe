@@ -26,7 +26,7 @@ Euterpe.Bar = (function() {
         if(typeof this.number !== 'undefined') {
             this.numberItem = new Euterpe.Text({text: this.number.toString()});
             this.numberOffset = 3;
-            this.numberHeight = this.numberItem.getRealHeight(scale, true);
+            this.numberHeight = this.numberItem.getRealHeight(1, true);
         }
 
         this.leftWidth = this.widths[this.leftType];
@@ -78,7 +78,6 @@ Euterpe.Bar = (function() {
 
         /** @private */
         renderNumber: function(x, y, scale) {
-
             return this.numberItem.render(x + this.leftWidth * scale,
                 y - this.numberOffset * scale
                   - this.numberHeight[1] * scale, scale);
