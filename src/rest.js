@@ -32,30 +32,39 @@ Euterpe.Rest = (function() {
         switch (this.type){
             case "long":
                 this.realWidth = this.basicWidth;
+                this.realHeight = [0, 28];
                 break;
             case "double_whole":
                 this.realWidth = this.basicWidth;
+                this.realHeight = [0, 14.5];
                 break;
             case "whole":
                 this.realWidth = 20;
+                this.realHeight = [0, 8];
                 break;
             case "half":
                 this.realWidth = 20;
+                this.realHeight = [6, 0];
                 break;
             case "quarter":
                 this.realWidth = 20;
+                this.realHeight = [16.75, 22.25];
                 break;
             case "eighth":
                 this.realWidth = 20;
+                this.realHeight = [9.5, 16.25];
                 break;
             case "sixteenth":
                 this.realWidth = 20;
+                this.realHeight = [9.5, 30.25];
                 break;
             case "thirty-second":
                 this.realWidth = 25;
+                this.realHeight = [9.5, 43.25];
                 break;
             case "sixty-fourth":
                 this.realWidth = 30;
+                this.realHeight = [9.5, 55.75];
                 break;
         }
     }
@@ -70,91 +79,35 @@ Euterpe.Rest = (function() {
          *
          */
         render: function(x, y, scale) {
-            /** @public */
-            this.scale = scale;
+            var startX = x + this.getRealWidth(scale) / 2;
 
-            /** @public */
-            this.width = this.realWidth * scale;
-
-            /** @public */
-            this.startY = y;
-
-            /** @public */
-            this.startX = x + this.width / 2;
+            var rendered = [];
 
             switch(this.type) {
-                case "long":
-                    this.prepared = this.initLong();
-                    break;
-                case "double_whole":
-                    this.prepared = this.initDoubleWhole();
-                    break;
-                case "whole":
-                    this.prepared = this.initWhole();
-                    break;
                 case "half":
-                    this.prepared = this.initHalf();
+                    rendered.push(this.initHalf(startX, y, scale));
                     break;
                 case "quarter":
-                    this.prepared = this.initQuarter();
+                    rendered.push(this.initQuarter(startX, y, scale));
                     break;
                 case "eighth":
-                    this.prepared = this.initEighth();
+                    rendered.push(this.initEighth(startX, y, scale));
                     break;
                 case "sixteenth":
-                    this.prepared = this.initSixteen();
+                    rendered.push(this.initSixteen(startX, y, scale));
                     break;
                 case "thirty-second":
-                    this.prepared = this.initThirtySecond();
+                    rendered.push(this.initThirtySecond(startX, y, scale));
                     break;
                 case "sixty-fourth":
-                    this.prepared = this.initSixtyFourth();
+                    rendered.push(this.initSixtyFourth(startX, y, scale));
                     break;
 
                 default:
-                    this.prepared = this.initLong();
+                    rendered.push(this.simpleRestShape(startX, y, scale));
             }
 
-            return this.prepared;
-        },
-
-
-        /**
-         * Make a long rest
-         *
-         * @private
-         */
-        initLong: function(){
-            /** @public  */
-            this.startY = this.getLineY(2);
-            this.height = this.getLineY(4) - this.startY;
-
-            return this.simpleRestShape();
-        },
-
-        /**
-         * Make a double whole rest
-         *
-         * @private
-         */
-        initDoubleWhole: function(){
-            /** @public  */
-            this.startY = this.getLineY(2);
-            this.height = this.getLineY(3) - this.startY;
-            return this.simpleRestShape();
-        },
-
-        /**
-         * Make a whole rest
-         *
-         * @private
-         */
-        initWhole: function(){
-            /** @public  */
-            this.startY = this.getLineY(2);
-            this.height = this.getLineY(3) - this.startY;
-            this.height = this.basicWidth * scale;
-            return this.simpleRestShape();
+            return rendered;
         },
 
         /**
@@ -162,11 +115,10 @@ Euterpe.Rest = (function() {
          *
          * @private
          */
-        initHalf: function(){
-            /** @public  */
-            this.height = this.basicWidth * scale;
-            this.startY = this.getLineY(3) - this.height;
-            return this.simpleRestShape();
+        initHalf: function(x, y, scale) {
+            var h = this.getRealHeight(scale, true);
+
+            return this.simpleRestShape(x, y - h[0], scale);
         },
 
         /**
@@ -174,15 +126,16 @@ Euterpe.Rest = (function() {
          *
          * @private
          */
-        initQuarter: function(){
-            var self = this;
-            this.startY = this.getLineY(1.5);
-            this.scale = 0.125 * scale;
+        initQuarter: function(x, y, scale) {
+            var sc = scale * 0.125;
+            var h = this.getRealHeight(scale, true);
+
+            var startY = y - h[0];
 
             return new Kinetic.Shape({
                 sceneFunc: function (ctx) {
-                    ctx.translate(self.startX, self.startY);
-                    ctx.scale(self.scale, self.scale);
+                    ctx.translate(x, startY);
+                    ctx.scale(sc, sc);
 
                     ctx.beginPath();
                     ctx.moveTo(100.2, 80.7);
@@ -214,15 +167,16 @@ Euterpe.Rest = (function() {
          *
          * @private
          */
-        initEighth: function(){
-            var self = this;
-            this.startY = this.getLineY(2) + 3 * scale;
-            this.scale = 0.125 * scale;
+        initEighth: function(x, y, scale) {
+            var sc = scale * 0.125;
+            var h = this.getRealHeight(scale, true);
+
+            var startY = y - h[0];
 
             return new Kinetic.Shape({
                 sceneFunc: function (ctx) {
-                    ctx.translate(self.startX, self.startY);
-                    ctx.scale(self.scale, self.scale);
+                    ctx.translate(x, startY);
+                    ctx.scale(sc, sc);
 
                     ctx.beginPath();
                     ctx.moveTo(92.9, 5.2);
@@ -261,15 +215,15 @@ Euterpe.Rest = (function() {
          *
          * @private
          */
-        initSixteen: function(){
-            var self = this;
-            this.startY = this.getLineY(2) + 3 * scale;
-            this.scale = 0.125 * scale;
+        initSixteen: function(x, y, scale) {
+            var h = this.getRealHeight(scale, true);
+            var sc = scale * 0.125;
+            var startY = y - h[0];
 
             return new Kinetic.Shape({
                 sceneFunc: function (ctx) {
-                    ctx.translate(self.startX, self.startY);
-                    ctx.scale(self.scale, self.scale);
+                    ctx.translate(x, startY);
+                    ctx.scale(sc, sc);
 
                     ctx.beginPath();
                     ctx.moveTo(132.4, 0.0);
@@ -322,15 +276,15 @@ Euterpe.Rest = (function() {
          *
          * @private
          */
-        initThirtySecond: function(){
-            var self = this;
-            this.startY = this.getLineY(1) + 3 * scale;
-            this.scale = 0.125 * scale;
+        initThirtySecond: function(x, y, scale) {
+            var h = this.getRealHeight(scale, true);
+            var sc = scale * 0.125;
+            var startY = y - h[0];
 
             return new Kinetic.Shape({
                 sceneFunc: function (ctx) {
-                    ctx.translate(self.startX, self.startY);
-                    ctx.scale(self.scale, self.scale);
+                    ctx.translate(x, startY);
+                    ctx.scale(sc, sc);
 
                     ctx.beginPath();
                     ctx.moveTo(154.4, 0.0);
@@ -396,15 +350,15 @@ Euterpe.Rest = (function() {
          *
          * @private
          */
-        initSixtyFourth: function(){
-            var self = this;
-            this.startY = this.getLineY(1) + 3 * scale;
-            this.scale = 0.125 * scale;
+        initSixtyFourth: function(x, y, scale) {
+            var h = this.getRealHeight(scale, true);
+            var sc = scale * 0.125;
+            var startY = y - h[0];
 
             return new Kinetic.Shape({
                 sceneFunc: function (ctx) {
-                    ctx.translate(self.startX, self.startY);
-                    ctx.scale(self.scale, self.scale);
+                    ctx.translate(x, startY);
+                    ctx.scale(sc, sc);
                     ctx.beginPath();
                     ctx.bezierCurveTo(89.0, 2.9, 80.5, 10.6, 76.7, 21.2);
                     ctx.bezierCurveTo(75.8, 24.6, 75.8, 25.4, 75.8, 30.1);
@@ -478,25 +432,16 @@ Euterpe.Rest = (function() {
         },
 
         /**
-         * Get Y coordinate by measure line number
-         *
-         * @private
-         */
-        getLineY: function(lineNumber){
-            return Euterpe.getY(lineNumber, this.scale, this.startY);
-        },
-
-        /**
          * Draw simple rest shape
          *
          * @private
          */
-        simpleRestShape: function(){
+        simpleRestShape: function(x, y, scale) {
             return new Kinetic.Rect({
-                x: this.startX,
-                y: this.startY,
-                width: this.width,
-                height: this.height,
+                x: x,
+                y: y,
+                width: this.getRealWidth(scale),
+                height: this.getRealHeight(scale),
                 fill: 'black',
                 strokeWidth: 0
             });

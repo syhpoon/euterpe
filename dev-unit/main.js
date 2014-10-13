@@ -586,6 +586,101 @@ var root = new Euterpe.Score({
                     leftType: "repeat"
                 })
             ]
+        }),
+
+        new Euterpe.Row({
+            type: "measure",
+            items: [
+                new Euterpe.Bar({
+                    number: 5,
+                    rightType: "single"
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Rest({
+                            type: "long",
+                            location: 1
+                        })
+                    ]
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Rest({
+                            type: "double_whole",
+                            location: 1
+                        })
+                    ]
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Rest({
+                            type: "whole",
+                            location: 1
+                        })
+                    ]
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Rest({
+                            type: "half",
+                            location: 1
+                        })
+                    ]
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Rest({
+                            type: "quarter",
+                            location: 2
+                        })
+                    ]
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Rest({
+                            type: "eighth",
+                            location: 3
+                        })
+                    ]
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Rest({
+                            type: "sixteenth",
+                            location: 1
+                        })
+                    ]
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Rest({
+                            type: "thirty-second",
+                            location: 1
+                        })
+                    ]
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Rest({
+                            type: "sixty-fourth",
+                            location: 1
+                        })
+                    ]
+                }),
+
+                new Euterpe.Bar({
+                    leftType: "single"
+                })
+            ]
         })
     ]
 });
