@@ -520,9 +520,11 @@ Euterpe.bind = function(node, rendered) {
         rendered = _.flatten(rendered);
     }
 
+    var state = {};
+
     var h = function(obj, f) {
         return function() {
-            f.call(obj, node, rendered);
+            f.call(obj, node, rendered, state);
         }
     };
 

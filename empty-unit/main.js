@@ -28,17 +28,17 @@ var root = new Euterpe.Score({
 
                 new Euterpe.TrebleClef({
                     on: {
-                        "click": function(node, assets) {
+                        "xclick": function(node, assets) {
                             console.log(node);
                             console.log(this);
                             console.log(assets);
                         },
-                        "xmouseover": function() {
+                        "mouseover": function(node, assets, state) {
                             this.fill('yellow');
                             Euterpe.global.background.draw();
                             Euterpe.global.foreground.draw();
                         },
-                        "xmouseout": function() {
+                        "mouseout": function(node, assets, state) {
                             this.fill('black');
                             Euterpe.global.background.draw();
                             Euterpe.global.foreground.draw();
