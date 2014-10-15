@@ -107,6 +107,8 @@ Euterpe.Rest = (function() {
                     rendered.push(this.simpleRestShape(startX, y, scale));
             }
 
+            Euterpe.bind(this, rendered);
+
             return rendered;
         },
 

@@ -39,10 +39,11 @@ Euterpe.StringNumber = (function() {
 
     Euterpe.extend(Euterpe.Node, StringNumber, {
         render: function(x, y, scale) {
-            this.prepared = new Kinetic.Group();
+            var rendered = [];
+
             var startX = x + this.realWidth * scale / 2;
 
-            this.prepared.add(new Kinetic.Circle({
+            rendered.push(new Kinetic.Circle({
                 x: startX,
                 y: y,
                 radius: 10 * scale,
@@ -51,7 +52,7 @@ Euterpe.StringNumber = (function() {
                 strokeWidth: scale
             }));
 
-            this.prepared.add(new Kinetic.Text({
+            rendered.push(new Kinetic.Text({
                 x: startX - (this.textWidth * scale) / 2,
                 y: y - (this.textHeight * scale) / 2,
                 text: this.string,
@@ -60,7 +61,9 @@ Euterpe.StringNumber = (function() {
                 fill: "black"
             }));
 
-            return this.prepared;
+            Euterpe.bind(this, rendered);
+
+            return rendered;
         }
     });
 

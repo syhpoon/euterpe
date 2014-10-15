@@ -83,26 +83,23 @@ Euterpe.Note = (function() {
          */
         render: function(x, y, scale) {
             /** @public */
-            this.scale = scale;
-
-            /** @public */
-            this.startX = x + this.headWidth * scale / 2;
-
-            /** @public */
-            this.startY = y;
-
-            /** @public */
             this.beamWidth = 1.3 * scale;
 
             /** @public */
             this.beamHeight = this.beamRealHeight * scale;
 
+            this.scale = scale;
+            this.startX = x + this.headWidth * scale / 2;
+            this.startY = y;
+
+            var rendered = [];
+
             switch(this.type) {
                 case "whole":
-                    this.prepared = this.initWhole();
+                    rendered = this.initWhole();
                     break;
                 default:
-                    this.prepared = this.initHalfQuarter();
+                    rendered = this.initHalfQuarter();
             }
 
             if(this.dots > 0) {
@@ -120,7 +117,7 @@ Euterpe.Note = (function() {
                 for(var i=this.dots; i > 0; i--) {
                     _x += (this.dotMargin * scale + this.dotWidth * scale / 2);
 
-                    this.prepared.add(
+                    rendered.push(
                         new Kinetic.Ellipse({
                             x: _x,
                             y: this.Y - yOff,
@@ -137,7 +134,9 @@ Euterpe.Note = (function() {
                 }
             }
 
-            return this.prepared;
+            Euterpe.bind(this, rendered);
+
+            return rendered;
         },
 
         /**
@@ -170,11 +169,7 @@ Euterpe.Note = (function() {
 
             intEl.rotation(45);
 
-            var group = new Kinetic.Group({});
-            group.add(extEl);
-            group.add(intEl);
-
-            return group;
+            return [extEl, intEl];
         },
 
         /**
@@ -183,7 +178,7 @@ Euterpe.Note = (function() {
          * @private
          */
         initHalfQuarter: function() {
-            var group = new Kinetic.Group({});
+            var rendered = [];
             var self = this;
 
             var extEl = new Kinetic.Ellipse({
@@ -198,7 +193,7 @@ Euterpe.Note = (function() {
             });
 
             extEl.rotation(140);
-            group.add(extEl);
+            rendered.push(extEl);
 
             if(this.type === "half") {
                 var intEl = new Kinetic.Ellipse({
@@ -214,7 +209,7 @@ Euterpe.Note = (function() {
 
                 intEl.rotation(140);
 
-                group.add(intEl);
+                rendered.push(intEl);
             }
 
             var bX, bY;
@@ -234,7 +229,7 @@ Euterpe.Note = (function() {
                         y: bY
                     });
 
-                    group.add(this.beam);
+                    rendered.push(this.beam);
                 }
                 else if(this.beamDir === 'down') {
                     bX = extEl.x() - (extEl.width() / 2) +
@@ -249,7 +244,7 @@ Euterpe.Note = (function() {
                         y: bY
                     });
 
-                    group.add(this.beam);
+                    rendered.push(this.beam);
                 }
 
                 // Check for flags
@@ -280,11 +275,13 @@ Euterpe.Note = (function() {
                         strokeWidth: 1
                     });
 
-                    group.add(flag);
+                    rendered.push(flag);
                 }
             }
 
-            return group;
+            Euterpe.bind(this, rendered);
+
+            return rendered;
         }
     });
 

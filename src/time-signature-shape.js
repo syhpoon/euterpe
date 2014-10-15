@@ -37,9 +37,10 @@ Euterpe.TimeSignatureShape = (function() {
             this.scale = scale;
             this.startX = startX;
             this.startY = startY + this.yoffset * scale;
+            var rendered = [];
 
             if(this.digit === "4") {
-                this.prepared = new Kinetic.Shape({
+                rendered.push(new Kinetic.Shape({
                     sceneFunc: function(ctx) {
                         var x = self.startX + 17.6 * scale;
                         var y = self.startY;
@@ -78,10 +79,12 @@ Euterpe.TimeSignatureShape = (function() {
                     fill: 'black',
                     stroke: 'black',
                     strokeWidth: 0
-                });
+                }));
             }
 
-            return this.prepared;
+            Euterpe.bind(this, rendered);
+
+            return rendered;
         }
     });
 

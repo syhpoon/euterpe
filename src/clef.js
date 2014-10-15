@@ -171,14 +171,11 @@ Euterpe.TrebleClef = (function() {
                 strokeWidth: 0
             });
 
-            this.prepared = new Kinetic.Group();
-            this.prepared.add(shape1);
-            this.prepared.add(shape2);
-            this.prepared.add(shape3);
-            this.prepared.add(shape4);
-            this.prepared.add(shape5);
+            var rendered = [shape1, shape2, shape3, shape4, shape5];
 
-            return this.prepared;
+            Euterpe.bind(this, rendered);
+
+            return rendered;
         }
     });
 

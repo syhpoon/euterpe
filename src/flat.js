@@ -24,7 +24,6 @@ Euterpe.Flat = (function() {
 
     Euterpe.extend(Euterpe.Node, Flat, {
         render: function(x, y, scale) {
-            this.prepared = new Kinetic.Group({});
             var height = (this.realHeight[0] + this.realHeight[1]) * scale;
             this.barWidth = 1.5 * scale;
 
@@ -74,9 +73,11 @@ Euterpe.Flat = (function() {
                 strokeWidth: 0
             });
 
-            this.prepared.add(bar, curve1, curve2);
+            var rendered = [bar, curve1, curve2];
 
-            return this.prepared;
+            Euterpe.bind(this, rendered);
+
+            return rendered;
         }
     });
 

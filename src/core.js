@@ -502,3 +502,38 @@ Euterpe.getGroups = function(items) {
     return groups;
 };
 
+/**
+ * Bind events
+ *
+ * @param {Object} node - Euterpe node
+ * @param {Array} rendered - List of rendered assets
+ */
+Euterpe.bind = function(node, rendered) {
+    if(typeof node.config.on === 'undefined') {
+        return
+    }
+
+    if(!_.isArray(rendered)) {
+        rendered = [rendered];
+    }
+    else {
+        rendered = _.flatten(rendered);
+    }
+
+    var h = function(obj, f) {
+        return function() {
+            f.call(obj, node, rendered);
+        }
+    };
+
+    var events = _.keys(node.config.on);
+
+    for(var i=0; i < events.length; i++) {
+        var event = events[i];
+
+        // Set event on every asset
+        _.each(rendered, function(obj) {
+            obj.on(event, h(obj, node.config.on[event]));
+        });
+    }
+};

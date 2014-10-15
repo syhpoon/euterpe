@@ -73,11 +73,12 @@ Euterpe.Sharp = (function() {
                 ]
             });
 
-            this.prepared = new Kinetic.Group();
-            this.prepared.add(verticalLine1, verticalLine2,
-                horizontalLine1, horizontalLine2);
+            var rendered = [verticalLine1, verticalLine2,
+                            horizontalLine1, horizontalLine2];
 
-            return this.prepared;
+            Euterpe.bind(this, rendered);
+
+            return rendered;
         }
     });
 
