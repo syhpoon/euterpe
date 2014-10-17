@@ -29,7 +29,7 @@ Euterpe.plugins = {
     add: function() {
         var self = this;
 
-        _.each(arguments, function(plugin) { self.plugins.push(plugin)});
+        _.each(arguments, function(plugin) { self.plugins.push(plugin);});
     },
 
     fold: function(root, scale, extra) {
@@ -510,7 +510,7 @@ Euterpe.getGroups = function(items) {
  */
 Euterpe.bind = function(node, rendered) {
     if(typeof node.config.on === 'undefined') {
-        return
+        return;
     }
 
     if(!_.isArray(rendered)) {
@@ -525,7 +525,7 @@ Euterpe.bind = function(node, rendered) {
     var h = function(obj, f) {
         return function() {
             f.call(obj, node, rendered, state);
-        }
+        };
     };
 
     var events = _.keys(node.config.on);

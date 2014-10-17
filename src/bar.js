@@ -79,8 +79,8 @@ Euterpe.Bar = (function() {
         /** @private */
         renderNumber: function(x, y, scale) {
             return this.numberItem.render(x + this.leftWidth * scale,
-                y - this.numberOffset * scale
-                  - this.numberHeight[1] * scale, scale);
+                y - this.numberOffset * scale -
+                    this.numberHeight[1] * scale, scale);
         },
 
         /** @private */

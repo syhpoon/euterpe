@@ -26,31 +26,16 @@ var root = new Euterpe.Score({
                     rightType: "single"
                 }),
 
-                new Euterpe.TrebleClef({
-                    on: {
-                        "xclick": function(node, assets) {
-                            console.log(node);
-                            console.log(this);
-                            console.log(assets);
-                        },
-                        "mouseover": function(node, assets, state) {
-                            this.fill('yellow');
-                            Euterpe.global.background.draw();
-                            Euterpe.global.foreground.draw();
-                        },
-                        "mouseout": function(node, assets, state) {
-                            this.fill('black');
-                            Euterpe.global.background.draw();
-                            Euterpe.global.foreground.draw();
-                        }
-                    }
-                }),
+                new Euterpe.TrebleClef({}),
                 new Euterpe.TimeSignature(4, 4, {}),
 
                 new Euterpe.Column({
-                    leftMargin: 3,
                     items: [
                         new Euterpe.Note({
+                            leftItems: [
+                                new Euterpe.Natural({}),
+                                new Euterpe.Sharp({})
+                            ],
                             beamDirection: "up",
                             type: "quarter",
                             flags: 1,

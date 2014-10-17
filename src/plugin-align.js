@@ -105,7 +105,7 @@ Euterpe.PluginAlign = (function() {
 
         /** @private */
         getCols: function(items, i) {
-            return _.map(items, function(a) {return a[i]});
+            return _.map(items, function(a) {return a[i];});
         },
 
         /** @private */
@@ -142,9 +142,9 @@ Euterpe.PluginAlign = (function() {
                         continue;
                     }
 
-                    colDist[col.id] = Euterpe.getDistance(col.parent, col, scale)
-                                      + col.leftMargin * scale
-                                      + col.getLeftWidth(scale);
+                    colDist[col.id] = Euterpe.getDistance(col.parent, col, scale) +
+                                      col.leftMargin * scale +
+                                      col.getLeftWidth(scale);
                     colWidth[col.id] = col.getRealWidth(scale, true);
                     rightWidth[col.id] = col.getRightWidth(scale);
                 }

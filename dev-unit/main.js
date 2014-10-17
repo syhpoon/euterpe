@@ -678,6 +678,91 @@ var root = new Euterpe.Score({
                 }),
 
                 new Euterpe.Bar({
+                    number: 6,
+                    rightType: "single"
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Note({
+                            leftItems: [
+                                new Euterpe.Natural({}),
+                                new Euterpe.Sharp({}),
+                                new Euterpe.Flat({})
+                            ],
+                            beamDirection: "up",
+                            type: "quarter",
+                            flags: 1,
+                            location: -1
+                        })
+                    ]
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Note({
+                            leftItems: [
+                                new Euterpe.Natural({}),
+                                new Euterpe.Sharp({}),
+                                new Euterpe.Flat({})
+                            ],
+                            beamDirection: "up",
+                            type: "quarter",
+                            flags: 1,
+                            location: -0.5
+                        })
+                    ]
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Note({
+                            leftItems: [
+                                new Euterpe.Natural({}),
+                                new Euterpe.Sharp({}),
+                                new Euterpe.Flat({})
+                            ],
+                            beamDirection: "up",
+                            type: "quarter",
+                            flags: 1,
+                            location: 0
+                        })
+                    ]
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Note({
+                            leftItems: [
+                                new Euterpe.Natural({}),
+                                new Euterpe.Sharp({}),
+                                new Euterpe.Flat({})
+                            ],
+                            beamDirection: "up",
+                            type: "quarter",
+                            flags: 1,
+                            location: 0.5
+                        })
+                    ]
+                }),
+
+                new Euterpe.Column({
+                    items: [
+                        new Euterpe.Note({
+                            leftItems: [
+                                new Euterpe.Natural({}),
+                                new Euterpe.Sharp({}),
+                                new Euterpe.Flat({})
+                            ],
+                            beamDirection: "up",
+                            type: "quarter",
+                            flags: 1,
+                            location: 1
+                        })
+                    ]
+                }),
+
+                new Euterpe.Bar({
                     leftType: "single"
                 })
             ]
