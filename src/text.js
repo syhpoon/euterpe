@@ -26,6 +26,7 @@ Euterpe.Text = (function() {
         this.fontFamily = Euterpe.getConfig(config, "fontFamily", "Arial");
         this.fontSize = Euterpe.getConfig(config, "fontSize", 10);
         this.fontStyle = Euterpe.getConfig(config, "fontStyle", "normal");
+        var scale = 1;
 
         // Dynamic width hack
         var tmp = new Kinetic.Text({

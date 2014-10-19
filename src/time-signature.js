@@ -12,24 +12,19 @@ Euterpe.TimeSignature = (function() {
     /**
      * Time signature [container]
      *
-     * @param {Number} numerator
-     * @param {Number} denominator
      * @param {Object} config
+     * @param {Number} [config.numerator]
+     * @param {Number} [config.denominator]
      * @constructor
      */
-    function TimeSignature(numerator, denominator, config) {
-        if(typeof numerator === 'undefined') {
-            numerator = 4;
-        }
-
-        if(typeof denominator === 'undefined') {
-            denominator = 4;
-        }
+    function TimeSignature(config) {
+        this.numerator = Euterpe.getConfig(config, "numerator", 4);
+        this.denominator = Euterpe.getConfig(config, "denominator", 4);
 
         TimeSignature.super.call(this, config);
 
-        this.add(new Euterpe.TimeSignatureShape(numerator, 0));
-        this.add(new Euterpe.TimeSignatureShape(denominator, 2));
+        this.add(new Euterpe.TimeSignatureShape(this.numerator, 0));
+        this.add(new Euterpe.TimeSignatureShape(this.denominator, 2));
     }
 
     Euterpe.extend(Euterpe.Column, TimeSignature, {

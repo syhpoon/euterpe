@@ -45,7 +45,7 @@ Euterpe.Score = (function() {
                 fontFamily: "Serif"
             });
 
-            this.titleWidth = this.titleText.getRealWidth(scale);
+            this.titleWidth = this.titleText.getRealWidth(1);
             this.titleHeight = this.titleText.getRealHeight(1);
         }
 

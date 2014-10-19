@@ -87,20 +87,20 @@ Euterpe.Row = (function() {
                     if(note.config.location > (this.numberOfLines - 1)) {
                         d = Math.floor(note.config.location);
 
-                        this.addLedgerLine(note, d, note.X, width, y, lines);
+                        this.addLedgerLine(note, d, note.X, width, y, lines, scale);
                     }
                     // Line above
                     else if(note.config.location < 0) {
                         d = Math.ceil(note.config.location);
 
-                        this.addLedgerLine(note, d, note.X, width, y, lines);
+                        this.addLedgerLine(note, d, note.X, width, y, lines, scale);
                     }
                 }
             }
         },
 
         /** @private **/
-        addLedgerLine: function(item, pos, x, width, baseY, lines) {
+        addLedgerLine: function(item, pos, x, width, baseY, lines, scale) {
             var found;
 
             while(true) {
