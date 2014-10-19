@@ -1,1 +1,2516 @@
-function Euterpe(){}function Euterpe(){}function Euterpe(){}Euterpe.TrebleClef=function(){function e(t){this.realWidth=36.8,t.location=0,e.super.call(this,"Euterpe.TrebleClef",t)}return Euterpe.extend(Euterpe.Node,e,{realHeight:[26.3,82],render:function(e,t,n){this.startX=e,this.startY=t-27*n,this.scale=.125*n;var r=this,i=new Kinetic.Shape({sceneFunc:function(e){e.beginPath(),e.translate(r.startX,r.startY),e.scale(r.scale,r.scale),e.moveTo(159,3),e.quadraticCurveTo(129,50,117,93),e.quadraticCurveTo(107,126,102,167),e.quadraticCurveTo(101,192,102,210),e.quadraticCurveTo(107,255,116,297),e.quadraticCurveTo(63,351,44,375),e.quadraticCurveTo(24,401,15,429),e.quadraticCurveTo(2,464,3,503),e.quadraticCurveTo(5,540,20,575),e.quadraticCurveTo(29,596,48,615),e.quadraticCurveTo(62,630,87,645),e.quadraticCurveTo(113,660,150,666),e.quadraticCurveTo(177,668,194,665),e.quadraticCurveTo(204,720,213,776),e.quadraticCurveTo(216,795,216,813),e.quadraticCurveTo(203,849,158,857),e.quadraticCurveTo(132,857,120,842),e.quadraticCurveTo(152,845,166,813),e.quadraticCurveTo(165,821,168,802),e.quadraticCurveTo(166,775,151,765),e.quadraticCurveTo(132,750,107,758),e.quadraticCurveTo(86,768,78,789),e.quadraticCurveTo(71,818,90,840),e.quadraticCurveTo(105,857,129,865),e.quadraticCurveTo(149,872,177,865),e.quadraticCurveTo(194,860,209,846),e.quadraticCurveTo(231,828,230,803),e.quadraticCurveTo(221,735,207,662),e.quadraticCurveTo(248,650,267,626),e.quadraticCurveTo(293,599,296,566),e.quadraticCurveTo(300,527,285,494),e.quadraticCurveTo(270,462,234,444),e.quadraticCurveTo(215,435,189,435),e.quadraticCurveTo(177,435,164,438),e.quadraticCurveTo(155,396,146,354),e.quadraticCurveTo(183,315,203,275),e.quadraticCurveTo(219,243,222,210),e.quadraticCurveTo(227,167,221,137),e.quadraticCurveTo(213,93,192,51),e.quadraticCurveTo(180,29,159,3),e.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0}),s=new Kinetic.Shape({sceneFunc:function(e){e.beginPath(),e.translate(r.startX,r.startY),e.scale(r.scale,r.scale),e.moveTo(191,93),e.quadraticCurveTo(179,83,171,93),e.quadraticCurveTo(126,162,131,281),e.quadraticCurveTo(188,239,203,188),e.quadraticCurveTo(209,162,204,135),e.quadraticCurveTo(200,111,191,93),e.fillStrokeShape(this)},fill:"white",stroke:"white",strokeWidth:0}),o=new Kinetic.Shape({sceneFunc:function(e){e.beginPath(),e.translate(r.startX,r.startY),e.scale(r.scale,r.scale),e.moveTo(171,473),e.quadraticCurveTo(188,555,206,648),e.quadraticCurveTo(237,639,255,620),e.quadraticCurveTo(283,588,283,558),e.quadraticCurveTo(285,525,269,501),e.quadraticCurveTo(252,476,216,470),e.quadraticCurveTo(194,465,171,473),e.fillStrokeShape(this)},fill:"white",stroke:"white",strokeWidth:0}),u=new Kinetic.Shape({sceneFunc:function(e){e.beginPath(),e.translate(r.startX,r.startY),e.scale(r.scale,r.scale),e.moveTo(147,446),e.quadraticCurveTo(141,411,132,369),e.quadraticCurveTo(90,401,68,435),e.quadraticCurveTo(45,467,39,503),e.quadraticCurveTo(30,540,45,576),e.quadraticCurveTo(60,612,92,633),e.quadraticCurveTo(123,651,161,654),e.quadraticCurveTo(174,654,188,653),e.fillStrokeShape(this)},fill:"white",stroke:"white",strokeWidth:0}),a=new Kinetic.Shape({sceneFunc:function(e){e.beginPath(),e.translate(r.startX,r.startY),e.scale(r.scale,r.scale),e.moveTo(147,444),e.quadraticCurveTo(120,456,101,480),e.quadraticCurveTo(83,504,84,536),e.quadraticCurveTo(86,567,107,588),e.quadraticCurveTo(114,597,126,605),e.quadraticCurveTo(116,593,107,581),e.quadraticCurveTo(95,560,99,537),e.quadraticCurveTo(105,509,132,491),e.quadraticCurveTo(143,482,164,476),e.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0}),f=[i,s,o,u,a];return Euterpe.bind(this,f),f}}),e}(),Euterpe.Column=function(){function e(t){e.super.call(this,"Euterpe.Column",t)}return Euterpe.extend(Euterpe.Container,e,{getRealWidth:function(e,t){var n=Euterpe.getMargins(this,e),r=this.collectItems(),i=_.max(_.map(r,function(n){var r=0,i=0;return n.isNode&&(r=n.getLeftWidth(e),i=n.getRightWidth(e)),n.getRealWidth(e,t)+(t?0:r+i)}));return i+(t?0:n)},getRealHeight:function(e,t){var n=this.collectItems();return Euterpe.getRealHeight(this,n,e,t)},collectItems:function(){var e=this.items;return _.isArray(this.config.aboveItems)&&(e=this.config.aboveItems.concat(this.items)),_.isArray(this.config.belowItems)&&(e=e.concat(this.config.belowItems)),e},render:function(e,t,n){var r=[],i,s,o=0,u=this.collectItems(),a=this.renderSideItems(u,n,r,e,t,!0);e+=a;for(s=0;s<u.length;s++)i=u[s],i.X=e,i.Y=Euterpe.getY(i,n,t),r.push(i.render(i.X,i.Y,n)),a=i.getRealWidth(n),a>o&&(o=a);return this.renderSideItems(this.items,n,r,e+o,t,!1),r},renderSideItems:function(e,t,n,r,i,s){var o=[],u=0,a=0;if(s)for(f=0;f<e.length;f++)e[f].isNode?(c=e[f].getLeftWidth(t),o.push(c),c>u&&(u=c)):o.push(0);for(var f=0;f<e.length;f++){var l=e[f],c=0,h=0;typeof o[f]!="undefined"&&o[f]!==u&&(h=u-o[f]);var p=s?l.leftItems:l.rightItems;for(var d=0;d<p.length;d++){var v=p[d];typeof v.config.location=="undefined"&&(v.config.location=l.config.location),v.X=r+v.leftMargin*t+h+c,v.Y=Euterpe.getY(v,t,i),n.push(v.render(v.X,v.Y,t)),c+=v.getRealWidth(t)}c>a&&(a=c)}return a},reduceWidth:function(e,t){return _.reduce(e,function(e,n){return e+n.getRealWidth(t)},0)}}),e}(),Euterpe.ContainerDepth=0,Euterpe.Container=function(){var e=function(e,t){this.id=Euterpe.randomString(20),this.items=[],this.name=this.name||e,this.config=t||{},this.leftMargin=Euterpe.getConfig(t,"leftMargin",0),this.rightMargin=Euterpe.getConfig(t,"rightMargin",0),this.leftItems=[],this.rightItems=[];if(typeof t!="undefined"&&_.isArray(t.items))for(var n=0;n<t.items.length;n++)this.add(t.items[n])};return e.prototype={getRealWidth:function(e,t){var n=t?0:Euterpe.getMargins(this,e);for(var r=0;r<this.items.length;r++)n+=this.items[r].getRealWidth(e,t);return n},getRealHeight:function(e,t){return Euterpe.getRealHeight(this,this.items,e,t)},isContainer:!0,getLeftWidth:function(e){var t=_.map(this.items,function(t){return t.getLeftWidth(e)});return _.max(t)},getRightWidth:function(e){var t=_.map(this.items,function(t){return t.getRightWidth(e)});return _.max(t)},clear:function(){this.items.length=0},size:function(){return this.items.length},add:function(e){var t=this;if(_.isArray(e))return _.each(e,function(e){t.add(e)});e.parent=this,this.items.push(e)},prepend:function(e){e.parentContainer=this,this.items.unshift(e)},insertBefore:function(e,t){for(var n=0;n<this.items.length;n++){var r=this.items[n];if(r.id===e)return this.items.splice(n,0,t)}},baseRender:function(e,t,n,r,i){Euterpe.ContainerDepth+=1;var s=[],o=function(e,t,n,r,i){var s=Euterpe.getY(e,r,n);return e.Y=s,e.render(t,s,r,i)};r=r||o,i=i||o;for(var u=0;u<this.items.length;u++){var a=this.items[u],f=0;Euterpe.log.debug((new Array(Euterpe.ContainerDepth)).join("  "),a),a.isContainer?(a.parentContainer=this,f=a.getRealWidth(n),a.X=e+a.leftMargin*n,a.Y=t,s.push(i(a,a.X,a.Y,n,u)),e+=f):(a.parentContainer=this,f=a.getRealWidth(n),a.X=e+a.leftMargin*n,a.Y=t,s.push(r(a,a.X,a.Y,n,u)),e+=f)}return Euterpe.ContainerDepth-=1,s},render:function(e,t,n){return Euterpe.baseRender(this.items,e,t,n)}},e}(),Euterpe.const={LOG_DEBUG:1,LOG_INFO:2,LOG_WARNING:3,LOG_ERROR:4},Euterpe.global={loglevel:Euterpe.const.LOG_INFO},Euterpe.plugins={plugins:[],add:function(){var e=this;_.each(arguments,function(t){e.plugins.push(t)})},fold:function(e,t,n){return _.reduce(this.plugins,function(e,r){return r.process(e,t,n)},e)}},Euterpe.getConfig=function(e,t,n){return typeof e=="undefined"?n:typeof e[t]=="undefined"?n:e[t]},Euterpe.getY=function(e,t,n){var r;if(typeof e=="number")r=e;else{if(typeof e.config=="undefined"||typeof e.config.location=="undefined")return n;r=e.config.location}if(typeof r=="function")return r(t,n);var i=Euterpe.global.linePadding/2+Euterpe.global.lineWidth/2,s,o,u;return r>=0?(o=Math.floor(r),u=Math.ceil(r)>r?i:0,s=Euterpe.global.linePadding*o+Euterpe.global.lineWidth*o,n+s+u):r<0?(o=Math.ceil(r),u=Math.floor(r)<r?i:0,s=Euterpe.global.linePadding*-o+Euterpe.global.lineWidth*-o,n+s*-1-u):n},Euterpe.initNode=function(e,t){e.isNode=!0,e.nodeName=t},Euterpe.extend=function(e,t,n){function r(){}r.prototype=e.prototype,t.prototype=new r,t.prototype.constructor=t,t.super=e,typeof n=="object"&&_.extend(t.prototype,n)},Euterpe.render=function(e,t,n,r,i,s){Euterpe.initLog(),Euterpe.global.root=e,Euterpe.global.background=new Kinetic.Layer({}),Euterpe.global.foreground=new Kinetic.Layer({}),Euterpe.global.linePadding=13*i,Euterpe.global.lineWidth=i;var o=[],u=Euterpe.plugins.fold(e,i,o),a=u.getRealHeight(i,!0);n+=a[0];var f=n+a[1];Euterpe.stage=new Kinetic.Stage({container:s,width:r,height:f}),Euterpe.stage.add(Euterpe.global.foreground),Euterpe.stage.add(Euterpe.global.background);var l=_.flatten(u.render(t+e.leftMargin*i,n,i));for(var c=0;c<l.length;c++)l[c].layer2draw==="background"?Euterpe.global.background.add(l[c]):Euterpe.global.foreground.add(l[c]);for(var h=0;h<o.length;h++){var p=o[h],d=p(u,i);if(typeof d=="undefined")continue;d.layer2draw==="background"?Euterpe.global.background.add(d):Euterpe.global.foreground.add(d)}return Euterpe.stage},Euterpe.getMargins=function(e,t){return e.leftMargin*t+e.rightMargin*t},Euterpe.randomString=function(e){return(new Array(e+1)).join((Math.random().toString(36)+"00000000000000000").slice(2,18)).slice(0,e)},Euterpe.select=function(e,t){var n=function(t){return e[0]==="#"?t.id===e.slice(1,e.length):t.name===e};t=t||Euterpe.global.root;var r=[];if(t.isNode&&n(t))r.push(t);else if(t.isContainer)for(var i=0;i<t.items.length;i++){var s=t.items[i];n(s)&&r.push(s),s.isContainer&&r.push(Euterpe.select(e,s))}return _.flatten(r)},Euterpe.replace=function(e,t,n){for(var r=0;r<e.items.length;r++){var i=e.items[r];if(i.id==t)return n.parentContainer=e,e.items[r]=n,!0;if(i.isContainer&&Euterpe.replace(i,t,n))break}return!1},Euterpe.initLog=function(){var e=window.console||{},t=function(){};Euterpe.log={debug:t,info:t,warn:t,error:t},Euterpe.const.LOG_DEBUG>=Euterpe.global.loglevel&&e.log&&(Euterpe.log.debug=e.debug.bind(e)),Euterpe.const.LOG_INFO>=Euterpe.global.loglevel&&e.info&&(Euterpe.log.info=e.info.bind(e)),Euterpe.const.LOG_WARNING>=Euterpe.global.loglevel&&e.warn&&(Euterpe.log.warn=e.warn.bind(e)),Euterpe.const.LOG_ERROR>=Euterpe.global.loglevel&&e.error&&(Euterpe.log.error=e.error.bind(e))},Euterpe.getDistance=function(e,t,n){var r=0;for(var i=0;i<e.items.length;i++){var s=e.items[i];if(s.id===t.id)break;if(s.isContainer&&Euterpe.select("#"+t.id,s).length>0){r+=s.leftMargin*n,r+=Euterpe.getDistance(s,t,n);break}r+=s.getRealWidth(n)}return r},Euterpe.getRealHeight=function(e,t,n,r){var i=0,s,o,u,a,f;typeof e.realHeight!="undefined"&&(f=Euterpe.getY(e,n,i),s=e.realHeight[0]*n,o=e.realHeight[1]*n);for(var l=0;l<t.length;l++){var c=t[l],h=c.getRealHeight(n,!0);f=Euterpe.getY(c,n,i),u=f-h[0],a=f+h[1];if(typeof s=="undefined"||u<s)s=u;if(typeof o=="undefined"||a>o)o=a}return r?[s*-1,o]:o-s},Euterpe.baseRender=function(e,t,n,r){var i=[],s,o;for(o=0;o<e.length;o++)s=e[o],s.X=t,s.Y=Euterpe.getY(s,r,n),i.push(s.render(s.X,s.Y,r)),t+=s.getRealWidth(r);return i},Euterpe.getGroups=function(e){var t=[],n=null,r=null,i=null,s=[],o=null;for(var u=0;u<e.length;u++){var a=e[u];typeof a.group!="undefined"?(n!==a.group&&(n!==null&&t.push({first:i,last:o,groupType:r,items:_.clone(s)}),i=a.id,n=a.group,r=a.groupType,s.length=0),s.push(a)):t.push({first:undefined,last:undefined,groupType:undefined,items:[a]}),o=a.id}return s.length>0&&t.push({first:i,last:o,groupType:r,items:s}),t},Euterpe.bind=function(e,t){if(typeof e.config.on=="undefined")return;_.isArray(t)?t=_.flatten(t):t=[t];var n={},r=function(r,i){return function(){i.call(r,e,t,n)}},i=_.keys(e.config.on);for(var s=0;s<i.length;s++){var o=i[s];_.each(t,function(t){t.on(o,r(t,e.config.on[o]))})}},Euterpe.Flat=function(){function e(t){this.realWidth=12.25,this.realHeight=[16.3,9],e.super.call(this,"Euterpe.Flat",t)}return Euterpe.extend(Euterpe.Node,e,{render:function(e,t,n){var r=(this.realHeight[0]+this.realHeight[1])*n;this.barWidth=1.5*n,t-=16.25*n;var i=new Kinetic.Line({points:[0,0,0,r],stroke:"black",strokeWidth:this.barWidth,x:e,y:t}),s=t+r,o=e+this.barWidth/2,u=new Kinetic.Shape({sceneFunc:function(e){e.beginPath(),e.moveTo(o,s),e.lineTo(o+7*n,s-5.25*n),e.bezierCurveTo(o+12*n,s-8.75*n,o+12.5*n,s-19.75*n,o,s-13.75*n),e.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0}),a=new Kinetic.Shape({sceneFunc:function(e){e.beginPath(),e.moveTo(o,s-1.25*n),e.bezierCurveTo(o+9.75*n,s-6.75*n,o+8.25*n,s-17.25*n,o,s-12.75*n),e.fillStrokeShape(this)},fill:"white",stroke:"white",strokeWidth:0}),f=[i,u,a];return Euterpe.bind(this,f),f}}),e}(),Euterpe.helpers={},Euterpe.helpers.events={highlight:function(e,t){function n(n,r,i){typeof i.fill=="undefined"&&(i.fill={}),typeof i.stroke=="undefined"&&(i.stroke={});for(var s=0;s<r.length;s++){var o=r[s];o.fill()===e&&(i.fill[o._id]=e,o.fill(t)),o.stroke()===e&&(i.stroke[o._id]=e,o.stroke(t))}Euterpe.global.background.draw(),Euterpe.global.foreground.draw()}function r(e,t,n){for(var r=0;r<t.length;r++){var i=t[r];typeof n.fill[i._id]!="undefined"&&i.fill(n.fill[i._id]),typeof n.stroke[i._id]!="undefined"&&i.stroke(n.stroke[i._id])}Euterpe.global.background.draw(),Euterpe.global.foreground.draw()}return[n,r]}},Euterpe.KeySignature=function(){function e(t){this.type=Euterpe.getConfig(t,"type"),this.amount=Euterpe.getConfig(t,"amount");if(this.type!=="sharp"&&this.type!=="flat")throw"Invalid type argument";if(typeof this.amount!="number"||this.amount<1||this.amount>7)throw"amount should be >= 1 and <= 7";e.super.call(this,t);var n={sharp:[0,1.5,-0.5,1,2.5,.5,2],flat:[2,.5,2.5,1,3,1.5,3.5]};for(var r=0;r<this.amount;r++){var i={location:n[this.type][r]};this.add(this.type==="sharp"?new Euterpe.Sharp(i):new Euterpe.Flat(i))}}return Euterpe.extend(Euterpe.Container,e),e}(),Euterpe.Natural=function(){function e(t){this.realWidth=11.5,this.realHeight=[20.5,21.5],e.super.call(this,"Euterpe.Natural",t)}return Euterpe.extend(Euterpe.Node,e,{render:function(e,t,n){var r=1.5*n,i=28*n,s=10*n,o=2.5*n,u=1.5*n;t-=i/2+i/4;var a=new Kinetic.Rect({width:r,height:i,fill:"black",stroke:"black",strokeWidth:0,strokeEnabled:!1,x:e,y:t}),f=a.clone({x:e+s,y:t+i/2}),l,c,h=new Kinetic.Shape({sceneFunc:function(n){l=e,c=t+i/2,n.beginPath(),n.moveTo(l,c),n.lineTo(l+s+r,c-u),n.lineTo(l+s+r,c+o),n.lineTo(l,c+o+u),n.lineTo(l,c),n.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0,strokeEnabled:!1}),p=h.clone({sceneFunc:function(n){l=e,c=t+i-o,n.beginPath(),n.moveTo(l,c),n.lineTo(l+s+r,c-u),n.lineTo(l+s+r,c+o),n.lineTo(l,c+o+u),n.lineTo(l,c),n.fillStrokeShape(this)}}),d=[a,f,h,p];return Euterpe.bind(this,d),d}}),e}(),Euterpe.Node=function(){var e=function(e,t){this.id=Euterpe.randomString(20),this.name=e,this.config=t||{},this.leftMargin=Euterpe.getConfig(t,"leftMargin",0),this.rightMargin=Euterpe.getConfig(t,"rightMargin",0),this.leftItems=Euterpe.getConfig(t,"leftItems",[]),this.rightItems=Euterpe.getConfig(t,"rightItems",[])};return e.prototype.isNode=!0,e.prototype.getLeftWidth=function(e){return this.reduceWidth(this.leftItems,e)},e.prototype.getRightWidth=function(e){return this.reduceWidth(this.rightItems,e)},e.prototype.getRealWidth=function(e,t){var n=Euterpe.getMargins(this,e);return this.realWidth*e+(t?0:n)},e.prototype.getRealHeight=function(e,t){return typeof this.realHeight=="undefined"?t?[0,0]:0:t?[this.realHeight[0]*e,this.realHeight[1]*e]:this.realHeight[0]*e+this.realHeight[1]*e},e.prototype.clone=function(){var e=new this.constructor(this.config);return e.parentContainer=this.parentContainer,e},e.prototype.reduceWidth=function(e,t){return _.reduce(e,function(e,n){return e+n.getRealWidth(t)},0)},e}(),Euterpe.Note=function(){function e(t){this.type=Euterpe.getConfig(t,"type","quarter"),this.beamDir=Euterpe.getConfig(t,"beamDirection",undefined),this.flags=Euterpe.getConfig(t,"flags",0),this.dots=Euterpe.getConfig(t,"dots",0),this.beam=undefined,e.super.call(this,"Euterpe.Note",t),this.headHeight=13.3,this.realHeight=[this.headHeight/2,this.headHeight/2],this.type==="whole"?this.realWidth=this.headWidth=21.2:this.realWidth=this.headWidth=13.6,this.dotWidth=4.5,this.dotMargin=2.5,this.calculateSize()}return Euterpe.extend(Euterpe.Node,e,{beamRealHeight:35,calculateSize:function(){this.beamDir==="up"?this.realHeight=[this.beamRealHeight,this.headHeight/2]:this.beamDir==="down"&&(this.realHeight=[this.headHeight/2,this.beamRealHeight]),this.realWidth+=(this.dotMargin+this.dotWidth)*this.dots,this.flags>0&&(this.realWidth+=13.3)},render:function(e,t,n){this.beamWidth=1.3*n,this.beamHeight=this.beamRealHeight*n,this.scale=n,this.startX=e+this.headWidth*n/2,this.startY=t;var r=[];switch(this.type){case"whole":r=this.initWhole();break;default:r=this.initHalfQuarter()}if(this.dots>0){var i=0,s=this.location;s%1===0&&(i=3*n);var o=e+this.headWidth*n;for(var u=this.dots;u>0;u--)o+=this.dotMargin*n+this.dotWidth*n/2,r.push(new Kinetic.Ellipse({x:o,y:this.Y-i,radius:{x:2*this.scale,y:2*this.scale},fill:"black"})),o+=this.dotWidth*n/2}return Euterpe.bind(this,r),r},initWhole:function(){var e=new Kinetic.Ellipse({x:this.startX,y:this.startY,radius:{x:10.5*this.scale,y:6.5*this.scale},fill:"black"}),t=new Kinetic.Ellipse({x:this.startX,y:this.startY,radius:{x:5.5*this.scale,y:4*this.scale},fill:"white"});return t.rotation(45),[e,t]},initHalfQuarter:function(){var e=[],t=this,n=new Kinetic.Ellipse({x:this.startX,y:this.startY,radius:{x:7.6*this.scale,y:5.6*this.scale},fill:"black"});n.rotation(140),e.push(n);if(this.type==="half"){var r=new Kinetic.Ellipse({x:this.startX,y:this.startY,radius:{x:6.6*this.scale,y:2.5*this.scale},fill:"white"});r.rotation(140),e.push(r)}var i,s;if(typeof this.beamDir=="string"){this.beamDir==="up"?(i=n.x()+n.width()/2-this.beamWidth-this.beamWidth/3,s=n.y(),this.beam=new Kinetic.Line({points:[0,0,0,-this.beamHeight],stroke:"black",strokeWidth:this.beamWidth,x:i,y:s}),e.push(this.beam)):this.beamDir==="down"&&(i=n.x()-n.width()/2+this.beamWidth+this.beamWidth/3,s=n.y(),this.beam=new Kinetic.Line({points:[0,0,0,this.beamHeight],stroke:"black",strokeWidth:this.beamWidth,x:i,y:s}),e.push(this.beam));if(this.flags==1){var o=this.beam.x(),u=this.beam.y()-this.beamHeight,a=new Kinetic.Shape({sceneFunc:function(e){e.beginPath(),e.moveTo(o,u),e.bezierCurveTo(o+6.2*t.scale,u+11.8*t.scale,o+21.4*t.scale,u+10.4*t.scale,o+10*t.scale,u+26.4*t.scale),e.bezierCurveTo(o+19.6*t.scale,u+12.4*t.scale,o+5.4*t.scale,u+10.4*t.scale,o-.2*t.scale,u+7.4*t.scale),e.closePath(),e.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:1});e.push(a)}}return Euterpe.bind(this,e),e}}),e}(),Euterpe.PluginAboveBelow=function(){var e=function(t){e.super.call(this,"Euterpe.PluginAboveBelow",t)};return Euterpe.extend(Euterpe.Plugin,e,{roundLine:function(e){var t,n;return e<0?(t=e-Math.ceil(e),t===0?n=e:t>=-0.5?n=Math.ceil(e)-.5:n=Math.floor(e),n):(t=e-Math.floor(e),t===0?n=e:t<=.5?n=Math.floor(e)+.5:n=Math.ceil(e),n)},place:function(e,t,n,r){var i=0,s,o,u,a;typeof r=="number"?s=r:n==="above"?s=0:n==="below"&&(s=4);for(var f=0;f<e.length;f++){var l=e[f];o=l.getRealHeight(t,!0),u=o[0]/this.lineH,a=o[1]/this.lineH,n==="above"?(i=s-this.roundLine(a),s=i-this.roundLine(u)):n==="below"&&(i=s+this.roundLine(a),s=i+this.roundLine(u)),l.config.location=i}},process:function(e,t){this.lineH=Euterpe.global.linePadding+Euterpe.global.lineWidth;var n=Euterpe.select("Euterpe.Column",e);for(var r=0;r<n.length;r++){var i=n[r],s=i.config,o=i.getRealHeight(t,!0),u=this.roundLine(o[0]/this.lineH*-1),a=this.roundLine(o[1]/this.lineH);a<4&&(a=4),_.isArray(s.aboveItems)&&this.place(s.aboveItems,t,"above",u),_.isArray(s.belowItems)&&this.place(s.belowItems,t,"below",a)}return e}}),e}(),Euterpe.PluginAccidentals=function(){var e=function(t){e.super.call(this,"Euterpe.PluginAccidentals",t)};return Euterpe.extend(Euterpe.Plugin,e,{process:function(e){var t=Euterpe.select("Euterpe.Note",e);for(var n=0;n<t.length;n++){var r=t[n];if(typeof r.config.sharp=="undefined"&&typeof r.config.flat=="undefined")continue;var i=r.config.sharp||r.config.flat;for(var s=0;s<i;s++)typeof r.config.sharp!="undefined"?r.leftItems.push(new Euterpe.Sharp({})):typeof r.config.flat!="undefined"&&r.leftItems.push(new Euterpe.Flat({}))}return e}}),e}(),Euterpe.PluginAlign=function(){var e=function(t){this.totalWidth=Euterpe.getConfig(t,"totalWidth"),this.nodeMargin=Euterpe.getConfig(t,"nodeMargin",5),this.sideMargin=Euterpe.getConfig(t,"sideMargin",3),e.super.call(this,"Euterpe.PluginAlign",t)};return Euterpe.extend(Euterpe.Plugin,e,{process:function(e,t){var n,r;for(n=0;n<e.items.length;n++){r=e.items[n];var i,s=this.collectNodes(r);for(i=0;i<s.length;i++)s[i].leftMargin=this.nodeMargin;this.alignSideItems(r)}var o=Euterpe.getGroups(e.items);for(n=0;n<o.length;n++)this.processGroup(o[n],t);return e},alignSideItems:function(e){var t=Euterpe.select("Euterpe.Column",e);for(var n=0;n<t.length;n++){var r=t[n];for(var i=0;i<r.items.length;i++){var s=r.items[i],o;for(o=0;o<s.leftItems.length;o++)s.leftItems[o].rightMargin=this.sideMargin;for(o=0;o<s.rightItems.length;o++)s.rightItems[o].leftMargin=this.sideMargin}}},getColsBars:function(e){var t=[];for(var n=1;n<e.items.length;n++){var r=e.items[n];(r.name==="Euterpe.Column"||r.name==="Euterpe.Bar")&&t.push(r)}return t},stretchAlign:function(e,t){var n=e.getRealWidth(t),r=this.getColsBars(e),i=this.totalWidth-n,s=i/r.length/t;for(var o=0;o<r.length;o++)r[o].leftMargin+=s},getCols:function(e,t){return _.map(e,function(e){return e[t]})},cleanGroup:function(e){var t=[];for(var n=0;n<e.items.length;n++)t[n]=this.getColsBars(e.items[n]);return t},processGroup:function(e,t){var n=this.cleanGroup(e),r,i,s,o,u=_.max(_.map(n,function(e){return e.length}));for(r=0;r<u;r++){o=this.getCols(n,r);var a={},f={},l={};for(i=0;i<o.length;i++){s=o[i];if(typeof s=="undefined")continue;a[s.id]=Euterpe.getDistance(s.parent,s,t)+s.leftMargin*t+s.getLeftWidth(t),f[s.id]=s.getRealWidth(t,!0),l[s.id]=s.getRightWidth(t)}var c=_.max(_.values(a)),h=_.max(_.values(f)),p=_.max(_.values(l));for(i=0;i<o.length;i++){s=o[i];if(typeof s=="undefined")continue;var d=a[s.id],v=f[s.id],m=l[s.id];d<c&&(s.leftMargin+=(c-d)/t),v<h&&(s.rightMargin+=(h-v)/t),m<p&&(s.rightMargin+=(p-m)/t)}}var g=this;_.each(e.items,function(e){g.stretchAlign(e,t)})},collectNodes:function(e){return _.filter(e.items,function(e){return e.name!=="Euterpe.Bar"&&e.name!=="Euterpe.Column"})}}),e}(),Euterpe.Plugin=function(){var e=function(e,t){this.name=e,this.config=t||{}};return e.prototype.isPlugin=!0,e.prototype.process=function(e){return e},e}(),Euterpe.PluginNoteBar=function(){var e=function(t){e.super.call(this,"Euterpe.PluginNoteBar",t)};return Euterpe.extend(Euterpe.Plugin,e,{process:function(e,t,n){var r=Euterpe.select("Euterpe.Column",e),i=[],s=[],o=1,u={};for(var a=0;a<r.length;a++){var f=r[a];for(var l=0;l<f.items.length;l++){var c=f.items[l],h=c.config||{};if(h.bar==="begin"||h.bar==="cont"||h.bar==="end")o=h.beamDirection==="down"?-1:1,u[i.length]=o,c.flags=0,s.push(c.id),h.bar==="end"&&(this.adjustBeamHeight(s,o),i.push(_.clone(s)),s.length=0)}}for(var p=0;p<i.length;p++)n.push(this.bind(i[p],u[p]));return e},getTopTwo:function(e,t){var n=_.clone(e);return n.sort(function(e,n){return t===1?e.config.location-n.config.location:n.config.location-e.config.location}),n.length>2?[n[0],n[1]]:n},adjustBeamHeight:function(e,t){e=_.map(e,function(e){return Euterpe.select("#"+e)[0]});if(e.length>2){var n=this.getTopTwo(e,t),r=function(e,n){return Euterpe.getY(e,scale,n)-e.beamRealHeight*scale*t},i=n[0],s=n[1],o=i.parent.parent,u=Euterpe.getDistance(o,i,scale),a=Euterpe.getDistance(o,s,scale);for(var f=0;f<e.length;f++){var l=Math.abs(Euterpe.getY(e[f],scale,0)),c=r(i,l),h=r(s,l),p=(h-c)/(a-u),d=Euterpe.getDistance(o,e[f],scale),v=r(e[f],l),m=p*(d-u)+c,g=v-m;g!==0&&(e[f].beamRealHeight+=g*t/scale,e[f].calculateSize())}}},bind:function(e,t){return function(n,r){var i=Euterpe.select("#"+e[0])[0],s=Euterpe.select("#"+e[e.length-1])[0],o=i.beam.x(),u=i.beam.y()-i.beamHeight*t,a=s.beam.x(),f=s.beam.y()-s.beamHeight*t,l=4*r,c=new Kinetic.Shape({sceneFunc:function(e){e.beginPath(),e.moveTo(o,u),e.lineTo(a,f),e.lineTo(a,f+l*t),e.lineTo(o,u+l*t),e.moveTo(o,u),e.closePath(),e.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0});return c}}}),e}(),Euterpe.PluginNoteText=function(){var e=function(t){e.super.call(this,"Euterpe.PluginNoteText",t)};return Euterpe.extend(Euterpe.Plugin,e,{process:function(e){var t=Euterpe.select("Euterpe.Note",e);for(var n=0;n<t.length;n++){var r=t[n];if(typeof r.config.text=="undefined")continue;var i=new Euterpe.Text({text:r.config.text});r.leftItems.push(i)}return e}}),e}(),Euterpe.PluginTab=function(){var e=function(t){e.super.call(this,"Euterpe.PluginTab",t)};return Euterpe.extend(Euterpe.Plugin,e,{process:function(e){for(var t=0;t<e.items.length;t++){var n=e.items[t],r=new Euterpe.Row({type:"tab"});for(var i=0;i<n.items.length;i++){var s=n.items[i];if(s.name=="Euterpe.Bar"){r.add(s.clone());continue}var o=new Euterpe.Column({}),u=Euterpe.select("Euterpe.Note",s);for(var a=0;a<u.length;a++){var f=u[a];typeof f.config.tab_location=="number"&&typeof f.config.tab_text=="string"&&(n.group=t.toString(),n.groupType="bracket",r.group=n.group,r.groupType=n.groupType,o.add(new Euterpe.Text({text:f.config.tab_text,location:f.config.tab_location})))}r!==null&&o.items.length>0&&r.add(o)}typeof r.group!="undefined"&&e.items.splice(t+1,0,r)}return e}}),e}(),Euterpe.Rest=function(){function e(t){this.type=Euterpe.getConfig(t,"type","long"),e.super.call(this,"Euterpe.Rest",t),this.basicWidth=7;switch(this.type){case"long":this.realWidth=this.basicWidth,this.realHeight=[0,28];break;case"double_whole":this.realWidth=this.basicWidth,this.realHeight=[0,14.5];break;case"whole":this.realWidth=20,this.realHeight=[0,8];break;case"half":this.realWidth=20,this.realHeight=[6,0];break;case"quarter":this.realWidth=20,this.realHeight=[16.75,22.25];break;case"eighth":this.realWidth=20,this.realHeight=[9.5,16.25];break;case"sixteenth":this.realWidth=20,this.realHeight=[9.5,30.25];break;case"thirty-second":this.realWidth=25,this.realHeight=[9.5,43.25];break;case"sixty-fourth":this.realWidth=30,this.realHeight=[9.5,55.75]}}return Euterpe.extend(Euterpe.Node,e,{render:function(e,t,n){var r=e+this.getRealWidth(n)/2,i=[];switch(this.type){case"half":i.push(this.initHalf(r,t,n));break;case"quarter":i.push(this.initQuarter(r,t,n));break;case"eighth":i.push(this.initEighth(r,t,n));break;case"sixteenth":i.push(this.initSixteen(r,t,n));break;case"thirty-second":i.push(this.initThirtySecond(r,t,n));break;case"sixty-fourth":i.push(this.initSixtyFourth(r,t,n));break;default:i.push(this.simpleRestShape(r,t,n))}return Euterpe.bind(this,i),i},initHalf:function(e,t,n){var r=this.getRealHeight(n,!0);return this.simpleRestShape(e,t-r[0],n)},initQuarter:function(e,t,n){var r=n*.125,i=this.getRealHeight(n,!0),s=t-i[0];return new Kinetic.Shape({sceneFunc:function(t){t.translate(e,s),t.scale(r,r),t.beginPath(),t.moveTo(100.2,80.7),t.bezierCurveTo(100.2,100.2,61.1,129.6,61.1,168.7),t.bezierCurveTo(61.1,183.4,90.4,227.5,110,251.9),t.bezierCurveTo(100.2,247,90.4,242.1,75.8,242.1),t.bezierCurveTo(46.4,242.1,36.6,266.6,36.6,281.3),t.bezierCurveTo(36.6,291.1,46.4,300.9,51.3,310.7),t.bezierCurveTo(21.9,291.1,2.4,271.5,2.4,251.9),t.bezierCurveTo(2.4,203,35.8,220.1,60.2,210.3),t.bezierCurveTo(35.8,185.9,12.1,149.2,12.1,134.5),t.bezierCurveTo(12.1,124.7,41.5,90.4,51.3,66),t.lineTo(51.3,51.3),t.bezierCurveTo(51.3,36.6,41.5,17,36.6,2.4),t.bezierCurveTo(56.2,26.8,100.2,70.9,100.2,80.7),t.lineTo(100.2,80.7),t.closePath(),t.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0})},initEighth:function(e,t,n){var r=n*.125,i=this.getRealHeight(n,!0),s=t-i[0];return new Kinetic.Shape({sceneFunc:function(t){t.translate(e,s),t.scale(r,r),t.beginPath(),t.moveTo(92.9,5.2),t.bezierCurveTo(90.4,14.4,88.4,21.5,88.1,21.9),t.bezierCurveTo(84.9,28.7,78.5,37.2,73.6,42.1),t.bezierCurveTo(68.4,47.3,65.5,48.2,61.1,46.5),t.bezierCurveTo(57.4,44.5,56.2,42.4,53.8,31.5),t.bezierCurveTo(51.7,23.4,50.2,19,46.9,15.8),t.bezierCurveTo(38.4,6.5,23.8,5.3,12.6,12.6),t.bezierCurveTo(7.3,16.2,3.3,21.9,.9,28),t.bezierCurveTo(0,31.1,0,32,0,36.4),t.bezierCurveTo(0,40.9,0,42.4,.9,44.9),t.bezierCurveTo(3.6,53.8,9.3,60.7,18.2,64.7),t.bezierCurveTo(24.7,68,27.1,68.4,36,68.4),t.bezierCurveTo(42.5,68.4,44.5,68.4,49.8,67.5),t.bezierCurveTo(57.1,66.3,64.7,63.9,73.2,61.5),t.lineTo(78.5,59.4),t.lineTo(78.5,60.7),t.bezierCurveTo(78,62.3,44.1,190,43.7,190.8),t.bezierCurveTo(43.3,192.4,50.6,195.6,55,195.6),t.bezierCurveTo(59.4,195.6,65.9,192.8,66.3,190.8),t.bezierCurveTo(66.7,190.4,86.1,106.8,110.3,5.1),t.bezierCurveTo(107.1,-2.6,98.1,-0.8,92.9,5.2),t.closePath(),t.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0})},initSixteen:function(e,t,n){var r=this.getRealHeight(n,!0),i=n*.125,s=t-r[0];return new Kinetic.Shape({sceneFunc:function(t){t.translate(e,s),t.scale(i,i),t.beginPath(),t.moveTo(132.4,0),t.bezierCurveTo(126.7,0,121.8,4.5,120.8,9.5),t.bezierCurveTo(118,21.7,117.1,25.3,116.8,26.1),t.bezierCurveTo(114.2,31.6,107.4,42.3,102.3,47.8),t.bezierCurveTo(96.7,52.9,94.2,53.8,89.5,52.1),t.bezierCurveTo(85.7,50,84.4,47.8,81.9,36.3),t.bezierCurveTo(79.7,27.8,78,23.1,74.6,19.8),t.bezierCurveTo(65.6,9.9,50.3,8.6,38.3,16.3),t.bezierCurveTo(32.8,20.2,28.6,26.1,26,32.6),t.bezierCurveTo(25.1,35.9,25.1,36.8,25.1,41.5),t.bezierCurveTo(25.1,47.8,25.6,51.3,28.6,56.3),t.bezierCurveTo(32.8,64.9,41.8,71.7,52,74.2),t.bezierCurveTo(63.1,77.2,81.4,74.7,102.3,67.9),t.bezierCurveTo(105.2,66.6,108.2,65.7,108.2,65.7),t.bezierCurveTo(108.2,66.2,104.8,80.2,101,97.7),t.bezierCurveTo(94.6,127.5,94.2,129.7,92,133.4),t.bezierCurveTo(88.6,140.7,81,151,75.8,155.6),t.bezierCurveTo(71.6,159.5,68.7,160.3,64.4,158.6),t.bezierCurveTo(60.6,156.5,59.2,154.3,56.7,142.9),t.bezierCurveTo(54.5,134.3,52.9,129.7,49.4,126.2),t.bezierCurveTo(40.5,116.4,25.1,115.2,13.2,122.8),t.bezierCurveTo(7.7,126.7,3.4,132.6,.9,139),t.bezierCurveTo(0,142.5,0,143.3,0,148),t.bezierCurveTo(0,154.3,.4,157.7,3.4,162.8),t.bezierCurveTo(7.7,171.4,16.6,178.2,26.9,180.8),t.bezierCurveTo(37.9,183.7,59.2,180.8,80.1,173.5),t.bezierCurveTo(82.7,172.7,84.4,172.3,84.4,172.3),t.bezierCurveTo(84.4,172.7,54.5,306.4,53.3,310.7),t.bezierCurveTo(53.3,311.6,53.7,312,55.4,312.8),t.bezierCurveTo(58,314.5,62.2,315.9,65.2,315.9),t.bezierCurveTo(68.2,315.9,72.4,314.5,75,312.8),t.bezierCurveTo(76.7,312,77.2,311.6,77.6,309.4),t.bezierCurveTo(77.6,308.2,100.1,196.1,127.9,60.2),t.bezierCurveTo(131.9,40.2,133.1,33.9,136.5,17),t.bezierCurveTo(137.7,11.1,139.7,0,132.4,0),t.closePath(),t.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0})},initThirtySecond:function(e,t,n){var r=this.getRealHeight(n,!0),i=n*.125,s=t-r[0];return new Kinetic.Shape({sceneFunc:function(t){t.translate(e,s),t.scale(i,i),t.beginPath(),t.moveTo(154.4,0),t.bezierCurveTo(152.8,0,146,0,144.3,7.4),t.bezierCurveTo(141.2,20.7,140.5,22.5,138.9,25.3),t.bezierCurveTo(134.2,35.1,127.5,44.5,122.7,47.5),t.bezierCurveTo(120.2,49.2,118,49.2,115.1,47.9),t.bezierCurveTo(111.2,45.8,109.9,43.6,107.4,32.1),t.bezierCurveTo(105.2,23.6,103.6,18.9,100.1,15.5),t.bezierCurveTo(91.2,5.7,75.8,4.5,63.9,12.1),t.bezierCurveTo(58.4,15.9,54.1,21.9,51.6,28.3),t.bezierCurveTo(50.7,31.7,50.7,32.5,50.7,37.2),t.bezierCurveTo(50.7,43.6,51.1,47.1,54.1,52.2),t.bezierCurveTo(58.4,60.7,67.3,67.5,77.6,70),t.bezierCurveTo(82.3,71.4,94.2,71.4,102.3,70),t.bezierCurveTo(109.1,68.8,117.2,66.6,125.3,64.1),t.bezierCurveTo(129.1,62.8,131.7,61.9,132.1,61.9),t.bezierCurveTo(132.1,62.3,117.6,126.3,116.8,128.4),t.bezierCurveTo(114.2,133.9,107.4,144.6,102.3,150.1),t.bezierCurveTo(96.7,155.2,94.2,156.1,89.5,154.4),t.bezierCurveTo(85.7,152.3,84.4,150.1,81.9,138.6),t.bezierCurveTo(79.7,130.1,78,125.4,74.6,122.1),t.bezierCurveTo(65.6,112.2,50.3,111,38.3,118.6),t.bezierCurveTo(32.8,122.5,28.6,128.4,26,134.9),t.bezierCurveTo(25.1,138.2,25.1,139.1,25.1,143.8),t.bezierCurveTo(25.1,150.1,25.6,153.6,28.6,158.7),t.bezierCurveTo(32.8,167.2,41.8,174,52,176.5),t.bezierCurveTo(63.1,179.5,81.4,177,102.3,170.2),t.bezierCurveTo(105.2,168.9,108.2,168,108.2,168),t.bezierCurveTo(108.2,168.5,104.8,182.5,101,200),t.bezierCurveTo(94.6,229.8,94.2,232,92,235.7),t.bezierCurveTo(88.6,243,81,253.3,75.8,258),t.bezierCurveTo(71.6,261.8,68.7,262.6,64.4,260.9),t.bezierCurveTo(60.6,258.8,59.2,256.6,56.7,245.2),t.bezierCurveTo(54.5,236.7,52.9,232,49.4,228.5),t.bezierCurveTo(40.5,218.7,25.1,217.5,13.2,225.1),t.bezierCurveTo(7.7,229,3.4,234.9,.9,241.3),t.bezierCurveTo(0,244.8,0,245.6,0,250.3),t.bezierCurveTo(0,256.6,.4,260,3.4,265.1),t.bezierCurveTo(7.7,273.7,16.6,280.5,26.9,283.1),t.bezierCurveTo(37.9,286,59.2,283.1,80.1,275.8),t.bezierCurveTo(82.7,275,84.4,274.6,84.4,274.6),t.bezierCurveTo(84.4,275,54.5,408.7,53.3,413),t.bezierCurveTo(53.3,413.9,53.7,414.3,55.4,415.2),t.bezierCurveTo(58,416.8,62.2,418.2,65.2,418.2),t.bezierCurveTo(68.2,418.2,72.4,416.8,75,415.2),t.bezierCurveTo(76.7,414.3,77.2,413.9,77.6,411.7),t.bezierCurveTo(77.6,410.5,100.1,298.4,127.9,162.5),t.bezierCurveTo(141.5,94.4,151.4,44.8,158.6,8.7),t.bezierCurveTo(159.5,4.3,157.9,-0.1,154.4,0),t.closePath(),t.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0})},initSixtyFourth:function(e,t,n){var r=this.getRealHeight(n,!0),i=n*.125,s=t-r[0];return new Kinetic.Shape({sceneFunc:function(t){t.translate(e,s),t.scale(i,i),t.beginPath(),t.bezierCurveTo(89,2.9,80.5,10.6,76.7,21.2),t.bezierCurveTo(75.8,24.6,75.8,25.4,75.8,30.1),t.bezierCurveTo(75.8,34.8,75.8,36.5,76.7,39.1),t.bezierCurveTo(79.7,48.5,85.7,55.7,95,59.9),t.bezierCurveTo(101.8,63.4,104.4,63.8,113.8,63.8),t.bezierCurveTo(120.2,63.8,122.7,63.8,127.9,63),t.bezierCurveTo(134.6,61.7,144,59.1,151.3,56.6),t.lineTo(155.9,54.8),t.lineTo(155.5,56.6),t.bezierCurveTo(155.1,57.4,152.1,72.3,148.2,89.3),t.bezierCurveTo(141.5,119.2,141.1,120.9,138.9,124.7),t.bezierCurveTo(134.2,134.5,127.5,143.9,122.7,146.9),t.bezierCurveTo(120.2,148.6,118,148.6,115.1,147.3),t.bezierCurveTo(111.2,145.2,109.9,143,107.4,131.5),t.bezierCurveTo(105.2,123,103.6,118.3,100.1,114.9),t.bezierCurveTo(91.2,105.1,75.8,103.9,63.9,111.5),t.bezierCurveTo(58.4,115.3,54.1,121.3,51.6,127.7),t.bezierCurveTo(50.7,131.1,50.7,131.9,50.7,136.6),t.bezierCurveTo(50.7,143,51.1,146.5,54.1,151.6),t.bezierCurveTo(58.4,160.1,67.3,166.9,77.6,169.4),t.bezierCurveTo(82.3,170.8,94.2,170.8,102.3,169.4),t.bezierCurveTo(109.1,168.2,117.2,166,125.3,163.5),t.bezierCurveTo(129.1,162.3,131.7,161.3,132.1,161.3),t.bezierCurveTo(132.1,161.8,117.6,225.7,116.8,227.8),t.bezierCurveTo(114.2,233.3,107.4,244,102.3,249.5),t.bezierCurveTo(96.7,254.6,94.2,255.6,89.5,253.8),t.bezierCurveTo(85.7,251.7,84.4,249.5,81.9,238),t.bezierCurveTo(79.7,229.5,78,224.8,74.6,221.5),t.bezierCurveTo(65.6,211.6,50.3,210.4,38.3,218),t.bezierCurveTo(32.8,221.9,28.6,227.8,26,234.3),t.bezierCurveTo(25.1,237.6,25.1,238.5,25.1,243.2),t.bezierCurveTo(25.1,249.5,25.6,253,28.6,258.1),t.bezierCurveTo(32.8,266.6,41.8,273.4,52,275.9),t.bezierCurveTo(63.1,278.9,81.4,276.4,102.3,269.6),t.bezierCurveTo(105.2,268.3,108.2,267.4,108.2,267.4),t.bezierCurveTo(108.2,267.9,104.8,281.9,101,299.4),t.bezierCurveTo(94.6,329.2,94.2,331.4,92,335.1),t.bezierCurveTo(88.6,342.4,81,352.7,75.8,357.4),t.bezierCurveTo(71.6,361.2,68.7,362,64.4,360.3),t.bezierCurveTo(60.6,358.2,59.2,356,56.7,344.6),t.bezierCurveTo(54.5,336.1,52.9,331.4,49.4,328),t.bezierCurveTo(40.5,318.1,25.1,316.9,13.2,324.5),t.bezierCurveTo(7.7,328.4,3.4,334.3,.9,340.7),t.bezierCurveTo(0,344.2,0,345,0,349.7),t.bezierCurveTo(0,356,.4,359.4,3.4,364.5),t.bezierCurveTo(7.7,373.1,16.6,379.9,26.9,382.5),t.bezierCurveTo(37.9,385.4,59.2,382.5,80.1,375.2),t.bezierCurveTo(82.7,374.4,84.4,374,84.4,374),t.bezierCurveTo(84.4,374.4,54.5,508.1,53.3,512.4),t.bezierCurveTo(53.3,513.3,53.7,513.7,55.4,514.6),t.bezierCurveTo(58,516.2,62.2,517.6,65.2,517.6),t.bezierCurveTo(68.2,517.6,72.4,516.2,75,514.6),t.bezierCurveTo(76.7,513.7,77.2,513.3,77.6,511.1),t.bezierCurveTo(77.6,509.9,100.1,397.8,127.9,261.9),t.bezierCurveTo(171.7,42.9,177.2,14.8,176.8,13.9),t.bezierCurveTo(175.6,11.8,173.9,11,171.3,11),t.bezierCurveTo(167.5,11,166.6,11.8,162.8,19.1),t.bezierCurveTo(157.3,29.7,151.7,37.4,147.8,40.4),t.bezierCurveTo(145.7,42.1,143.6,42.1,140.2,40.8),t.bezierCurveTo(136.4,38.6,135.1,36.5,132.5,25),t.bezierCurveTo(130,13.5,126.9,8.4,120.6,4.1),t.bezierCurveTo(114.6,.3,107,-0.9,100.1,.7),t.closePath(),t.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0})},simpleRestShape:function(e,t,n){return new Kinetic.Rect({x:e,y:t,width:this.getRealWidth(n),height:this.getRealHeight(n),fill:"black",strokeWidth:0})}}),e}(),Euterpe.Row=function(){function e(t){e.super.call(this,"Euterpe.Row",t),this.type=Euterpe.getConfig(t,"type"),this.group=Euterpe.getConfig(t,"group",undefined),this.groupType=Euterpe.getConfig(t,"groupType",undefined),this.type==="measure"?(this.numberOfLines=5,this.realHeight=[0,57.3]):this.type==="tab"&&(this.numberOfLines=6,this.realHeight=[0,71.5]),this.prepared=[]}return Euterpe.extend(Euterpe.Container,e,{render:function(e,t,n){var r=[],i=0,s=e;for(var o=0;o<this.items.length;o++){var u=this.items[o];u.X=e+u.leftMargin*n,u.Y=t,r.push(u.render(u.X,u.Y,n));var a=u.getRealWidth(n);i+=a,e+=a}r.push(this.renderSelf(s,t,n,i));if(this.type==="measure"){var f=[];this.prepareLedgerLines(f,Euterpe.select("Euterpe.Note",this),t,n),r.push(this.renderLedgerLines(f,n))}return r},prepareLedgerLines:function(e,t,n,r){for(var i=0;i<t.length;i++){var s=t[i];if(typeof s.config.location=="number"){var o=s.headWidth*r,u;s.config.location>this.numberOfLines-1?(u=Math.floor(s.config.location),this.addLedgerLine(s,u,s.X,o,n,e,r)):s.config.location<0&&(u=Math.ceil(s.config.location),this.addLedgerLine(s,u,s.X,o,n,e,r))}}},addLedgerLine:function(e,t,n,r,i,s,o){var u;for(;;){if(t>0&&t<=4||t===0)break;u=!1;var a=Euterpe.getY(t,o,i);if(e.name==="Euterpe.Note"){for(var f=0;f<s.length;f++){var l=s[f];if(l[0]===n&&l[1]===a){u=!0;break}}u||s.push([n,a,r])}t+=t>0?-1:1}},renderLedgerLines:function(e,t){var n=[];for(var r=0;r<e.length;r++){var i=e[r][0],s=e[r][1],o=5*t,u=e[r][2]+o*2;n.push(new Kinetic.Line({points:[0,0,u,0],stroke:"black",strokeWidth:Euterpe.global.lineWidth,x:i-o,y:s}))}return n},renderSelf:function(e,t,n,r){var i=new Kinetic.Line({points:[0,0,r,0],stroke:"black",strokeWidth:Euterpe.global.lineWidth,x:e,y:t}),s=new Kinetic.Group({});s.add(i);for(var o=2;o<this.numberOfLines+1;o++){var u=Euterpe.getY(o-1,n,t),a=i.clone({y:u});s.add(a)}return s}}),e}(),Euterpe.Score=function(){function e(t){this.layer=t.layer,this.lineMargin=Euterpe.getConfig(t,"lineMargin",0),this.titleMargin=Euterpe.getConfig(t,"titleMargin",0),this.musicByMargin=Euterpe.getConfig(t,"musicByMargin",0),this.tuningMargin=Euterpe.getConfig(t,"tuningMargin",0),this.title=Euterpe.getConfig(t,"title",undefined),this.musicBy=Euterpe.getConfig(t,"musicBy",undefined),this.tuning=Euterpe.getConfig(t,"tuning",undefined),this.titleHeight=0,this.musicByHeight=0,this.tuningHeight=0,typeof this.title!="undefined"&&(this.titleText=new Euterpe.Text({text:this.title,fontSize:40,fontFamily:"Serif"}),this.titleWidth=this.titleText.getRealWidth(1),this.titleHeight=this.titleText.getRealHeight(1)),typeof this.musicBy!="undefined"&&(this.musicByText=new Euterpe.Text({fontSize:20,text:"Music by "+this.musicBy,fontFamily:"Serif"}),this.musicByHeight=this.musicByText.getRealHeight(1)),typeof this.tuning!="undefined"&&(this.tuningText=new Euterpe.Text({fontSize:15,text:this.tuning,fontFamily:"Serif",fontStyle:"italic"}),this.tuningHeight=this.tuningText.getRealHeight(1)),e.super.call(this,"Euterpe.Score",t)}return Euterpe.extend(Euterpe.Container,e,{bracketExtraUp:5,bracketExtraDown:5,getRealHeight:function(e,t){var n=this.doGetRealHeight(this.items,e,t),r=0;return r+=this.titleHeight*e,r+=this.titleMargin*e,r+=this.musicByHeight*e,r+=this.musicByMargin*e,r+=this.tuningHeight*e,r+=this.tuningMargin*e,t?n[0]+=r:n+=r,n},render:function(e,t,n){var r=0,i=[],s,o=Euterpe.getGroups(this.items),u=0;for(s=0;s<o.length;s++){var a=o[s];a.groupType==="bracket"&&6>u&&(u=6)}e+=u*n;var f=0;t=this.renderMeta(e,t,n,i);for(s=0;s<this.items.length;s++){var l=this.items[s],c=this.doGetRealHeight([l],n,!0);r!==0&&(r+=c[0]);var h=t+r;l.Y=h,l.X=e,f<o.length&&o[f].first===l.id&&(i.push(this.renderBracket(e-u*n,h,n,o[f].items)),f++),r+=c[1],i.push(l.render(e,h,n))}return i},renderMeta:function(e,t,n,r){var i=this.getRealHeight(n,!0);t-=i[0];var s=(this.titleHeight+this.musicByHeight+this.tuningHeight+this.titleMargin+this.musicByMargin+this.tuningMargin)*n;return typeof this.title!="undefined"&&(t+=this.titleHeight*n/2,r.push(this.renderText(this.titleText,this.titleWidth,e,t,n,!0)),t+=this.titleHeight*n/2,t+=this.titleMargin*n),typeof this.musicBy!="undefined"&&(t+=this.musicByHeight*n/2,r.push(this.renderText(this.musicByText,0,e,t,n)),t+=this.musicByHeight*n/2,t+=this.musicByMargin*n),typeof this.tuning!="undefined"&&(t+=this.tuningHeight*n/2,r.push(this.renderText(this.tuningText,0,e,t,n)),t+=this.tuningHeight*n/2,t+=this.tuningMargin*n),t+=i[0]-s,t},renderText:function(e,t,n,r,i,s){var o=n;if(s){var u=this.items[0].getRealWidth(i);o=n+(u/2-t/2)}return e.render(o,r,i)},doGetRealHeight:function(e,t,n){var r,i=0,s=Euterpe.getGroups(this.items),o=function(e){return _.find(s,function(t){return t.first===e.id})},u=function(e){return _.find(s,function(t){return t.last===e.id})};for(var a=0;a<e.length;a++){var f=e[a],l=f.getRealHeight(t,!0);o(f)&&(l[0]+=this.bracketExtraUp*t),u(f)&&(l[1]+=this.bracketExtraDown*t);var c=l[1]+l[0];typeof r=="undefined"&&(r=l[0]+i),i+=c+this.lineMargin*t}return n?[r,i-r]:i},renderBracket:function(e,t,n,r){var i=this.bracketExtraUp*n,s=this.bracketExtraDown*n,o=this.doGetRealHeight(r,n,!0),u=o[0]-i,a=o[1]-s-this.lineMargin*n;return new Kinetic.Shape({sceneFunc:function(r){r.beginPath();var o=10*n;r.moveTo(e+o,t-u-i),r.lineTo(e,t-u),r.lineTo(e,t+a),r.lineTo(e+o,t+a+s),r.lineTo(e+o/5,t+a),r.lineTo(e+o/5,t-u),r.lineTo(e+o,t-u-i),r.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0})}}),e}(),Euterpe.Sharp=function(){function e(t){e.super.call(this,"Euterpe.Sharp",t),this.realWidth=9,this.realHeight=[11,11]}return Euterpe.extend(Euterpe.Node,e,{render:function(e,t,n){var r=this.realHeight[0]+this.realHeight[1];this.startY=t-r*n/2-n;var i=this.realWidth*n,s=r*n,o=1.5*n,u=new Kinetic.Rect({x:this.X+i/3.6-o/2,y:this.startY+2*n,width:o,height:s,fill:"black",strokeWidth:0}),a=u.clone({x:this.X+i-i/3.6-o/2,y:this.startY}),f=4.5*n,l=this.startY+s/4+3*n;o=3*n;var c=new Kinetic.Line({points:[this.X,l,this.X,l+o,this.X+i,l+o-f,this.X+i,l-f],fill:"black",strokeWidth:0,closed:!0});l=this.startY+s-s/4;var h=c.clone({points:[this.X,l,this.X,l+o,this.X+i,l+o-f,this.X+i,l-f]}),p=[u,a,c,h];return Euterpe.bind(this,p),p}}),e}(),Euterpe.StringNumber=function(){function e(t){this.string=Euterpe.getConfig(t,"string"),this.fontSize=10,this.fontFamily="Arial";if(typeof this.string!="number"||this.string<0||this.string>6)throw"Invalid string value";this.string=this.string.toString(),this.textWidth=5,this.textHeight=7.6,this.realWidth=21.3,this.realHeight=[10.65,10.65],e.super.call(this,"Euterpe.StringNumber",t)}return Euterpe.extend(Euterpe.Node,e,{render:function(e,t,n){var r=[],i=e+this.realWidth*n/2;return r.push(new Kinetic.Circle({x:i,y:t,radius:10*n,fill:"white",stroke:"black",strokeWidth:n})),r.push(new Kinetic.Text({x:i-this.textWidth*n/2,y:t-this.textHeight*n/2,text:this.string,fontSize:this.fontSize*n,fontFamily:this.fontFamily,fill:"black"})),Euterpe.bind(this,r),r}}),e}(),Euterpe.Text=function(){function e(t){this.text=Euterpe.getConfig(t,"text"),this.color=Euterpe.getConfig(t,"color","black"),this.fontFamily=Euterpe.getConfig(t,"fontFamily","Arial"),this.fontSize=Euterpe.getConfig(t,"fontSize",10),this.fontStyle=Euterpe.getConfig(t,"fontStyle","normal");var n=1,r=new Kinetic.Text({x:0,y:0,text:this.text,fontSize:this.fontSize*n,fontFamily:this.fontFamily,fontStyle:this.fontStyle}),i=r.height()/n;this.realWidth=r.width()/n,this.realHeight=[i/2,i/2],e.super.call(this,"Euterpe.Text",t)}return Euterpe.extend(Euterpe.Node,e,{render:function(e,t,n){var r=[new Kinetic.Text({x:e,y:t-(this.realHeight[0]*n+this.realHeight[1]*n)/2,text:this.text,fontSize:this.fontSize*n,fontFamily:this.fontFamily,fontStyle:this.fontStyle,fill:this.color})];return Euterpe.bind(this,r),r}}),e}(),Euterpe.TimeSignature=function(){function e(t){this.numerator=Euterpe.getConfig(t,"numerator",4),this.denominator=Euterpe.getConfig(t,"denominator",4),e.super.call(this,t),this.add(new Euterpe.TimeSignatureShape(this.numerator,0)),this.add(new Euterpe.TimeSignatureShape(this.denominator,2))}return Euterpe.extend(Euterpe.Column,e,{name:"Euterpe.TimeSignature"}),e}(),Euterpe.TimeSignatureShape=function(){function e(t,n){this.yoffset=2;var r={4:[0,24+this.yoffset]};this.digit=t.toString(),this.realWidth=22.4,this.realHeight=r[t],e.super.call(this,"Euterpe.TimeSignatureShape",{location:n})}return Euterpe.extend(Euterpe.Node,e,{render:function(e,t,n){var r=this;this.scale=n,this.startX=e,this.startY=t+this.yoffset*n;var i=[];return this.digit==="4"&&i.push(new Kinetic.Shape({sceneFunc:function(e){var t=r.startX+17.6*n,i=r.startY;e.beginPath(),e.moveTo(t,i),e.lineTo(t-10*r.scale,i),e.bezierCurveTo(t-8.8*r.scale,i+6.8*r.scale,t-10.54*r.scale,i+10.66*r.scale,t-17.6*r.scale,i+16*r.scale),e.lineTo(t-17.6*r.scale,i+17*r.scale),e.lineTo(t-3.6*r.scale,i+17*r.scale),e.lineTo(t-3.6*r.scale,i+22.4*r.scale),e.lineTo(t-5.6*r.scale,i+22.4*r.scale),e.lineTo(t-5.6*r.scale,i+23.4*r.scale),e.lineTo(t-5.6*r.scale,i+23.4*r.scale),e.lineTo(t+4.4*r.scale,i+23.4*r.scale),e.lineTo(t+4.4*r.scale,i+22.4*r.scale),e.lineTo(t+2.4*r.scale,i+22.4*r.scale),e.lineTo(t+2.4*r.scale,i+17*r.scale),e.lineTo(t+4.4*r.scale,i+17*r.scale),e.lineTo(t+4.4*r.scale,i+16*r.scale),e.lineTo(t+2.4*r.scale,i+16*r.scale),e.lineTo(t+2.4*r.scale,i+1.4*r.scale),e.lineTo(t-3.6*r.scale,i+7.2*r.scale),e.lineTo(t-3.6*r.scale,i+16*r.scale),e.lineTo(t-16.6*r.scale,i+16*r.scale),e.lineTo(t,i),e.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0})),Euterpe.bind(this,i),i}}),e}(),Euterpe.TrebleClef=function(){function e(t){this.realWidth=36.8,t.location=0,e.super.call(this,"Euterpe.TrebleClef",t)}return Euterpe.extend(Euterpe.Node,e,{realHeight:[26.3,82],render:function(e,t,n){this.startX=e,this.startY=t-27*n,this.scale=.125*n;var r=this,i=new Kinetic.Shape({sceneFunc:function(e){e.beginPath(),e.translate(r.startX,r.startY),e.scale(r.scale,r.scale),e.moveTo(159,3),e.quadraticCurveTo(129,50,117,93),e.quadraticCurveTo(107,126,102,167),e.quadraticCurveTo(101,192,102,210),e.quadraticCurveTo(107,255,116,297),e.quadraticCurveTo(63,351,44,375),e.quadraticCurveTo(24,401,15,429),e.quadraticCurveTo(2,464,3,503),e.quadraticCurveTo(5,540,20,575),e.quadraticCurveTo(29,596,48,615),e.quadraticCurveTo(62,630,87,645),e.quadraticCurveTo(113,660,150,666),e.quadraticCurveTo(177,668,194,665),e.quadraticCurveTo(204,720,213,776),e.quadraticCurveTo(216,795,216,813),e.quadraticCurveTo(203,849,158,857),e.quadraticCurveTo(132,857,120,842),e.quadraticCurveTo(152,845,166,813),e.quadraticCurveTo(165,821,168,802),e.quadraticCurveTo(166,775,151,765),e.quadraticCurveTo(132,750,107,758),e.quadraticCurveTo(86,768,78,789),e.quadraticCurveTo(71,818,90,840),e.quadraticCurveTo(105,857,129,865),e.quadraticCurveTo(149,872,177,865),e.quadraticCurveTo(194,860,209,846),e.quadraticCurveTo(231,828,230,803),e.quadraticCurveTo(221,735,207,662),e.quadraticCurveTo(248,650,267,626),e.quadraticCurveTo(293,599,296,566),e.quadraticCurveTo(300,527,285,494),e.quadraticCurveTo(270,462,234,444),e.quadraticCurveTo(215,435,189,435),e.quadraticCurveTo(177,435,164,438),e.quadraticCurveTo(155,396,146,354),e.quadraticCurveTo(183,315,203,275),e.quadraticCurveTo(219,243,222,210),e.quadraticCurveTo(227,167,221,137),e.quadraticCurveTo(213,93,192,51),e.quadraticCurveTo(180,29,159,3),e.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0}),s=new Kinetic.Shape({sceneFunc:function(e){e.beginPath(),e.translate(r.startX,r.startY),e.scale(r.scale,r.scale),e.moveTo(191,93),e.quadraticCurveTo(179,83,171,93),e.quadraticCurveTo(126,162,131,281),e.quadraticCurveTo(188,239,203,188),e.quadraticCurveTo(209,162,204,135),e.quadraticCurveTo(200,111,191,93),e.fillStrokeShape(this)},fill:"white",stroke:"white",strokeWidth:0}),o=new Kinetic.Shape({sceneFunc:function(e){e.beginPath(),e.translate(r.startX,r.startY),e.scale(r.scale,r.scale),e.moveTo(171,473),e.quadraticCurveTo(188,555,206,648),e.quadraticCurveTo(237,639,255,620),e.quadraticCurveTo(283,588,283,558),e.quadraticCurveTo(285,525,269,501),e.quadraticCurveTo(252,476,216,470),e.quadraticCurveTo(194,465,171,473),e.fillStrokeShape(this)},fill:"white",stroke:"white",strokeWidth:0}),u=new Kinetic.Shape({sceneFunc:function(e){e.beginPath(),e.translate(r.startX,r.startY),e.scale(r.scale,r.scale),e.moveTo(147,446),e.quadraticCurveTo(141,411,132,369),e.quadraticCurveTo(90,401,68,435),e.quadraticCurveTo(45,467,39,503),e.quadraticCurveTo(30,540,45,576),e.quadraticCurveTo(60,612,92,633),e.quadraticCurveTo(123,651,161,654),e.quadraticCurveTo(174,654,188,653),e.fillStrokeShape(this)},fill:"white",stroke:"white",strokeWidth:0}),a=new Kinetic.Shape({sceneFunc:function(e){e.beginPath(),e.translate(r.startX,r.startY),e.scale(r.scale,r.scale),e.moveTo(147,444),e.quadraticCurveTo(120,456,101,480),e.quadraticCurveTo(83,504,84,536),e.quadraticCurveTo(86,567,107,588),e.quadraticCurveTo(114,597,126,605),e.quadraticCurveTo(116,593,107,581),e.quadraticCurveTo(95,560,99,537),e.quadraticCurveTo(105,509,132,491),e.quadraticCurveTo(143,482,164,476),e.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0}),f=[i,s,o,u,a];return Euterpe.bind(this,f),f}}),e}(),Euterpe.Column=function(){function e(t){e.super.call(this,"Euterpe.Column",t)}return Euterpe.extend(Euterpe.Container,e,{getRealWidth:function(e,t){var n=Euterpe.getMargins(this,e),r=this.collectItems(),i=_.max(_.map(r,function(n){var r=0,i=0;return n.isNode&&(r=n.getLeftWidth(e),i=n.getRightWidth(e)),n.getRealWidth(e,t)+(t?0:r+i)}));return i+(t?0:n)},getRealHeight:function(e,t){var n=this.collectItems();return Euterpe.getRealHeight(this,n,e,t)},collectItems:function(){var e=this.items;return _.isArray(this.config.aboveItems)&&(e=this.config.aboveItems.concat(this.items)),_.isArray(this.config.belowItems)&&(e=e.concat(this.config.belowItems)),e},render:function(e,t,n){var r=[],i,s,o=0,u=this.collectItems(),a=this.renderSideItems(u,n,r,e,t,!0);e+=a;for(s=0;s<u.length;s++)i=u[s],i.X=e,i.Y=Euterpe.getY(i,n,t),r.push(i.render(i.X,i.Y,n)),a=i.getRealWidth(n),a>o&&(o=a);return this.renderSideItems(this.items,n,r,e+o,t,!1),r},renderSideItems:function(e,t,n,r,i,s){var o=[],u=0,a=0;if(s)for(f=0;f<e.length;f++)e[f].isNode?(c=e[f].getLeftWidth(t),o.push(c),c>u&&(u=c)):o.push(0);for(var f=0;f<e.length;f++){var l=e[f],c=0,h=0;typeof o[f]!="undefined"&&o[f]!==u&&(h=u-o[f]);var p=s?l.leftItems:l.rightItems;for(var d=0;d<p.length;d++){var v=p[d];typeof v.config.location=="undefined"&&(v.config.location=l.config.location),v.X=r+v.leftMargin*t+h+c,v.Y=Euterpe.getY(v,t,i),n.push(v.render(v.X,v.Y,t)),c+=v.getRealWidth(t)}c>a&&(a=c)}return a},reduceWidth:function(e,t){return _.reduce(e,function(e,n){return e+n.getRealWidth(t)},0)}}),e}(),Euterpe.ContainerDepth=0,Euterpe.Container=function(){var e=function(e,t){this.id=Euterpe.randomString(20),this.items=[],this.name=this.name||e,this.config=t||{},this.leftMargin=Euterpe.getConfig(t,"leftMargin",0),this.rightMargin=Euterpe.getConfig(t,"rightMargin",0),this.leftItems=[],this.rightItems=[];if(typeof t!="undefined"&&_.isArray(t.items))for(var n=0;n<t.items.length;n++)this.add(t.items[n])};return e.prototype={getRealWidth:function(e,t){var n=t?0:Euterpe.getMargins(this,e);for(var r=0;r<this.items.length;r++)n+=this.items[r].getRealWidth(e,t);return n},getRealHeight:function(e,t){return Euterpe.getRealHeight(this,this.items,e,t)},isContainer:!0,getLeftWidth:function(e){var t=_.map(this.items,function(t){return t.getLeftWidth(e)});return _.max(t)},getRightWidth:function(e){var t=_.map(this.items,function(t){return t.getRightWidth(e)});return _.max(t)},clear:function(){this.items.length=0},size:function(){return this.items.length},add:function(e){var t=this;if(_.isArray(e))return _.each(e,function(e){t.add(e)});e.parent=this,this.items.push(e)},prepend:function(e){e.parentContainer=this,this.items.unshift(e)},insertBefore:function(e,t){for(var n=0;n<this.items.length;n++){var r=this.items[n];if(r.id===e)return this.items.splice(n,0,t)}},baseRender:function(e,t,n,r,i){Euterpe.ContainerDepth+=1;var s=[],o=function(e,t,n,r,i){var s=Euterpe.getY(e,r,n);return e.Y=s,e.render(t,s,r,i)};r=r||o,i=i||o;for(var u=0;u<this.items.length;u++){var a=this.items[u],f=0;Euterpe.log.debug((new Array(Euterpe.ContainerDepth)).join("  "),a),a.isContainer?(a.parentContainer=this,f=a.getRealWidth(n),a.X=e+a.leftMargin*n,a.Y=t,s.push(i(a,a.X,a.Y,n,u)),e+=f):(a.parentContainer=this,f=a.getRealWidth(n),a.X=e+a.leftMargin*n,a.Y=t,s.push(r(a,a.X,a.Y,n,u)),e+=f)}return Euterpe.ContainerDepth-=1,s},render:function(e,t,n){return Euterpe.baseRender(this.items,e,t,n)}},e}(),Euterpe.const={LOG_DEBUG:1,LOG_INFO:2,LOG_WARNING:3,LOG_ERROR:4},Euterpe.global={loglevel:Euterpe.const.LOG_INFO},Euterpe.plugins={plugins:[],add:function(){var e=this;_.each(arguments,function(t){e.plugins.push(t)})},fold:function(e,t,n){return _.reduce(this.plugins,function(e,r){return r.process(e,t,n)},e)}},Euterpe.getConfig=function(e,t,n){return typeof e=="undefined"?n:typeof e[t]=="undefined"?n:e[t]},Euterpe.getY=function(e,t,n){var r;if(typeof e=="number")r=e;else{if(typeof e.config=="undefined"||typeof e.config.location=="undefined")return n;r=e.config.location}if(typeof r=="function")return r(t,n);var i=Euterpe.global.linePadding/2+Euterpe.global.lineWidth/2,s,o,u;return r>=0?(o=Math.floor(r),u=Math.ceil(r)>r?i:0,s=Euterpe.global.linePadding*o+Euterpe.global.lineWidth*o,n+s+u):r<0?(o=Math.ceil(r),u=Math.floor(r)<r?i:0,s=Euterpe.global.linePadding*-o+Euterpe.global.lineWidth*-o,n+s*-1-u):n},Euterpe.initNode=function(e,t){e.isNode=!0,e.nodeName=t},Euterpe.extend=function(e,t,n){function r(){}r.prototype=e.prototype,t.prototype=new r,t.prototype.constructor=t,t.super=e,typeof n=="object"&&_.extend(t.prototype,n)},Euterpe.render=function(e,t,n,r,i,s){Euterpe.initLog(),Euterpe.global.root=e,Euterpe.global.background=new Kinetic.Layer({}),Euterpe.global.foreground=new Kinetic.Layer({}),Euterpe.global.linePadding=13*i,Euterpe.global.lineWidth=i;var o=[],u=Euterpe.plugins.fold(e,i,o),a=u.getRealHeight(i,!0);n+=a[0];var f=n+a[1];Euterpe.stage=new Kinetic.Stage({container:s,width:r,height:f}),Euterpe.stage.add(Euterpe.global.foreground),Euterpe.stage.add(Euterpe.global.background);var l=_.flatten(u.render(t+e.leftMargin*i,n,i));for(var c=0;c<l.length;c++)l[c].layer2draw==="background"?Euterpe.global.background.add(l[c]):Euterpe.global.foreground.add(l[c]);for(var h=0;h<o.length;h++){var p=o[h],d=p(u,i);if(typeof d=="undefined")continue;d.layer2draw==="background"?Euterpe.global.background.add(d):Euterpe.global.foreground.add(d)}return Euterpe.stage},Euterpe.getMargins=function(e,t){return e.leftMargin*t+e.rightMargin*t},Euterpe.randomString=function(e){return(new Array(e+1)).join((Math.random().toString(36)+"00000000000000000").slice(2,18)).slice(0,e)},Euterpe.select=function(e,t){var n=function(t){return e[0]==="#"?t.id===e.slice(1,e.length):t.name===e};t=t||Euterpe.global.root;var r=[];if(t.isNode&&n(t))r.push(t);else if(t.isContainer)for(var i=0;i<t.items.length;i++){var s=t.items[i];n(s)&&r.push(s),s.isContainer&&r.push(Euterpe.select(e,s))}return _.flatten(r)},Euterpe.replace=function(e,t,n){for(var r=0;r<e.items.length;r++){var i=e.items[r];if(i.id==t)return n.parentContainer=e,e.items[r]=n,!0;if(i.isContainer&&Euterpe.replace(i,t,n))break}return!1},Euterpe.initLog=function(){var e=window.console||{},t=function(){};Euterpe.log={debug:t,info:t,warn:t,error:t},Euterpe.const.LOG_DEBUG>=Euterpe.global.loglevel&&e.log&&(Euterpe.log.debug=e.debug.bind(e)),Euterpe.const.LOG_INFO>=Euterpe.global.loglevel&&e.info&&(Euterpe.log.info=e.info.bind(e)),Euterpe.const.LOG_WARNING>=Euterpe.global.loglevel&&e.warn&&(Euterpe.log.warn=e.warn.bind(e)),Euterpe.const.LOG_ERROR>=Euterpe.global.loglevel&&e.error&&(Euterpe.log.error=e.error.bind(e))},Euterpe.getDistance=function(e,t,n){var r=0;for(var i=0;i<e.items.length;i++){var s=e.items[i];if(s.id===t.id)break;if(s.isContainer&&Euterpe.select("#"+t.id,s).length>0){r+=s.leftMargin*n,r+=Euterpe.getDistance(s,t,n);break}r+=s.getRealWidth(n)}return r},Euterpe.getRealHeight=function(e,t,n,r){var i=0,s,o,u,a,f;typeof e.realHeight!="undefined"&&(f=Euterpe.getY(e,n,i),s=e.realHeight[0]*n,o=e.realHeight[1]*n);for(var l=0;l<t.length;l++){var c=t[l],h=c.getRealHeight(n,!0);f=Euterpe.getY(c,n,i),u=f-h[0],a=f+h[1];if(typeof s=="undefined"||u<s)s=u;if(typeof o=="undefined"||a>o)o=a}return r?[s*-1,o]:o-s},Euterpe.baseRender=function(e,t,n,r){var i=[],s,o;for(o=0;o<e.length;o++)s=e[o],s.X=t,s.Y=Euterpe.getY(s,r,n),i.push(s.render(s.X,s.Y,r)),t+=s.getRealWidth(r);return i},Euterpe.getGroups=function(e){var t=[],n=null,r=null,i=null,s=[],o=null;for(var u=0;u<e.length;u++){var a=e[u];typeof a.group!="undefined"?(n!==a.group&&(n!==null&&t.push({first:i,last:o,groupType:r,items:_.clone(s)}),i=a.id,n=a.group,r=a.groupType,s.length=0),s.push(a)):t.push({first:undefined,last:undefined,groupType:undefined,items:[a]}),o=a.id}return s.length>0&&t.push({first:i,last:o,groupType:r,items:s}),t},Euterpe.bind=function(e,t){if(typeof e.config.on=="undefined")return;_.isArray(t)?t=_.flatten(t):t=[t];var n={},r=function(r,i){return function(){i.call(r,e,t,n)}},i=_.keys(e.config.on);for(var s=0;s<i.length;s++){var o=i[s];_.each(t,function(t){t.on(o,r(t,e.config.on[o]))})}},Euterpe.Flat=function(){function e(t){this.realWidth=12.25,this.realHeight=[16.3,9],e.super.call(this,"Euterpe.Flat",t)}return Euterpe.extend(Euterpe.Node,e,{render:function(e,t,n){var r=(this.realHeight[0]+this.realHeight[1])*n;this.barWidth=1.5*n,t-=16.25*n;var i=new Kinetic.Line({points:[0,0,0,r],stroke:"black",strokeWidth:this.barWidth,x:e,y:t}),s=t+r,o=e+this.barWidth/2,u=new Kinetic.Shape({sceneFunc:function(e){e.beginPath(),e.moveTo(o,s),e.lineTo(o+7*n,s-5.25*n),e.bezierCurveTo(o+12*n,s-8.75*n,o+12.5*n,s-19.75*n,o,s-13.75*n),e.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0}),a=new Kinetic.Shape({sceneFunc:function(e){e.beginPath(),e.moveTo(o,s-1.25*n),e.bezierCurveTo(o+9.75*n,s-6.75*n,o+8.25*n,s-17.25*n,o,s-12.75*n),e.fillStrokeShape(this)},fill:"white",stroke:"white",strokeWidth:0}),f=[i,u,a];return Euterpe.bind(this,f),f}}),e}(),Euterpe.helpers={},Euterpe.helpers.events={highlight:function(e,t){function n(n,r,i){typeof i.fill=="undefined"&&(i.fill={}),typeof i.stroke=="undefined"&&(i.stroke={});for(var s=0;s<r.length;s++){var o=r[s];o.fill()===e&&(i.fill[o._id]=e,o.fill(t)),o.stroke()===e&&(i.stroke[o._id]=e,o.stroke(t))}Euterpe.global.background.draw(),Euterpe.global.foreground.draw()}function r(e,t,n){for(var r=0;r<t.length;r++){var i=t[r];typeof n.fill[i._id]!="undefined"&&i.fill(n.fill[i._id]),typeof n.stroke[i._id]!="undefined"&&i.stroke(n.stroke[i._id])}Euterpe.global.background.draw(),Euterpe.global.foreground.draw()}return[n,r]}},Euterpe.KeySignature=function(){function e(t){this.type=Euterpe.getConfig(t,"type"),this.amount=Euterpe.getConfig(t,"amount");if(this.type!=="sharp"&&this.type!=="flat")throw"Invalid type argument";if(typeof this.amount!="number"||this.amount<1||this.amount>7)throw"amount should be >= 1 and <= 7";e.super.call(this,t);var n={sharp:[0,1.5,-0.5,1,2.5,.5,2],flat:[2,.5,2.5,1,3,1.5,3.5]};for(var r=0;r<this.amount;r++){var i={location:n[this.type][r]};this.add(this.type==="sharp"?new Euterpe.Sharp(i):new Euterpe.Flat(i))}}return Euterpe.extend(Euterpe.Container,e),e}(),Euterpe.Natural=function(){function e(t){this.realWidth=11.5,this.realHeight=[20.5,21.5],e.super.call(this,"Euterpe.Natural",t)}return Euterpe.extend(Euterpe.Node,e,{render:function(e,t,n){var r=1.5*n,i=28*n,s=10*n,o=2.5*n,u=1.5*n;t-=i/2+i/4;var a=new Kinetic.Rect({width:r,height:i,fill:"black",stroke:"black",strokeWidth:0,strokeEnabled:!1,x:e,y:t}),f=a.clone({x:e+s,y:t+i/2}),l,c,h=new Kinetic.Shape({sceneFunc:function(n){l=e,c=t+i/2,n.beginPath(),n.moveTo(l,c),n.lineTo(l+s+r,c-u),n.lineTo(l+s+r,c+o),n.lineTo(l,c+o+u),n.lineTo(l,c),n.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0,strokeEnabled:!1}),p=h.clone({sceneFunc:function(n){l=e,c=t+i-o,n.beginPath(),n.moveTo(l,c),n.lineTo(l+s+r,c-u),n.lineTo(l+s+r,c+o),n.lineTo(l,c+o+u),n.lineTo(l,c),n.fillStrokeShape(this)}}),d=[a,f,h,p];return Euterpe.bind(this,d),d}}),e}(),Euterpe.Node=function(){var e=function(e,t){this.id=Euterpe.randomString(20),this.name=e,this.config=t||{},this.leftMargin=Euterpe.getConfig(t,"leftMargin",0),this.rightMargin=Euterpe.getConfig(t,"rightMargin",0),this.leftItems=Euterpe.getConfig(t,"leftItems",[]),this.rightItems=Euterpe.getConfig(t,"rightItems",[])};return e.prototype.isNode=!0,e.prototype.getLeftWidth=function(e){return this.reduceWidth(this.leftItems,e)},e.prototype.getRightWidth=function(e){return this.reduceWidth(this.rightItems,e)},e.prototype.getRealWidth=function(e,t){var n=Euterpe.getMargins(this,e);return this.realWidth*e+(t?0:n)},e.prototype.getRealHeight=function(e,t){return typeof this.realHeight=="undefined"?t?[0,0]:0:t?[this.realHeight[0]*e,this.realHeight[1]*e]:this.realHeight[0]*e+this.realHeight[1]*e},e.prototype.clone=function(){var e=new this.constructor(this.config);return e.parentContainer=this.parentContainer,e},e.prototype.reduceWidth=function(e,t){return _.reduce(e,function(e,n){return e+n.getRealWidth(t)},0)},e}(),Euterpe.Note=function(){function e(t){this.type=Euterpe.getConfig(t,"type","quarter"),this.beamDir=Euterpe.getConfig(t,"beamDirection",undefined),this.flags=Euterpe.getConfig(t,"flags",0),this.dots=Euterpe.getConfig(t,"dots",0),this.beam=undefined,e.super.call(this,"Euterpe.Note",t),this.headHeight=13.3,this.realHeight=[this.headHeight/2,this.headHeight/2],this.type==="whole"?this.realWidth=this.headWidth=21.2:this.realWidth=this.headWidth=13.6,this.dotWidth=4.5,this.dotMargin=2.5,this.calculateSize()}return Euterpe.extend(Euterpe.Node,e,{beamRealHeight:35,calculateSize:function(){this.beamDir==="up"?this.realHeight=[this.beamRealHeight,this.headHeight/2]:this.beamDir==="down"&&(this.realHeight=[this.headHeight/2,this.beamRealHeight]),this.realWidth+=(this.dotMargin+this.dotWidth)*this.dots,this.flags>0&&(this.realWidth+=13.3)},render:function(e,t,n){this.beamWidth=1.3*n,this.beamHeight=this.beamRealHeight*n,this.scale=n,this.startX=e+this.headWidth*n/2,this.startY=t;var r=[];switch(this.type){case"whole":r=this.initWhole();break;default:r=this.initHalfQuarter()}if(this.dots>0){var i=0,s=this.location;s%1===0&&(i=3*n);var o=e+this.headWidth*n;for(var u=this.dots;u>0;u--)o+=this.dotMargin*n+this.dotWidth*n/2,r.push(new Kinetic.Ellipse({x:o,y:this.Y-i,radius:{x:2*this.scale,y:2*this.scale},fill:"black"})),o+=this.dotWidth*n/2}return Euterpe.bind(this,r),r},initWhole:function(){var e=new Kinetic.Ellipse({x:this.startX,y:this.startY,radius:{x:10.5*this.scale,y:6.5*this.scale},fill:"black"}),t=new Kinetic.Ellipse({x:this.startX,y:this.startY,radius:{x:5.5*this.scale,y:4*this.scale},fill:"white"});return t.rotation(45),[e,t]},initHalfQuarter:function(){var e=[],t=this,n=new Kinetic.Ellipse({x:this.startX,y:this.startY,radius:{x:7.6*this.scale,y:5.6*this.scale},fill:"black"});n.rotation(140),e.push(n);if(this.type==="half"){var r=new Kinetic.Ellipse({x:this.startX,y:this.startY,radius:{x:6.6*this.scale,y:2.5*this.scale},fill:"white"});r.rotation(140),e.push(r)}var i,s;if(typeof this.beamDir=="string"){this.beamDir==="up"?(i=n.x()+n.width()/2-this.beamWidth-this.beamWidth/3,s=n.y(),this.beam=new Kinetic.Line({points:[0,0,0,-this.beamHeight],stroke:"black",strokeWidth:this.beamWidth,x:i,y:s}),e.push(this.beam)):this.beamDir==="down"&&(i=n.x()-n.width()/2+this.beamWidth+this.beamWidth/3,s=n.y(),this.beam=new Kinetic.Line({points:[0,0,0,this.beamHeight],stroke:"black",strokeWidth:this.beamWidth,x:i,y:s}),e.push(this.beam));if(this.flags==1){var o=this.beam.x(),u=this.beam.y()-this.beamHeight,a=new Kinetic.Shape({sceneFunc:function(e){e.beginPath(),e.moveTo(o,u),e.bezierCurveTo(o+6.2*t.scale,u+11.8*t.scale,o+21.4*t.scale,u+10.4*t.scale,o+10*t.scale,u+26.4*t.scale),e.bezierCurveTo(o+19.6*t.scale,u+12.4*t.scale,o+5.4*t.scale,u+10.4*t.scale,o-.2*t.scale,u+7.4*t.scale),e.closePath(),e.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:1});e.push(a)}}return Euterpe.bind(this,e),e}}),e}(),Euterpe.PluginAboveBelow=function(){var e=function(t){e.super.call(this,"Euterpe.PluginAboveBelow",t)};return Euterpe.extend(Euterpe.Plugin,e,{roundLine:function(e){var t,n;return e<0?(t=e-Math.ceil(e),t===0?n=e:t>=-0.5?n=Math.ceil(e)-.5:n=Math.floor(e),n):(t=e-Math.floor(e),t===0?n=e:t<=.5?n=Math.floor(e)+.5:n=Math.ceil(e),n)},place:function(e,t,n,r){var i=0,s,o,u,a;typeof r=="number"?s=r:n==="above"?s=0:n==="below"&&(s=4);for(var f=0;f<e.length;f++){var l=e[f];o=l.getRealHeight(t,!0),u=o[0]/this.lineH,a=o[1]/this.lineH,n==="above"?(i=s-this.roundLine(a),s=i-this.roundLine(u)):n==="below"&&(i=s+this.roundLine(a),s=i+this.roundLine(u)),l.config.location=i}},process:function(e,t){this.lineH=Euterpe.global.linePadding+Euterpe.global.lineWidth;var n=Euterpe.select("Euterpe.Column",e);for(var r=0;r<n.length;r++){var i=n[r],s=i.config,o=i.getRealHeight(t,!0),u=this.roundLine(o[0]/this.lineH*-1),a=this.roundLine(o[1]/this.lineH);a<4&&(a=4),_.isArray(s.aboveItems)&&this.place(s.aboveItems,t,"above",u),_.isArray(s.belowItems)&&this.place(s.belowItems,t,"below",a)}return e}}),e}(),Euterpe.PluginAccidentals=function(){var e=function(t){e.super.call(this,"Euterpe.PluginAccidentals",t)};return Euterpe.extend(Euterpe.Plugin,e,{process:function(e){var t=Euterpe.select("Euterpe.Note",e);for(var n=0;n<t.length;n++){var r=t[n];if(typeof r.config.sharp=="undefined"&&typeof r.config.flat=="undefined")continue;var i=r.config.sharp||r.config.flat;for(var s=0;s<i;s++)typeof r.config.sharp!="undefined"?r.leftItems.push(new Euterpe.Sharp({})):typeof r.config.flat!="undefined"&&r.leftItems.push(new Euterpe.Flat({}))}return e}}),e}(),Euterpe.PluginAlign=function(){var e=function(t){this.totalWidth=Euterpe.getConfig(t,"totalWidth"),this.nodeMargin=Euterpe.getConfig(t,"nodeMargin",5),this.sideMargin=Euterpe.getConfig(t,"sideMargin",3),e.super.call(this,"Euterpe.PluginAlign",t)};return Euterpe.extend(Euterpe.Plugin,e,{process:function(e,t){var n,r;for(n=0;n<e.items.length;n++){r=e.items[n];var i,s=this.collectNodes(r);for(i=0;i<s.length;i++)s[i].leftMargin=this.nodeMargin;this.alignSideItems(r)}var o=Euterpe.getGroups(e.items);for(n=0;n<o.length;n++)this.processGroup(o[n],t);return e},alignSideItems:function(e){var t=Euterpe.select("Euterpe.Column",e);for(var n=0;n<t.length;n++){var r=t[n];for(var i=0;i<r.items.length;i++){var s=r.items[i],o;for(o=0;o<s.leftItems.length;o++)s.leftItems[o].rightMargin=this.sideMargin;for(o=0;o<s.rightItems.length;o++)s.rightItems[o].leftMargin=this.sideMargin}}},getColsBars:function(e){var t=[];for(var n=1;n<e.items.length;n++){var r=e.items[n];(r.name==="Euterpe.Column"||r.name==="Euterpe.Bar")&&t.push(r)}return t},stretchAlign:function(e,t){var n=e.getRealWidth(t),r=this.getColsBars(e),i=this.totalWidth-n,s=i/r.length/t;for(var o=0;o<r.length;o++)r[o].leftMargin+=s},getCols:function(e,t){return _.map(e,function(e){return e[t]})},cleanGroup:function(e){var t=[];for(var n=0;n<e.items.length;n++)t[n]=this.getColsBars(e.items[n]);return t},processGroup:function(e,t){var n=this.cleanGroup(e),r,i,s,o,u=_.max(_.map(n,function(e){return e.length}));for(r=0;r<u;r++){o=this.getCols(n,r);var a={},f={},l={};for(i=0;i<o.length;i++){s=o[i];if(typeof s=="undefined")continue;a[s.id]=Euterpe.getDistance(s.parent,s,t)+s.leftMargin*t+s.getLeftWidth(t),f[s.id]=s.getRealWidth(t,!0),l[s.id]=s.getRightWidth(t)}var c=_.max(_.values(a)),h=_.max(_.values(f)),p=_.max(_.values(l));for(i=0;i<o.length;i++){s=o[i];if(typeof s=="undefined")continue;var d=a[s.id],v=f[s.id],m=l[s.id];d<c&&(s.leftMargin+=(c-d)/t),v<h&&(s.rightMargin+=(h-v)/t),m<p&&(s.rightMargin+=(p-m)/t)}}var g=this;_.each(e.items,function(e){g.stretchAlign(e,t)})},collectNodes:function(e){return _.filter(e.items,function(e){return e.name!=="Euterpe.Bar"&&e.name!=="Euterpe.Column"})}}),e}(),Euterpe.Plugin=function(){var e=function(e,t){this.name=e,this.config=t||{}};return e.prototype.isPlugin=!0,e.prototype.process=function(e){return e},e}(),Euterpe.PluginNoteBar=function(){var e=function(t){e.super.call(this,"Euterpe.PluginNoteBar",t)};return Euterpe.extend(Euterpe.Plugin,e,{process:function(e,t,n){var r=Euterpe.select("Euterpe.Column",e),i=[],s=[],o=1,u={};for(var a=0;a<r.length;a++){var f=r[a];for(var l=0;l<f.items.length;l++){var c=f.items[l],h=c.config||{};if(h.bar==="begin"||h.bar==="cont"||h.bar==="end")o=h.beamDirection==="down"?-1:1,u[i.length]=o,c.flags=0,s.push(c.id),h.bar==="end"&&(this.adjustBeamHeight(s,o),i.push(_.clone(s)),s.length=0)}}for(var p=0;p<i.length;p++)n.push(this.bind(i[p],u[p]));return e},getTopTwo:function(e,t){var n=_.clone(e);return n.sort(function(e,n){return t===1?e.config.location-n.config.location:n.config.location-e.config.location}),n.length>2?[n[0],n[1]]:n},adjustBeamHeight:function(e,t){e=_.map(e,function(e){return Euterpe.select("#"+e)[0]});if(e.length>2){var n=this.getTopTwo(e,t),r=function(e,n){return Euterpe.getY(e,scale,n)-e.beamRealHeight*scale*t},i=n[0],s=n[1],o=i.parent.parent,u=Euterpe.getDistance(o,i,scale),a=Euterpe.getDistance(o,s,scale);for(var f=0;f<e.length;f++){var l=Math.abs(Euterpe.getY(e[f],scale,0)),c=r(i,l),h=r(s,l),p=(h-c)/(a-u),d=Euterpe.getDistance(o,e[f],scale),v=r(e[f],l),m=p*(d-u)+c,g=v-m;g!==0&&(e[f].beamRealHeight+=g*t/scale,e[f].calculateSize())}}},bind:function(e,t){return function(n,r){var i=Euterpe.select("#"+e[0])[0],s=Euterpe.select("#"+e[e.length-1])[0],o=i.beam.x(),u=i.beam.y()-i.beamHeight*t,a=s.beam.x(),f=s.beam.y()-s.beamHeight*t,l=4*r,c=new Kinetic.Shape({sceneFunc:function(e){e.beginPath(),e.moveTo(o,u),e.lineTo(a,f),e.lineTo(a,f+l*t),e.lineTo(o,u+l*t),e.moveTo(o,u),e.closePath(),e.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0});return c}}}),e}(),Euterpe.PluginNoteText=function(){var e=function(t){e.super.call(this,"Euterpe.PluginNoteText",t)};return Euterpe.extend(Euterpe.Plugin,e,{process:function(e){var t=Euterpe.select("Euterpe.Note",e);for(var n=0;n<t.length;n++){var r=t[n];if(typeof r.config.text=="undefined")continue;var i=new Euterpe.Text({text:r.config.text});r.leftItems.push(i)}return e}}),e}(),Euterpe.PluginTab=function(){var e=function(t){e.super.call(this,"Euterpe.PluginTab",t)};return Euterpe.extend(Euterpe.Plugin,e,{process:function(e){for(var t=0;t<e.items.length;t++){var n=e.items[t],r=new Euterpe.Row({type:"tab"});for(var i=0;i<n.items.length;i++){var s=n.items[i];if(s.name=="Euterpe.Bar"){r.add(s.clone());continue}var o=new Euterpe.Column({}),u=Euterpe.select("Euterpe.Note",s);for(var a=0;a<u.length;a++){var f=u[a];typeof f.config.tab_location=="number"&&typeof f.config.tab_text=="string"&&(n.group=t.toString(),n.groupType="bracket",r.group=n.group,r.groupType=n.groupType,o.add(new Euterpe.Text({text:f.config.tab_text,location:f.config.tab_location})))}r!==null&&o.items.length>0&&r.add(o)}typeof r.group!="undefined"&&e.items.splice(t+1,0,r)}return e}}),e}(),Euterpe.Rest=function(){function e(t){this.type=Euterpe.getConfig(t,"type","long"),e.super.call(this,"Euterpe.Rest",t),this.basicWidth=7;switch(this.type){case"long":this.realWidth=this.basicWidth,this.realHeight=[0,28];break;case"double_whole":this.realWidth=this.basicWidth,this.realHeight=[0,14.5];break;case"whole":this.realWidth=20,this.realHeight=[0,8];break;case"half":this.realWidth=20,this.realHeight=[6,0];break;case"quarter":this.realWidth=20,this.realHeight=[16.75,22.25];break;case"eighth":this.realWidth=20,this.realHeight=[9.5,16.25];break;case"sixteenth":this.realWidth=20,this.realHeight=[9.5,30.25];break;case"thirty-second":this.realWidth=25,this.realHeight=[9.5,43.25];break;case"sixty-fourth":this.realWidth=30,this.realHeight=[9.5,55.75]}}return Euterpe.extend(Euterpe.Node,e,{render:function(e,t,n){var r=e+this.getRealWidth(n)/2,i=[];switch(this.type){case"half":i.push(this.initHalf(r,t,n));break;case"quarter":i.push(this.initQuarter(r,t,n));break;case"eighth":i.push(this.initEighth(r,t,n));break;case"sixteenth":i.push(this.initSixteen(r,t,n));break;case"thirty-second":i.push(this.initThirtySecond(r,t,n));break;case"sixty-fourth":i.push(this.initSixtyFourth(r,t,n));break;default:i.push(this.simpleRestShape(r,t,n))}return Euterpe.bind(this,i),i},initHalf:function(e,t,n){var r=this.getRealHeight(n,!0);return this.simpleRestShape(e,t-r[0],n)},initQuarter:function(e,t,n){var r=n*.125,i=this.getRealHeight(n,!0),s=t-i[0];return new Kinetic.Shape({sceneFunc:function(t){t.translate(e,s),t.scale(r,r),t.beginPath(),t.moveTo(100.2,80.7),t.bezierCurveTo(100.2,100.2,61.1,129.6,61.1,168.7),t.bezierCurveTo(61.1,183.4,90.4,227.5,110,251.9),t.bezierCurveTo(100.2,247,90.4,242.1,75.8,242.1),t.bezierCurveTo(46.4,242.1,36.6,266.6,36.6,281.3),t.bezierCurveTo(36.6,291.1,46.4,300.9,51.3,310.7),t.bezierCurveTo(21.9,291.1,2.4,271.5,2.4,251.9),t.bezierCurveTo(2.4,203,35.8,220.1,60.2,210.3),t.bezierCurveTo(35.8,185.9,12.1,149.2,12.1,134.5),t.bezierCurveTo(12.1,124.7,41.5,90.4,51.3,66),t.lineTo(51.3,51.3),t.bezierCurveTo(51.3,36.6,41.5,17,36.6,2.4),t.bezierCurveTo(56.2,26.8,100.2,70.9,100.2,80.7),t.lineTo(100.2,80.7),t.closePath(),t.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0})},initEighth:function(e,t,n){var r=n*.125,i=this.getRealHeight(n,!0),s=t-i[0];return new Kinetic.Shape({sceneFunc:function(t){t.translate(e,s),t.scale(r,r),t.beginPath(),t.moveTo(92.9,5.2),t.bezierCurveTo(90.4,14.4,88.4,21.5,88.1,21.9),t.bezierCurveTo(84.9,28.7,78.5,37.2,73.6,42.1),t.bezierCurveTo(68.4,47.3,65.5,48.2,61.1,46.5),t.bezierCurveTo(57.4,44.5,56.2,42.4,53.8,31.5),t.bezierCurveTo(51.7,23.4,50.2,19,46.9,15.8),t.bezierCurveTo(38.4,6.5,23.8,5.3,12.6,12.6),t.bezierCurveTo(7.3,16.2,3.3,21.9,.9,28),t.bezierCurveTo(0,31.1,0,32,0,36.4),t.bezierCurveTo(0,40.9,0,42.4,.9,44.9),t.bezierCurveTo(3.6,53.8,9.3,60.7,18.2,64.7),t.bezierCurveTo(24.7,68,27.1,68.4,36,68.4),t.bezierCurveTo(42.5,68.4,44.5,68.4,49.8,67.5),t.bezierCurveTo(57.1,66.3,64.7,63.9,73.2,61.5),t.lineTo(78.5,59.4),t.lineTo(78.5,60.7),t.bezierCurveTo(78,62.3,44.1,190,43.7,190.8),t.bezierCurveTo(43.3,192.4,50.6,195.6,55,195.6),t.bezierCurveTo(59.4,195.6,65.9,192.8,66.3,190.8),t.bezierCurveTo(66.7,190.4,86.1,106.8,110.3,5.1),t.bezierCurveTo(107.1,-2.6,98.1,-0.8,92.9,5.2),t.closePath(),t.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0})},initSixteen:function(e,t,n){var r=this.getRealHeight(n,!0),i=n*.125,s=t-r[0];return new Kinetic.Shape({sceneFunc:function(t){t.translate(e,s),t.scale(i,i),t.beginPath(),t.moveTo(132.4,0),t.bezierCurveTo(126.7,0,121.8,4.5,120.8,9.5),t.bezierCurveTo(118,21.7,117.1,25.3,116.8,26.1),t.bezierCurveTo(114.2,31.6,107.4,42.3,102.3,47.8),t.bezierCurveTo(96.7,52.9,94.2,53.8,89.5,52.1),t.bezierCurveTo(85.7,50,84.4,47.8,81.9,36.3),t.bezierCurveTo(79.7,27.8,78,23.1,74.6,19.8),t.bezierCurveTo(65.6,9.9,50.3,8.6,38.3,16.3),t.bezierCurveTo(32.8,20.2,28.6,26.1,26,32.6),t.bezierCurveTo(25.1,35.9,25.1,36.8,25.1,41.5),t.bezierCurveTo(25.1,47.8,25.6,51.3,28.6,56.3),t.bezierCurveTo(32.8,64.9,41.8,71.7,52,74.2),t.bezierCurveTo(63.1,77.2,81.4,74.7,102.3,67.9),t.bezierCurveTo(105.2,66.6,108.2,65.7,108.2,65.7),t.bezierCurveTo(108.2,66.2,104.8,80.2,101,97.7),t.bezierCurveTo(94.6,127.5,94.2,129.7,92,133.4),t.bezierCurveTo(88.6,140.7,81,151,75.8,155.6),t.bezierCurveTo(71.6,159.5,68.7,160.3,64.4,158.6),t.bezierCurveTo(60.6,156.5,59.2,154.3,56.7,142.9),t.bezierCurveTo(54.5,134.3,52.9,129.7,49.4,126.2),t.bezierCurveTo(40.5,116.4,25.1,115.2,13.2,122.8),t.bezierCurveTo(7.7,126.7,3.4,132.6,.9,139),t.bezierCurveTo(0,142.5,0,143.3,0,148),t.bezierCurveTo(0,154.3,.4,157.7,3.4,162.8),t.bezierCurveTo(7.7,171.4,16.6,178.2,26.9,180.8),t.bezierCurveTo(37.9,183.7,59.2,180.8,80.1,173.5),t.bezierCurveTo(82.7,172.7,84.4,172.3,84.4,172.3),t.bezierCurveTo(84.4,172.7,54.5,306.4,53.3,310.7),t.bezierCurveTo(53.3,311.6,53.7,312,55.4,312.8),t.bezierCurveTo(58,314.5,62.2,315.9,65.2,315.9),t.bezierCurveTo(68.2,315.9,72.4,314.5,75,312.8),t.bezierCurveTo(76.7,312,77.2,311.6,77.6,309.4),t.bezierCurveTo(77.6,308.2,100.1,196.1,127.9,60.2),t.bezierCurveTo(131.9,40.2,133.1,33.9,136.5,17),t.bezierCurveTo(137.7,11.1,139.7,0,132.4,0),t.closePath(),t.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0})},initThirtySecond:function(e,t,n){var r=this.getRealHeight(n,!0),i=n*.125,s=t-r[0];return new Kinetic.Shape({sceneFunc:function(t){t.translate(e,s),t.scale(i,i),t.beginPath(),t.moveTo(154.4,0),t.bezierCurveTo(152.8,0,146,0,144.3,7.4),t.bezierCurveTo(141.2,20.7,140.5,22.5,138.9,25.3),t.bezierCurveTo(134.2,35.1,127.5,44.5,122.7,47.5),t.bezierCurveTo(120.2,49.2,118,49.2,115.1,47.9),t.bezierCurveTo(111.2,45.8,109.9,43.6,107.4,32.1),t.bezierCurveTo(105.2,23.6,103.6,18.9,100.1,15.5),t.bezierCurveTo(91.2,5.7,75.8,4.5,63.9,12.1),t.bezierCurveTo(58.4,15.9,54.1,21.9,51.6,28.3),t.bezierCurveTo(50.7,31.7,50.7,32.5,50.7,37.2),t.bezierCurveTo(50.7,43.6,51.1,47.1,54.1,52.2),t.bezierCurveTo(58.4,60.7,67.3,67.5,77.6,70),t.bezierCurveTo(82.3,71.4,94.2,71.4,102.3,70),t.bezierCurveTo(109.1,68.8,117.2,66.6,125.3,64.1),t.bezierCurveTo(129.1,62.8,131.7,61.9,132.1,61.9),t.bezierCurveTo(132.1,62.3,117.6,126.3,116.8,128.4),t.bezierCurveTo(114.2,133.9,107.4,144.6,102.3,150.1),t.bezierCurveTo(96.7,155.2,94.2,156.1,89.5,154.4),t.bezierCurveTo(85.7,152.3,84.4,150.1,81.9,138.6),t.bezierCurveTo(79.7,130.1,78,125.4,74.6,122.1),t.bezierCurveTo(65.6,112.2,50.3,111,38.3,118.6),t.bezierCurveTo(32.8,122.5,28.6,128.4,26,134.9),t.bezierCurveTo(25.1,138.2,25.1,139.1,25.1,143.8),t.bezierCurveTo(25.1,150.1,25.6,153.6,28.6,158.7),t.bezierCurveTo(32.8,167.2,41.8,174,52,176.5),t.bezierCurveTo(63.1,179.5,81.4,177,102.3,170.2),t.bezierCurveTo(105.2,168.9,108.2,168,108.2,168),t.bezierCurveTo(108.2,168.5,104.8,182.5,101,200),t.bezierCurveTo(94.6,229.8,94.2,232,92,235.7),t.bezierCurveTo(88.6,243,81,253.3,75.8,258),t.bezierCurveTo(71.6,261.8,68.7,262.6,64.4,260.9),t.bezierCurveTo(60.6,258.8,59.2,256.6,56.7,245.2),t.bezierCurveTo(54.5,236.7,52.9,232,49.4,228.5),t.bezierCurveTo(40.5,218.7,25.1,217.5,13.2,225.1),t.bezierCurveTo(7.7,229,3.4,234.9,.9,241.3),t.bezierCurveTo(0,244.8,0,245.6,0,250.3),t.bezierCurveTo(0,256.6,.4,260,3.4,265.1),t.bezierCurveTo(7.7,273.7,16.6,280.5,26.9,283.1),t.bezierCurveTo(37.9,286,59.2,283.1,80.1,275.8),t.bezierCurveTo(82.7,275,84.4,274.6,84.4,274.6),t.bezierCurveTo(84.4,275,54.5,408.7,53.3,413),t.bezierCurveTo(53.3,413.9,53.7,414.3,55.4,415.2),t.bezierCurveTo(58,416.8,62.2,418.2,65.2,418.2),t.bezierCurveTo(68.2,418.2,72.4,416.8,75,415.2),t.bezierCurveTo(76.7,414.3,77.2,413.9,77.6,411.7),t.bezierCurveTo(77.6,410.5,100.1,298.4,127.9,162.5),t.bezierCurveTo(141.5,94.4,151.4,44.8,158.6,8.7),t.bezierCurveTo(159.5,4.3,157.9,-0.1,154.4,0),t.closePath(),t.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0})},initSixtyFourth:function(e,t,n){var r=this.getRealHeight(n,!0),i=n*.125,s=t-r[0];return new Kinetic.Shape({sceneFunc:function(t){t.translate(e,s),t.scale(i,i),t.beginPath(),t.bezierCurveTo(89,2.9,80.5,10.6,76.7,21.2),t.bezierCurveTo(75.8,24.6,75.8,25.4,75.8,30.1),t.bezierCurveTo(75.8,34.8,75.8,36.5,76.7,39.1),t.bezierCurveTo(79.7,48.5,85.7,55.7,95,59.9),t.bezierCurveTo(101.8,63.4,104.4,63.8,113.8,63.8),t.bezierCurveTo(120.2,63.8,122.7,63.8,127.9,63),t.bezierCurveTo(134.6,61.7,144,59.1,151.3,56.6),t.lineTo(155.9,54.8),t.lineTo(155.5,56.6),t.bezierCurveTo(155.1,57.4,152.1,72.3,148.2,89.3),t.bezierCurveTo(141.5,119.2,141.1,120.9,138.9,124.7),t.bezierCurveTo(134.2,134.5,127.5,143.9,122.7,146.9),t.bezierCurveTo(120.2,148.6,118,148.6,115.1,147.3),t.bezierCurveTo(111.2,145.2,109.9,143,107.4,131.5),t.bezierCurveTo(105.2,123,103.6,118.3,100.1,114.9),t.bezierCurveTo(91.2,105.1,75.8,103.9,63.9,111.5),t.bezierCurveTo(58.4,115.3,54.1,121.3,51.6,127.7),t.bezierCurveTo(50.7,131.1,50.7,131.9,50.7,136.6),t.bezierCurveTo(50.7,143,51.1,146.5,54.1,151.6),t.bezierCurveTo(58.4,160.1,67.3,166.9,77.6,169.4),t.bezierCurveTo(82.3,170.8,94.2,170.8,102.3,169.4),t.bezierCurveTo(109.1,168.2,117.2,166,125.3,163.5),t.bezierCurveTo(129.1,162.3,131.7,161.3,132.1,161.3),t.bezierCurveTo(132.1,161.8,117.6,225.7,116.8,227.8),t.bezierCurveTo(114.2,233.3,107.4,244,102.3,249.5),t.bezierCurveTo(96.7,254.6,94.2,255.6,89.5,253.8),t.bezierCurveTo(85.7,251.7,84.4,249.5,81.9,238),t.bezierCurveTo(79.7,229.5,78,224.8,74.6,221.5),t.bezierCurveTo(65.6,211.6,50.3,210.4,38.3,218),t.bezierCurveTo(32.8,221.9,28.6,227.8,26,234.3),t.bezierCurveTo(25.1,237.6,25.1,238.5,25.1,243.2),t.bezierCurveTo(25.1,249.5,25.6,253,28.6,258.1),t.bezierCurveTo(32.8,266.6,41.8,273.4,52,275.9),t.bezierCurveTo(63.1,278.9,81.4,276.4,102.3,269.6),t.bezierCurveTo(105.2,268.3,108.2,267.4,108.2,267.4),t.bezierCurveTo(108.2,267.9,104.8,281.9,101,299.4),t.bezierCurveTo(94.6,329.2,94.2,331.4,92,335.1),t.bezierCurveTo(88.6,342.4,81,352.7,75.8,357.4),t.bezierCurveTo(71.6,361.2,68.7,362,64.4,360.3),t.bezierCurveTo(60.6,358.2,59.2,356,56.7,344.6),t.bezierCurveTo(54.5,336.1,52.9,331.4,49.4,328),t.bezierCurveTo(40.5,318.1,25.1,316.9,13.2,324.5),t.bezierCurveTo(7.7,328.4,3.4,334.3,.9,340.7),t.bezierCurveTo(0,344.2,0,345,0,349.7),t.bezierCurveTo(0,356,.4,359.4,3.4,364.5),t.bezierCurveTo(7.7,373.1,16.6,379.9,26.9,382.5),t.bezierCurveTo(37.9,385.4,59.2,382.5,80.1,375.2),t.bezierCurveTo(82.7,374.4,84.4,374,84.4,374),t.bezierCurveTo(84.4,374.4,54.5,508.1,53.3,512.4),t.bezierCurveTo(53.3,513.3,53.7,513.7,55.4,514.6),t.bezierCurveTo(58,516.2,62.2,517.6,65.2,517.6),t.bezierCurveTo(68.2,517.6,72.4,516.2,75,514.6),t.bezierCurveTo(76.7,513.7,77.2,513.3,77.6,511.1),t.bezierCurveTo(77.6,509.9,100.1,397.8,127.9,261.9),t.bezierCurveTo(171.7,42.9,177.2,14.8,176.8,13.9),t.bezierCurveTo(175.6,11.8,173.9,11,171.3,11),t.bezierCurveTo(167.5,11,166.6,11.8,162.8,19.1),t.bezierCurveTo(157.3,29.7,151.7,37.4,147.8,40.4),t.bezierCurveTo(145.7,42.1,143.6,42.1,140.2,40.8),t.bezierCurveTo(136.4,38.6,135.1,36.5,132.5,25),t.bezierCurveTo(130,13.5,126.9,8.4,120.6,4.1),t.bezierCurveTo(114.6,.3,107,-0.9,100.1,.7),t.closePath(),t.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0})},simpleRestShape:function(e,t,n){return new Kinetic.Rect({x:e,y:t,width:this.getRealWidth(n),height:this.getRealHeight(n),fill:"black",strokeWidth:0})}}),e}(),Euterpe.Row=function(){function e(t){e.super.call(this,"Euterpe.Row",t),this.type=Euterpe.getConfig(t,"type"),this.group=Euterpe.getConfig(t,"group",undefined),this.groupType=Euterpe.getConfig(t,"groupType",undefined),this.type==="measure"?(this.numberOfLines=5,this.realHeight=[0,57.3]):this.type==="tab"&&(this.numberOfLines=6,this.realHeight=[0,71.5]),this.prepared=[]}return Euterpe.extend(Euterpe.Container,e,{render:function(e,t,n){var r=[],i=0,s=e;for(var o=0;o<this.items.length;o++){var u=this.items[o];u.X=e+u.leftMargin*n,u.Y=t,r.push(u.render(u.X,u.Y,n));var a=u.getRealWidth(n);i+=a,e+=a}r.push(this.renderSelf(s,t,n,i));if(this.type==="measure"){var f=[];this.prepareLedgerLines(f,Euterpe.select("Euterpe.Note",this),t,n),r.push(this.renderLedgerLines(f,n))}return r},prepareLedgerLines:function(e,t,n,r){for(var i=0;i<t.length;i++){var s=t[i];if(typeof s.config.location=="number"){var o=s.headWidth*r,u;s.config.location>this.numberOfLines-1?(u=Math.floor(s.config.location),this.addLedgerLine(s,u,s.X,o,n,e,r)):s.config.location<0&&(u=Math.ceil(s.config.location),this.addLedgerLine(s,u,s.X,o,n,e,r))}}},addLedgerLine:function(e,t,n,r,i,s,o){var u;for(;;){if(t>0&&t<=4||t===0)break;u=!1;var a=Euterpe.getY(t,o,i);if(e.name==="Euterpe.Note"){for(var f=0;f<s.length;f++){var l=s[f];if(l[0]===n&&l[1]===a){u=!0;break}}u||s.push([n,a,r])}t+=t>0?-1:1}},renderLedgerLines:function(e,t){var n=[];for(var r=0;r<e.length;r++){var i=e[r][0],s=e[r][1],o=5*t,u=e[r][2]+o*2;n.push(new Kinetic.Line({points:[0,0,u,0],stroke:"black",strokeWidth:Euterpe.global.lineWidth,x:i-o,y:s}))}return n},renderSelf:function(e,t,n,r){var i=new Kinetic.Line({points:[0,0,r,0],stroke:"black",strokeWidth:Euterpe.global.lineWidth,x:e,y:t}),s=new Kinetic.Group({});s.add(i);for(var o=2;o<this.numberOfLines+1;o++){var u=Euterpe.getY(o-1,n,t),a=i.clone({y:u});s.add(a)}return s}}),e}(),Euterpe.Score=function(){function e(t){this.layer=t.layer,this.lineMargin=Euterpe.getConfig(t,"lineMargin",0),this.titleMargin=Euterpe.getConfig(t,"titleMargin",0),this.musicByMargin=Euterpe.getConfig(t,"musicByMargin",0),this.tuningMargin=Euterpe.getConfig(t,"tuningMargin",0),this.title=Euterpe.getConfig(t,"title",undefined),this.musicBy=Euterpe.getConfig(t,"musicBy",undefined),this.tuning=Euterpe.getConfig(t,"tuning",undefined),this.titleHeight=0,this.musicByHeight=0,this.tuningHeight=0,typeof this.title!="undefined"&&(this.titleText=new Euterpe.Text({text:this.title,fontSize:40,fontFamily:"Serif"}),this.titleWidth=this.titleText.getRealWidth(1),this.titleHeight=this.titleText.getRealHeight(1)),typeof this.musicBy!="undefined"&&(this.musicByText=new Euterpe.Text({fontSize:20,text:"Music by "+this.musicBy,fontFamily:"Serif"}),this.musicByHeight=this.musicByText.getRealHeight(1)),typeof this.tuning!="undefined"&&(this.tuningText=new Euterpe.Text({fontSize:15,text:this.tuning,fontFamily:"Serif",fontStyle:"italic"}),this.tuningHeight=this.tuningText.getRealHeight(1)),e.super.call(this,"Euterpe.Score",t)}return Euterpe.extend(Euterpe.Container,e,{bracketExtraUp:5,bracketExtraDown:5,getRealHeight:function(e,t){var n=this.doGetRealHeight(this.items,e,t),r=0;return r+=this.titleHeight*e,r+=this.titleMargin*e,r+=this.musicByHeight*e,r+=this.musicByMargin*e,r+=this.tuningHeight*e,r+=this.tuningMargin*e,t?n[0]+=r:n+=r,n},render:function(e,t,n){var r=0,i=[],s,o=Euterpe.getGroups(this.items),u=0;for(s=0;s<o.length;s++){var a=o[s];a.groupType==="bracket"&&6>u&&(u=6)}e+=u*n;var f=0;t=this.renderMeta(e,t,n,i);for(s=0;s<this.items.length;s++){var l=this.items[s],c=this.doGetRealHeight([l],n,!0);r!==0&&(r+=c[0]);var h=t+r;l.Y=h,l.X=e,f<o.length&&o[f].first===l.id&&(i.push(this.renderBracket(e-u*n,h,n,o[f].items)),f++),r+=c[1],i.push(l.render(e,h,n))}return i},renderMeta:function(e,t,n,r){var i=this.getRealHeight(n,!0);t-=i[0];var s=(this.titleHeight+this.musicByHeight+this.tuningHeight+this.titleMargin+this.musicByMargin+this.tuningMargin)*n;return typeof this.title!="undefined"&&(t+=this.titleHeight*n/2,r.push(this.renderText(this.titleText,this.titleWidth,e,t,n,!0)),t+=this.titleHeight*n/2,t+=this.titleMargin*n),typeof this.musicBy!="undefined"&&(t+=this.musicByHeight*n/2,r.push(this.renderText(this.musicByText,0,e,t,n)),t+=this.musicByHeight*n/2,t+=this.musicByMargin*n),typeof this.tuning!="undefined"&&(t+=this.tuningHeight*n/2,r.push(this.renderText(this.tuningText,0,e,t,n)),t+=this.tuningHeight*n/2,t+=this.tuningMargin*n),t+=i[0]-s,t},renderText:function(e,t,n,r,i,s){var o=n;if(s){var u=this.items[0].getRealWidth(i);o=n+(u/2-t/2)}return e.render(o,r,i)},doGetRealHeight:function(e,t,n){var r,i=0,s=Euterpe.getGroups(this.items),o=function(e){return _.find(s,function(t){return t.first===e.id})},u=function(e){return _.find(s,function(t){return t.last===e.id})};for(var a=0;a<e.length;a++){var f=e[a],l=f.getRealHeight(t,!0);o(f)&&(l[0]+=this.bracketExtraUp*t),u(f)&&(l[1]+=this.bracketExtraDown*t);var c=l[1]+l[0];typeof r=="undefined"&&(r=l[0]+i),i+=c+this.lineMargin*t}return n?[r,i-r]:i},renderBracket:function(e,t,n,r){var i=this.bracketExtraUp*n,s=this.bracketExtraDown*n,o=this.doGetRealHeight(r,n,!0),u=o[0]-i,a=o[1]-s-this.lineMargin*n;return new Kinetic.Shape({sceneFunc:function(r){r.beginPath();var o=10*n;r.moveTo(e+o,t-u-i),r.lineTo(e,t-u),r.lineTo(e,t+a),r.lineTo(e+o,t+a+s),r.lineTo(e+o/5,t+a),r.lineTo(e+o/5,t-u),r.lineTo(e+o,t-u-i),r.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0})}}),e}(),Euterpe.Sharp=function(){function e(t){e.super.call(this,"Euterpe.Sharp",t),this.realWidth=9,this.realHeight=[11,11]}return Euterpe.extend(Euterpe.Node,e,{render:function(e,t,n){var r=this.realHeight[0]+this.realHeight[1];this.startY=t-r*n/2-n;var i=this.realWidth*n,s=r*n,o=1.5*n,u=new Kinetic.Rect({x:this.X+i/3.6-o/2,y:this.startY+2*n,width:o,height:s,fill:"black",strokeWidth:0}),a=u.clone({x:this.X+i-i/3.6-o/2,y:this.startY}),f=4.5*n,l=this.startY+s/4+3*n;o=3*n;var c=new Kinetic.Line({points:[this.X,l,this.X,l+o,this.X+i,l+o-f,this.X+i,l-f],fill:"black",strokeWidth:0,closed:!0});l=this.startY+s-s/4;var h=c.clone({points:[this.X,l,this.X,l+o,this.X+i,l+o-f,this.X+i,l-f]}),p=[u,a,c,h];return Euterpe.bind(this,p),p}}),e}(),Euterpe.StringNumber=function(){function e(t){this.string=Euterpe.getConfig(t,"string"),this.fontSize=10,this.fontFamily="Arial";if(typeof this.string!="number"||this.string<0||this.string>6)throw"Invalid string value";this.string=this.string.toString(),this.textWidth=5,this.textHeight=7.6,this.realWidth=21.3,this.realHeight=[10.65,10.65],e.super.call(this,"Euterpe.StringNumber",t)}return Euterpe.extend(Euterpe.Node,e,{render:function(e,t,n){var r=[],i=e+this.realWidth*n/2;return r.push(new Kinetic.Circle({x:i,y:t,radius:10*n,fill:"white",stroke:"black",strokeWidth:n})),r.push(new Kinetic.Text({x:i-this.textWidth*n/2,y:t-this.textHeight*n/2,text:this.string,fontSize:this.fontSize*n,fontFamily:this.fontFamily,fill:"black"})),Euterpe.bind(this,r),r}}),e}(),Euterpe.Text=function(){function e(t){this.text=Euterpe.getConfig(t,"text"),this.color=Euterpe.getConfig(t,"color","black"),this.fontFamily=Euterpe.getConfig(t,"fontFamily","Arial"),this.fontSize=Euterpe.getConfig(t,"fontSize",10),this.fontStyle=Euterpe.getConfig(t,"fontStyle","normal");var n=1,r=new Kinetic.Text({x:0,y:0,text:this.text,fontSize:this.fontSize*n,fontFamily:this.fontFamily,fontStyle:this.fontStyle}),i=r.height()/n;this.realWidth=r.width()/n,this.realHeight=[i/2,i/2],e.super.call(this,"Euterpe.Text",t)}return Euterpe.extend(Euterpe.Node,e,{render:function(e,t,n){var r=[new Kinetic.Text({x:e,y:t-(this.realHeight[0]*n+this.realHeight[1]*n)/2,text:this.text,fontSize:this.fontSize*n,fontFamily:this.fontFamily,fontStyle:this.fontStyle,fill:this.color})];return Euterpe.bind(this,r),r}}),e}(),Euterpe.TimeSignature=function(){function e(t){this.numerator=Euterpe.getConfig(t,"numerator",4),this.denominator=Euterpe.getConfig(t,"denominator",4),e.super.call(this,t),this.add(new Euterpe.TimeSignatureShape(this.numerator,0)),this.add(new Euterpe.TimeSignatureShape(this.denominator,2))}return Euterpe.extend(Euterpe.Column,e,{name:"Euterpe.TimeSignature"}),e}(),Euterpe.TimeSignatureShape=function(){function e(t,n){this.yoffset=2;var r={4:[0,24+this.yoffset]};this.digit=t.toString(),this.realWidth=22.4,this.realHeight=r[t],e.super.call(this,"Euterpe.TimeSignatureShape",{location:n})}return Euterpe.extend(Euterpe.Node,e,{render:function(e,t,n){var r=this;this.scale=n,this.startX=e,this.startY=t+this.yoffset*n;var i=[];return this.digit==="4"&&i.push(new Kinetic.Shape({sceneFunc:function(e){var t=r.startX+17.6*n,i=r.startY;e.beginPath(),e.moveTo(t,i),e.lineTo(t-10*r.scale,i),e.bezierCurveTo(t-8.8*r.scale,i+6.8*r.scale,t-10.54*r.scale,i+10.66*r.scale,t-17.6*r.scale,i+16*r.scale),e.lineTo(t-17.6*r.scale,i+17*r.scale),e.lineTo(t-3.6*r.scale,i+17*r.scale),e.lineTo(t-3.6*r.scale,i+22.4*r.scale),e.lineTo(t-5.6*r.scale,i+22.4*r.scale),e.lineTo(t-5.6*r.scale,i+23.4*r.scale),e.lineTo(t-5.6*r.scale,i+23.4*r.scale),e.lineTo(t+4.4*r.scale,i+23.4*r.scale),e.lineTo(t+4.4*r.scale,i+22.4*r.scale),e.lineTo(t+2.4*r.scale,i+22.4*r.scale),e.lineTo(t+2.4*r.scale,i+17*r.scale),e.lineTo(t+4.4*r.scale,i+17*r.scale),e.lineTo(t+4.4*r.scale,i+16*r.scale),e.lineTo(t+2.4*r.scale,i+16*r.scale),e.lineTo(t+2.4*r.scale,i+1.4*r.scale),e.lineTo(t-3.6*r.scale,i+7.2*r.scale),e.lineTo(t-3.6*r.scale,i+16*r.scale),e.lineTo(t-16.6*r.scale,i+16*r.scale),e.lineTo(t,i),e.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0})),Euterpe.bind(this,i),i}}),e}(),Euterpe.TrebleClef=function(){function e(t){this.realWidth=36.8,t.location=0,e.super.call(this,"Euterpe.TrebleClef",t)}return Euterpe.extend(Euterpe.Node,e,{realHeight:[26.3,82],render:function(e,t,n){this.startX=e,this.startY=t-27*n,this.scale=.125*n;var r=this,i=new Kinetic.Shape({sceneFunc:function(e){e.beginPath(),e.translate(r.startX,r.startY),e.scale(r.scale,r.scale),e.moveTo(159,3),e.quadraticCurveTo(129,50,117,93),e.quadraticCurveTo(107,126,102,167),e.quadraticCurveTo(101,192,102,210),e.quadraticCurveTo(107,255,116,297),e.quadraticCurveTo(63,351,44,375),e.quadraticCurveTo(24,401,15,429),e.quadraticCurveTo(2,464,3,503),e.quadraticCurveTo(5,540,20,575),e.quadraticCurveTo(29,596,48,615),e.quadraticCurveTo(62,630,87,645),e.quadraticCurveTo(113,660,150,666),e.quadraticCurveTo(177,668,194,665),e.quadraticCurveTo(204,720,213,776),e.quadraticCurveTo(216,795,216,813),e.quadraticCurveTo(203,849,158,857),e.quadraticCurveTo(132,857,120,842),e.quadraticCurveTo(152,845,166,813),e.quadraticCurveTo(165,821,168,802),e.quadraticCurveTo(166,775,151,765),e.quadraticCurveTo(132,750,107,758),e.quadraticCurveTo(86,768,78,789),e.quadraticCurveTo(71,818,90,840),e.quadraticCurveTo(105,857,129,865),e.quadraticCurveTo(149,872,177,865),e.quadraticCurveTo(194,860,209,846),e.quadraticCurveTo(231,828,230,803),e.quadraticCurveTo(221,735,207,662),e.quadraticCurveTo(248,650,267,626),e.quadraticCurveTo(293,599,296,566),e.quadraticCurveTo(300,527,285,494),e.quadraticCurveTo(270,462,234,444),e.quadraticCurveTo(215,435,189,435),e.quadraticCurveTo(177,435,164,438),e.quadraticCurveTo(155,396,146,354),e.quadraticCurveTo(183,315,203,275),e.quadraticCurveTo(219,243,222,210),e.quadraticCurveTo(227,167,221,137),e.quadraticCurveTo(213,93,192,51),e.quadraticCurveTo(180,29,159,3),e.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0}),s=new Kinetic.Shape({sceneFunc:function(e){e.beginPath(),e.translate(r.startX,r.startY),e.scale(r.scale,r.scale),e.moveTo(191,93),e.quadraticCurveTo(179,83,171,93),e.quadraticCurveTo(126,162,131,281),e.quadraticCurveTo(188,239,203,188),e.quadraticCurveTo(209,162,204,135),e.quadraticCurveTo(200,111,191,93),e.fillStrokeShape(this)},fill:"white",stroke:"white",strokeWidth:0}),o=new Kinetic.Shape({sceneFunc:function(e){e.beginPath(),e.translate(r.startX,r.startY),e.scale(r.scale,r.scale),e.moveTo(171,473),e.quadraticCurveTo(188,555,206,648),e.quadraticCurveTo(237,639,255,620),e.quadraticCurveTo(283,588,283,558),e.quadraticCurveTo(285,525,269,501),e.quadraticCurveTo(252,476,216,470),e.quadraticCurveTo(194,465,171,473),e.fillStrokeShape(this)},fill:"white",stroke:"white",strokeWidth:0}),u=new Kinetic.Shape({sceneFunc:function(e){e.beginPath(),e.translate(r.startX,r.startY),e.scale(r.scale,r.scale),e.moveTo(147,446),e.quadraticCurveTo(141,411,132,369),e.quadraticCurveTo(90,401,68,435),e.quadraticCurveTo(45,467,39,503),e.quadraticCurveTo(30,540,45,576),e.quadraticCurveTo(60,612,92,633),e.quadraticCurveTo(123,651,161,654),e.quadraticCurveTo(174,654,188,653),e.fillStrokeShape(this)},fill:"white",stroke:"white",strokeWidth:0}),a=new Kinetic.Shape({sceneFunc:function(e){e.beginPath(),e.translate(r.startX,r.startY),e.scale(r.scale,r.scale),e.moveTo(147,444),e.quadraticCurveTo(120,456,101,480),e.quadraticCurveTo(83,504,84,536),e.quadraticCurveTo(86,567,107,588),e.quadraticCurveTo(114,597,126,605),e.quadraticCurveTo(116,593,107,581),e.quadraticCurveTo(95,560,99,537),e.quadraticCurveTo(105,509,132,491),e.quadraticCurveTo(143,482,164,476),e.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0}),f=[i,s,o,u,a];return Euterpe.bind(this,f),f}}),e}(),Euterpe.Column=function(){function e(t){e.super.call(this,"Euterpe.Column",t)}return Euterpe.extend(Euterpe.Container,e,{getRealWidth:function(e,t){var n=Euterpe.getMargins(this,e),r=this.collectItems(),i=_.max(_.map(r,function(n){var r=0,i=0;return n.isNode&&(r=n.getLeftWidth(e),i=n.getRightWidth(e)),n.getRealWidth(e,t)+(t?0:r+i)}));return i+(t?0:n)},getRealHeight:function(e,t){var n=this.collectItems();return Euterpe.getRealHeight(this,n,e,t)},collectItems:function(){var e=this.items;return _.isArray(this.config.aboveItems)&&(e=this.config.aboveItems.concat(this.items)),_.isArray(this.config.belowItems)&&(e=e.concat(this.config.belowItems)),e},render:function(e,t,n){var r=[],i,s,o=0,u=this.collectItems(),a=this.renderSideItems(u,n,r,e,t,!0);e+=a;for(s=0;s<u.length;s++)i=u[s],i.X=e,i.Y=Euterpe.getY(i,n,t),r.push(i.render(i.X,i.Y,n)),a=i.getRealWidth(n),a>o&&(o=a);return this.renderSideItems(this.items,n,r,e+o,t,!1),r},renderSideItems:function(e,t,n,r,i,s){var o=[],u=0,a=0;if(s)for(f=0;f<e.length;f++)e[f].isNode?(c=e[f].getLeftWidth(t),o.push(c),c>u&&(u=c)):o.push(0);for(var f=0;f<e.length;f++){var l=e[f],c=0,h=0;typeof o[f]!="undefined"&&o[f]!==u&&(h=u-o[f]);var p=s?l.leftItems:l.rightItems;for(var d=0;d<p.length;d++){var v=p[d];typeof v.config.location=="undefined"&&(v.config.location=l.config.location),v.X=r+v.leftMargin*t+h+c,v.Y=Euterpe.getY(v,t,i),n.push(v.render(v.X,v.Y,t)),c+=v.getRealWidth(t)}c>a&&(a=c)}return a},reduceWidth:function(e,t){return _.reduce(e,function(e,n){return e+n.getRealWidth(t)},0)}}),e}(),Euterpe.ContainerDepth=0,Euterpe.Container=function(){var e=function(e,t){this.id=Euterpe.randomString(20),this.items=[],this.name=this.name||e,this.config=t||{},this.leftMargin=Euterpe.getConfig(t,"leftMargin",0),this.rightMargin=Euterpe.getConfig(t,"rightMargin",0),this.leftItems=[],this.rightItems=[];if(typeof t!="undefined"&&_.isArray(t.items))for(var n=0;n<t.items.length;n++)this.add(t.items[n])};return e.prototype={getRealWidth:function(e,t){var n=t?0:Euterpe.getMargins(this,e);for(var r=0;r<this.items.length;r++)n+=this.items[r].getRealWidth(e,t);return n},getRealHeight:function(e,t){return Euterpe.getRealHeight(this,this.items,e,t)},isContainer:!0,getLeftWidth:function(e){var t=_.map(this.items,function(t){return t.getLeftWidth(e)});return _.max(t)},getRightWidth:function(e){var t=_.map(this.items,function(t){return t.getRightWidth(e)});return _.max(t)},clear:function(){this.items.length=0},size:function(){return this.items.length},add:function(e){var t=this;if(_.isArray(e))return _.each(e,function(e){t.add(e)});e.parent=this,this.items.push(e)},prepend:function(e){e.parentContainer=this,this.items.unshift(e)},insertBefore:function(e,t){for(var n=0;n<this.items.length;n++){var r=this.items[n];if(r.id===e)return this.items.splice(n,0,t)}},baseRender:function(e,t,n,r,i){Euterpe.ContainerDepth+=1;var s=[],o=function(e,t,n,r,i){var s=Euterpe.getY(e,r,n);return e.Y=s,e.render(t,s,r,i)};r=r||o,i=i||o;for(var u=0;u<this.items.length;u++){var a=this.items[u],f=0;Euterpe.log.debug((new Array(Euterpe.ContainerDepth)).join("  "),a),a.isContainer?(a.parentContainer=this,f=a.getRealWidth(n),a.X=e+a.leftMargin*n,a.Y=t,s.push(i(a,a.X,a.Y,n,u)),e+=f):(a.parentContainer=this,f=a.getRealWidth(n),a.X=e+a.leftMargin*n,a.Y=t,s.push(r(a,a.X,a.Y,n,u)),e+=f)}return Euterpe.ContainerDepth-=1,s},render:function(e,t,n){return Euterpe.baseRender(this.items,e,t,n)}},e}(),Euterpe.const={LOG_DEBUG:1,LOG_INFO:2,LOG_WARNING:3,LOG_ERROR:4},Euterpe.global={loglevel:Euterpe.const.LOG_INFO},Euterpe.plugins={plugins:[],add:function(){var e=this;_.each(arguments,function(t){e.plugins.push(t)})},fold:function(e,t,n){return _.reduce(this.plugins,function(e,r){return r.process(e,t,n)},e)}},Euterpe.getConfig=function(e,t,n){return typeof e=="undefined"?n:typeof e[t]=="undefined"?n:e[t]},Euterpe.getY=function(e,t,n){var r;if(typeof e=="number")r=e;else{if(typeof e.config=="undefined"||typeof e.config.location=="undefined")return n;r=e.config.location}if(typeof r=="function")return r(t,n);var i=Euterpe.global.linePadding/2+Euterpe.global.lineWidth/2,s,o,u;return r>=0?(o=Math.floor(r),u=Math.ceil(r)>r?i:0,s=Euterpe.global.linePadding*o+Euterpe.global.lineWidth*o,n+s+u):r<0?(o=Math.ceil(r),u=Math.floor(r)<r?i:0,s=Euterpe.global.linePadding*-o+Euterpe.global.lineWidth*-o,n+s*-1-u):n},Euterpe.initNode=function(e,t){e.isNode=!0,e.nodeName=t},Euterpe.extend=function(e,t,n){function r(){}r.prototype=e.prototype,t.prototype=new r,t.prototype.constructor=t,t.super=e,typeof n=="object"&&_.extend(t.prototype,n)},Euterpe.render=function(e,t,n,r,i,s){Euterpe.initLog(),Euterpe.global.root=e,Euterpe.global.background=new Kinetic.Layer({}),Euterpe.global.foreground=new Kinetic.Layer({}),Euterpe.global.linePadding=13*i,Euterpe.global.lineWidth=i;var o=[],u=Euterpe.plugins.fold(e,i,o),a=u.getRealHeight(i,!0);n+=a[0];var f=n+a[1];Euterpe.stage=new Kinetic.Stage({container:s,width:r,height:f}),Euterpe.stage.add(Euterpe.global.foreground),Euterpe.stage.add(Euterpe.global.background);var l=_.flatten(u.render(t+e.leftMargin*i,n,i));for(var c=0;c<l.length;c++)l[c].layer2draw==="background"?Euterpe.global.background.add(l[c]):Euterpe.global.foreground.add(l[c]);for(var h=0;h<o.length;h++){var p=o[h],d=p(u,i);if(typeof d=="undefined")continue;d.layer2draw==="background"?Euterpe.global.background.add(d):Euterpe.global.foreground.add(d)}return Euterpe.stage},Euterpe.getMargins=function(e,t){return e.leftMargin*t+e.rightMargin*t},Euterpe.randomString=function(e){return(new Array(e+1)).join((Math.random().toString(36)+"00000000000000000").slice(2,18)).slice(0,e)},Euterpe.select=function(e,t){var n=function(t){return e[0]==="#"?t.id===e.slice(1,e.length):t.name===e};t=t||Euterpe.global.root;var r=[];if(t.isNode&&n(t))r.push(t);else if(t.isContainer)for(var i=0;i<t.items.length;i++){var s=t.items[i];n(s)&&r.push(s),s.isContainer&&r.push(Euterpe.select(e,s))}return _.flatten(r)},Euterpe.replace=function(e,t,n){for(var r=0;r<e.items.length;r++){var i=e.items[r];if(i.id==t)return n.parentContainer=e,e.items[r]=n,!0;if(i.isContainer&&Euterpe.replace(i,t,n))break}return!1},Euterpe.initLog=function(){var e=window.console||{},t=function(){};Euterpe.log={debug:t,info:t,warn:t,error:t},Euterpe.const.LOG_DEBUG>=Euterpe.global.loglevel&&e.log&&(Euterpe.log.debug=e.debug.bind(e)),Euterpe.const.LOG_INFO>=Euterpe.global.loglevel&&e.info&&(Euterpe.log.info=e.info.bind(e)),Euterpe.const.LOG_WARNING>=Euterpe.global.loglevel&&e.warn&&(Euterpe.log.warn=e.warn.bind(e)),Euterpe.const.LOG_ERROR>=Euterpe.global.loglevel&&e.error&&(Euterpe.log.error=e.error.bind(e))},Euterpe.getDistance=function(e,t,n){var r=0;for(var i=0;i<e.items.length;i++){var s=e.items[i];if(s.id===t.id)break;if(s.isContainer&&Euterpe.select("#"+t.id,s).length>0){r+=s.leftMargin*n,r+=Euterpe.getDistance(s,t,n);break}r+=s.getRealWidth(n)}return r},Euterpe.getRealHeight=function(e,t,n,r){var i=0,s,o,u,a,f;typeof e.realHeight!="undefined"&&(f=Euterpe.getY(e,n,i),s=e.realHeight[0]*n,o=e.realHeight[1]*n);for(var l=0;l<t.length;l++){var c=t[l],h=c.getRealHeight(n,!0);f=Euterpe.getY(c,n,i),u=f-h[0],a=f+h[1];if(typeof s=="undefined"||u<s)s=u;if(typeof o=="undefined"||a>o)o=a}return r?[s*-1,o]:o-s},Euterpe.baseRender=function(e,t,n,r){var i=[],s,o;for(o=0;o<e.length;o++)s=e[o],s.X=t,s.Y=Euterpe.getY(s,r,n),i.push(s.render(s.X,s.Y,r)),t+=s.getRealWidth(r);return i},Euterpe.getGroups=function(e){var t=[],n=null,r=null,i=null,s=[],o=null;for(var u=0;u<e.length;u++){var a=e[u];typeof a.group!="undefined"?(n!==a.group&&(n!==null&&t.push({first:i,last:o,groupType:r,items:_.clone(s)}),i=a.id,n=a.group,r=a.groupType,s.length=0),s.push(a)):t.push({first:undefined,last:undefined,groupType:undefined,items:[a]}),o=a.id}return s.length>0&&t.push({first:i,last:o,groupType:r,items:s}),t},Euterpe.bind=function(e,t){if(typeof e.config.on=="undefined")return;_.isArray(t)?t=_.flatten(t):t=[t];var n={},r=function(r,i){return function(){i.call(r,e,t,n)}},i=_.keys(e.config.on);for(var s=0;s<i.length;s++){var o=i[s];_.each(t,function(t){t.on(o,r(t,e.config.on[o]))})}},Euterpe.Flat=function(){function e(t){this.realWidth=12.25,this.realHeight=[16.3,9],e.super.call(this,"Euterpe.Flat",t)}return Euterpe.extend(Euterpe.Node,e,{render:function(e,t,n){var r=(this.realHeight[0]+this.realHeight[1])*n;this.barWidth=1.5*n,t-=16.25*n;var i=new Kinetic.Line({points:[0,0,0,r],stroke:"black",strokeWidth:this.barWidth,x:e,y:t}),s=t+r,o=e+this.barWidth/2,u=new Kinetic.Shape({sceneFunc:function(e){e.beginPath(),e.moveTo(o,s),e.lineTo(o+7*n,s-5.25*n),e.bezierCurveTo(o+12*n,s-8.75*n,o+12.5*n,s-19.75*n,o,s-13.75*n),e.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0}),a=new Kinetic.Shape({sceneFunc:function(e){e.beginPath(),e.moveTo(o,s-1.25*n),e.bezierCurveTo(o+9.75*n,s-6.75*n,o+8.25*n,s-17.25*n,o,s-12.75*n),e.fillStrokeShape(this)},fill:"white",stroke:"white",strokeWidth:0}),f=[i,u,a];return Euterpe.bind(this,f),f}}),e}(),Euterpe.helpers={},Euterpe.helpers.events={highlight:function(e,t){function n(n,r,i){typeof i.fill=="undefined"&&(i.fill={}),typeof i.stroke=="undefined"&&(i.stroke={});for(var s=0;s<r.length;s++){var o=r[s];o.fill()===e&&(i.fill[o._id]=e,o.fill(t)),o.stroke()===e&&(i.stroke[o._id]=e,o.stroke(t))}Euterpe.global.background.draw(),Euterpe.global.foreground.draw()}function r(e,t,n){for(var r=0;r<t.length;r++){var i=t[r];typeof n.fill[i._id]!="undefined"&&i.fill(n.fill[i._id]),typeof n.stroke[i._id]!="undefined"&&i.stroke(n.stroke[i._id])}Euterpe.global.background.draw(),Euterpe.global.foreground.draw()}return[n,r]}},Euterpe.KeySignature=function(){function e(t){this.type=Euterpe.getConfig(t,"type"),this.amount=Euterpe.getConfig(t,"amount");if(this.type!=="sharp"&&this.type!=="flat")throw"Invalid type argument";if(typeof this.amount!="number"||this.amount<1||this.amount>7)throw"amount should be >= 1 and <= 7";e.super.call(this,t);var n={sharp:[0,1.5,-0.5,1,2.5,.5,2],flat:[2,.5,2.5,1,3,1.5,3.5]};for(var r=0;r<this.amount;r++){var i={location:n[this.type][r]};this.add(this.type==="sharp"?new Euterpe.Sharp(i):new Euterpe.Flat(i))}}return Euterpe.extend(Euterpe.Container,e),e}(),Euterpe.Natural=function(){function e(t){this.realWidth=11.5,this.realHeight=[20.5,21.5],e.super.call(this,"Euterpe.Natural",t)}return Euterpe.extend(Euterpe.Node,e,{render:function(e,t,n){var r=1.5*n,i=28*n,s=10*n,o=2.5*n,u=1.5*n;t-=i/2+i/4;var a=new Kinetic.Rect({width:r,height:i,fill:"black",stroke:"black",strokeWidth:0,strokeEnabled:!1,x:e,y:t}),f=a.clone({x:e+s,y:t+i/2}),l,c,h=new Kinetic.Shape({sceneFunc:function(n){l=e,c=t+i/2,n.beginPath(),n.moveTo(l,c),n.lineTo(l+s+r,c-u),n.lineTo(l+s+r,c+o),n.lineTo(l,c+o+u),n.lineTo(l,c),n.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0,strokeEnabled:!1}),p=h.clone({sceneFunc:function(n){l=e,c=t+i-o,n.beginPath(),n.moveTo(l,c),n.lineTo(l+s+r,c-u),n.lineTo(l+s+r,c+o),n.lineTo(l,c+o+u),n.lineTo(l,c),n.fillStrokeShape(this)}}),d=[a,f,h,p];return Euterpe.bind(this,d),d}}),e}(),Euterpe.Node=function(){var e=function(e,t){this.id=Euterpe.randomString(20),this.name=e,this.config=t||{},this.leftMargin=Euterpe.getConfig(t,"leftMargin",0),this.rightMargin=Euterpe.getConfig(t,"rightMargin",0),this.leftItems=Euterpe.getConfig(t,"leftItems",[]),this.rightItems=Euterpe.getConfig(t,"rightItems",[])};return e.prototype.isNode=!0,e.prototype.getLeftWidth=function(e){return this.reduceWidth(this.leftItems,e)},e.prototype.getRightWidth=function(e){return this.reduceWidth(this.rightItems,e)},e.prototype.getRealWidth=function(e,t){var n=Euterpe.getMargins(this,e);return this.realWidth*e+(t?0:n)},e.prototype.getRealHeight=function(e,t){return typeof this.realHeight=="undefined"?t?[0,0]:0:t?[this.realHeight[0]*e,this.realHeight[1]*e]:this.realHeight[0]*e+this.realHeight[1]*e},e.prototype.clone=function(){var e=new this.constructor(this.config);return e.parentContainer=this.parentContainer,e},e.prototype.reduceWidth=function(e,t){return _.reduce(e,function(e,n){return e+n.getRealWidth(t)},0)},e}(),Euterpe.Note=function(){function e(t){this.type=Euterpe.getConfig(t,"type","quarter"),this.beamDir=Euterpe.getConfig(t,"beamDirection",undefined),this.flags=Euterpe.getConfig(t,"flags",0),this.dots=Euterpe.getConfig(t,"dots",0),this.beam=undefined,e.super.call(this,"Euterpe.Note",t),this.headHeight=13.3,this.realHeight=[this.headHeight/2,this.headHeight/2],this.type==="whole"?this.realWidth=this.headWidth=21.2:this.realWidth=this.headWidth=13.6,this.dotWidth=4.5,this.dotMargin=2.5,this.calculateSize()}return Euterpe.extend(Euterpe.Node,e,{beamRealHeight:35,calculateSize:function(){this.beamDir==="up"?this.realHeight=[this.beamRealHeight,this.headHeight/2]:this.beamDir==="down"&&(this.realHeight=[this.headHeight/2,this.beamRealHeight]),this.realWidth+=(this.dotMargin+this.dotWidth)*this.dots,this.flags>0&&(this.realWidth+=13.3)},render:function(e,t,n){this.beamWidth=1.3*n,this.beamHeight=this.beamRealHeight*n,this.scale=n,this.startX=e+this.headWidth*n/2,this.startY=t;var r=[];switch(this.type){case"whole":r=this.initWhole();break;default:r=this.initHalfQuarter()}if(this.dots>0){var i=0,s=this.location;s%1===0&&(i=3*n);var o=e+this.headWidth*n;for(var u=this.dots;u>0;u--)o+=this.dotMargin*n+this.dotWidth*n/2,r.push(new Kinetic.Ellipse({x:o,y:this.Y-i,radius:{x:2*this.scale,y:2*this.scale},fill:"black"})),o+=this.dotWidth*n/2}return Euterpe.bind(this,r),r},initWhole:function(){var e=new Kinetic.Ellipse({x:this.startX,y:this.startY,radius:{x:10.5*this.scale,y:6.5*this.scale},fill:"black"}),t=new Kinetic.Ellipse({x:this.startX,y:this.startY,radius:{x:5.5*this.scale,y:4*this.scale},fill:"white"});return t.rotation(45),[e,t]},initHalfQuarter:function(){var e=[],t=this,n=new Kinetic.Ellipse({x:this.startX,y:this.startY,radius:{x:7.6*this.scale,y:5.6*this.scale},fill:"black"});n.rotation(140),e.push(n);if(this.type==="half"){var r=new Kinetic.Ellipse({x:this.startX,y:this.startY,radius:{x:6.6*this.scale,y:2.5*this.scale},fill:"white"});r.rotation(140),e.push(r)}var i,s;if(typeof this.beamDir=="string"){this.beamDir==="up"?(i=n.x()+n.width()/2-this.beamWidth-this.beamWidth/3,s=n.y(),this.beam=new Kinetic.Line({points:[0,0,0,-this.beamHeight],stroke:"black",strokeWidth:this.beamWidth,x:i,y:s}),e.push(this.beam)):this.beamDir==="down"&&(i=n.x()-n.width()/2+this.beamWidth+this.beamWidth/3,s=n.y(),this.beam=new Kinetic.Line({points:[0,0,0,this.beamHeight],stroke:"black",strokeWidth:this.beamWidth,x:i,y:s}),e.push(this.beam));if(this.flags==1){var o=this.beam.x(),u=this.beam.y()-this.beamHeight,a=new Kinetic.Shape({sceneFunc:function(e){e.beginPath(),e.moveTo(o,u),e.bezierCurveTo(o+6.2*t.scale,u+11.8*t.scale,o+21.4*t.scale,u+10.4*t.scale,o+10*t.scale,u+26.4*t.scale),e.bezierCurveTo(o+19.6*t.scale,u+12.4*t.scale,o+5.4*t.scale,u+10.4*t.scale,o-.2*t.scale,u+7.4*t.scale),e.closePath(),e.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:1});e.push(a)}}return Euterpe.bind(this,e),e}}),e}(),Euterpe.PluginAboveBelow=function(){var e=function(t){e.super.call(this,"Euterpe.PluginAboveBelow",t)};return Euterpe.extend(Euterpe.Plugin,e,{roundLine:function(e){var t,n;return e<0?(t=e-Math.ceil(e),t===0?n=e:t>=-0.5?n=Math.ceil(e)-.5:n=Math.floor(e),n):(t=e-Math.floor(e),t===0?n=e:t<=.5?n=Math.floor(e)+.5:n=Math.ceil(e),n)},place:function(e,t,n,r){var i=0,s,o,u,a;typeof r=="number"?s=r:n==="above"?s=0:n==="below"&&(s=4);for(var f=0;f<e.length;f++){var l=e[f];o=l.getRealHeight(t,!0),u=o[0]/this.lineH,a=o[1]/this.lineH,n==="above"?(i=s-this.roundLine(a),s=i-this.roundLine(u)):n==="below"&&(i=s+this.roundLine(a),s=i+this.roundLine(u)),l.config.location=i}},process:function(e,t){this.lineH=Euterpe.global.linePadding+Euterpe.global.lineWidth;var n=Euterpe.select("Euterpe.Column",e);for(var r=0;r<n.length;r++){var i=n[r],s=i.config,o=i.getRealHeight(t,!0),u=this.roundLine(o[0]/this.lineH*-1),a=this.roundLine(o[1]/this.lineH);a<4&&(a=4),_.isArray(s.aboveItems)&&this.place(s.aboveItems,t,"above",u),_.isArray(s.belowItems)&&this.place(s.belowItems,t,"below",a)}return e}}),e}(),Euterpe.PluginAccidentals=function(){var e=function(t){e.super.call(this,"Euterpe.PluginAccidentals",t)};return Euterpe.extend(Euterpe.Plugin,e,{process:function(e){var t=Euterpe.select("Euterpe.Note",e);for(var n=0;n<t.length;n++){var r=t[n];if(typeof r.config.sharp=="undefined"&&typeof r.config.flat=="undefined")continue;var i=r.config.sharp||r.config.flat;for(var s=0;s<i;s++)typeof r.config.sharp!="undefined"?r.leftItems.push(new Euterpe.Sharp({})):typeof r.config.flat!="undefined"&&r.leftItems.push(new Euterpe.Flat({}))}return e}}),e}(),Euterpe.PluginAlign=function(){var e=function(t){this.totalWidth=Euterpe.getConfig(t,"totalWidth"),this.nodeMargin=Euterpe.getConfig(t,"nodeMargin",5),this.sideMargin=Euterpe.getConfig(t,"sideMargin",3),e.super.call(this,"Euterpe.PluginAlign",t)};return Euterpe.extend(Euterpe.Plugin,e,{process:function(e,t){var n,r;for(n=0;n<e.items.length;n++){r=e.items[n];var i,s=this.collectNodes(r);for(i=0;i<s.length;i++)s[i].leftMargin=this.nodeMargin;this.alignSideItems(r)}var o=Euterpe.getGroups(e.items);for(n=0;n<o.length;n++)this.processGroup(o[n],t);return e},alignSideItems:function(e){var t=Euterpe.select("Euterpe.Column",e);for(var n=0;n<t.length;n++){var r=t[n];for(var i=0;i<r.items.length;i++){var s=r.items[i],o;for(o=0;o<s.leftItems.length;o++)s.leftItems[o].rightMargin=this.sideMargin;for(o=0;o<s.rightItems.length;o++)s.rightItems[o].leftMargin=this.sideMargin}}},getColsBars:function(e){var t=[];for(var n=1;n<e.items.length;n++){var r=e.items[n];(r.name==="Euterpe.Column"||r.name==="Euterpe.Bar")&&t.push(r)}return t},stretchAlign:function(e,t){var n=e.getRealWidth(t),r=this.getColsBars(e),i=this.totalWidth-n,s=i/r.length/t;for(var o=0;o<r.length;o++)r[o].leftMargin+=s},getCols:function(e,t){return _.map(e,function(e){return e[t]})},cleanGroup:function(e){var t=[];for(var n=0;n<e.items.length;n++)t[n]=this.getColsBars(e.items[n]);return t},processGroup:function(e,t){var n=this.cleanGroup(e),r,i,s,o,u=_.max(_.map(n,function(e){return e.length}));for(r=0;r<u;r++){o=this.getCols(n,r);var a={},f={},l={};for(i=0;i<o.length;i++){s=o[i];if(typeof s=="undefined")continue;a[s.id]=Euterpe.getDistance(s.parent,s,t)+s.leftMargin*t+s.getLeftWidth(t),f[s.id]=s.getRealWidth(t,!0),l[s.id]=s.getRightWidth(t)}var c=_.max(_.values(a)),h=_.max(_.values(f)),p=_.max(_.values(l));for(i=0;i<o.length;i++){s=o[i];if(typeof s=="undefined")continue;var d=a[s.id],v=f[s.id],m=l[s.id];d<c&&(s.leftMargin+=(c-d)/t),v<h&&(s.rightMargin+=(h-v)/t),m<p&&(s.rightMargin+=(p-m)/t)}}var g=this;_.each(e.items,function(e){g.stretchAlign(e,t)})},collectNodes:function(e){return _.filter(e.items,function(e){return e.name!=="Euterpe.Bar"&&e.name!=="Euterpe.Column"})}}),e}(),Euterpe.Plugin=function(){var e=function(e,t){this.name=e,this.config=t||{}};return e.prototype.isPlugin=!0,e.prototype.process=function(e){return e},e}(),Euterpe.PluginNoteBar=function(){var e=function(t){e.super.call(this,"Euterpe.PluginNoteBar",t)};return Euterpe.extend(Euterpe.Plugin,e,{process:function(e,t,n){var r=Euterpe.select("Euterpe.Column",e),i=[],s=[],o=1,u={};for(var a=0;a<r.length;a++){var f=r[a];for(var l=0;l<f.items.length;l++){var c=f.items[l],h=c.config||{};if(h.bar==="begin"||h.bar==="cont"||h.bar==="end")o=h.beamDirection==="down"?-1:1,u[i.length]=o,c.flags=0,s.push(c.id),h.bar==="end"&&(this.adjustBeamHeight(s,o),i.push(_.clone(s)),s.length=0)}}for(var p=0;p<i.length;p++)n.push(this.bind(i[p],u[p]));return e},getTopTwo:function(e,t){var n=_.clone(e);return n.sort(function(e,n){return t===1?e.config.location-n.config.location:n.config.location-e.config.location}),n.length>2?[n[0],n[1]]:n},adjustBeamHeight:function(e,t){e=_.map(e,function(e){return Euterpe.select("#"+e)[0]});if(e.length>2){var n=this.getTopTwo(e,t),r=function(e,n){return Euterpe.getY(e,scale,n)-e.beamRealHeight*scale*t},i=n[0],s=n[1],o=i.parent.parent,u=Euterpe.getDistance(o,i,scale),a=Euterpe.getDistance(o,s,scale);for(var f=0;f<e.length;f++){var l=Math.abs(Euterpe.getY(e[f],scale,0)),c=r(i,l),h=r(s,l),p=(h-c)/(a-u),d=Euterpe.getDistance(o,e[f],scale),v=r(e[f],l),m=p*(d-u)+c,g=v-m;g!==0&&(e[f].beamRealHeight+=g*t/scale,e[f].calculateSize())}}},bind:function(e,t){return function(n,r){var i=Euterpe.select("#"+e[0])[0],s=Euterpe.select("#"+e[e.length-1])[0],o=i.beam.x(),u=i.beam.y()-i.beamHeight*t,a=s.beam.x(),f=s.beam.y()-s.beamHeight*t,l=4*r,c=new Kinetic.Shape({sceneFunc:function(e){e.beginPath(),e.moveTo(o,u),e.lineTo(a,f),e.lineTo(a,f+l*t),e.lineTo(o,u+l*t),e.moveTo(o,u),e.closePath(),e.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0});return c}}}),e}(),Euterpe.PluginNoteText=function(){var e=function(t){e.super.call(this,"Euterpe.PluginNoteText",t)};return Euterpe.extend(Euterpe.Plugin,e,{process:function(e){var t=Euterpe.select("Euterpe.Note",e);for(var n=0;n<t.length;n++){var r=t[n];if(typeof r.config.text=="undefined")continue;var i=new Euterpe.Text({text:r.config.text});r.leftItems.push(i)}return e}}),e}(),Euterpe.PluginTab=function(){var e=function(t){e.super.call(this,"Euterpe.PluginTab",t)};return Euterpe.extend(Euterpe.Plugin,e,{process:function(e){for(var t=0;t<e.items.length;t++){var n=e.items[t],r=new Euterpe.Row({type:"tab"});for(var i=0;i<n.items.length;i++){var s=n.items[i];if(s.name=="Euterpe.Bar"){r.add(s.clone());continue}var o=new Euterpe.Column({}),u=Euterpe.select("Euterpe.Note",s);for(var a=0;a<u.length;a++){var f=u[a];typeof f.config.tab_location=="number"&&typeof f.config.tab_text=="string"&&(n.group=t.toString(),n.groupType="bracket",r.group=n.group,r.groupType=n.groupType,o.add(new Euterpe.Text({text:f.config.tab_text,location:f.config.tab_location})))}r!==null&&o.items.length>0&&r.add(o)}typeof r.group!="undefined"&&e.items.splice(t+1,0,r)}return e}}),e}(),Euterpe.Rest=function(){function e(t){this.type=Euterpe.getConfig(t,"type","long"),e.super.call(this,"Euterpe.Rest",t),this.basicWidth=7;switch(this.type){case"long":this.realWidth=this.basicWidth,this.realHeight=[0,28];break;case"double_whole":this.realWidth=this.basicWidth,this.realHeight=[0,14.5];break;case"whole":this.realWidth=20,this.realHeight=[0,8];break;case"half":this.realWidth=20,this.realHeight=[6,0];break;case"quarter":this.realWidth=20,this.realHeight=[16.75,22.25];break;case"eighth":this.realWidth=20,this.realHeight=[9.5,16.25];break;case"sixteenth":this.realWidth=20,this.realHeight=[9.5,30.25];break;case"thirty-second":this.realWidth=25,this.realHeight=[9.5,43.25];break;case"sixty-fourth":this.realWidth=30,this.realHeight=[9.5,55.75]}}return Euterpe.extend(Euterpe.Node,e,{render:function(e,t,n){var r=e+this.getRealWidth(n)/2,i=[];switch(this.type){case"half":i.push(this.initHalf(r,t,n));break;case"quarter":i.push(this.initQuarter(r,t,n));break;case"eighth":i.push(this.initEighth(r,t,n));break;case"sixteenth":i.push(this.initSixteen(r,t,n));break;case"thirty-second":i.push(this.initThirtySecond(r,t,n));break;case"sixty-fourth":i.push(this.initSixtyFourth(r,t,n));break;default:i.push(this.simpleRestShape(r,t,n))}return Euterpe.bind(this,i),i},initHalf:function(e,t,n){var r=this.getRealHeight(n,!0);return this.simpleRestShape(e,t-r[0],n)},initQuarter:function(e,t,n){var r=n*.125,i=this.getRealHeight(n,!0),s=t-i[0];return new Kinetic.Shape({sceneFunc:function(t){t.translate(e,s),t.scale(r,r),t.beginPath(),t.moveTo(100.2,80.7),t.bezierCurveTo(100.2,100.2,61.1,129.6,61.1,168.7),t.bezierCurveTo(61.1,183.4,90.4,227.5,110,251.9),t.bezierCurveTo(100.2,247,90.4,242.1,75.8,242.1),t.bezierCurveTo(46.4,242.1,36.6,266.6,36.6,281.3),t.bezierCurveTo(36.6,291.1,46.4,300.9,51.3,310.7),t.bezierCurveTo(21.9,291.1,2.4,271.5,2.4,251.9),t.bezierCurveTo(2.4,203,35.8,220.1,60.2,210.3),t.bezierCurveTo(35.8,185.9,12.1,149.2,12.1,134.5),t.bezierCurveTo(12.1,124.7,41.5,90.4,51.3,66),t.lineTo(51.3,51.3),t.bezierCurveTo(51.3,36.6,41.5,17,36.6,2.4),t.bezierCurveTo(56.2,26.8,100.2,70.9,100.2,80.7),t.lineTo(100.2,80.7),t.closePath(),t.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0})},initEighth:function(e,t,n){var r=n*.125,i=this.getRealHeight(n,!0),s=t-i[0];return new Kinetic.Shape({sceneFunc:function(t){t.translate(e,s),t.scale(r,r),t.beginPath(),t.moveTo(92.9,5.2),t.bezierCurveTo(90.4,14.4,88.4,21.5,88.1,21.9),t.bezierCurveTo(84.9,28.7,78.5,37.2,73.6,42.1),t.bezierCurveTo(68.4,47.3,65.5,48.2,61.1,46.5),t.bezierCurveTo(57.4,44.5,56.2,42.4,53.8,31.5),t.bezierCurveTo(51.7,23.4,50.2,19,46.9,15.8),t.bezierCurveTo(38.4,6.5,23.8,5.3,12.6,12.6),t.bezierCurveTo(7.3,16.2,3.3,21.9,.9,28),t.bezierCurveTo(0,31.1,0,32,0,36.4),t.bezierCurveTo(0,40.9,0,42.4,.9,44.9),t.bezierCurveTo(3.6,53.8,9.3,60.7,18.2,64.7),t.bezierCurveTo(24.7,68,27.1,68.4,36,68.4),t.bezierCurveTo(42.5,68.4,44.5,68.4,49.8,67.5),t.bezierCurveTo(57.1,66.3,64.7,63.9,73.2,61.5),t.lineTo(78.5,59.4),t.lineTo(78.5,60.7),t.bezierCurveTo(78,62.3,44.1,190,43.7,190.8),t.bezierCurveTo(43.3,192.4,50.6,195.6,55,195.6),t.bezierCurveTo(59.4,195.6,65.9,192.8,66.3,190.8),t.bezierCurveTo(66.7,190.4,86.1,106.8,110.3,5.1),t.bezierCurveTo(107.1,-2.6,98.1,-0.8,92.9,5.2),t.closePath(),t.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0})},initSixteen:function(e,t,n){var r=this.getRealHeight(n,!0),i=n*.125,s=t-r[0];return new Kinetic.Shape({sceneFunc:function(t){t.translate(e,s),t.scale(i,i),t.beginPath(),t.moveTo(132.4,0),t.bezierCurveTo(126.7,0,121.8,4.5,120.8,9.5),t.bezierCurveTo(118,21.7,117.1,25.3,116.8,26.1),t.bezierCurveTo(114.2,31.6,107.4,42.3,102.3,47.8),t.bezierCurveTo(96.7,52.9,94.2,53.8,89.5,52.1),t.bezierCurveTo(85.7,50,84.4,47.8,81.9,36.3),t.bezierCurveTo(79.7,27.8,78,23.1,74.6,19.8),t.bezierCurveTo(65.6,9.9,50.3,8.6,38.3,16.3),t.bezierCurveTo(32.8,20.2,28.6,26.1,26,32.6),t.bezierCurveTo(25.1,35.9,25.1,36.8,25.1,41.5),t.bezierCurveTo(25.1,47.8,25.6,51.3,28.6,56.3),t.bezierCurveTo(32.8,64.9,41.8,71.7,52,74.2),t.bezierCurveTo(63.1,77.2,81.4,74.7,102.3,67.9),t.bezierCurveTo(105.2,66.6,108.2,65.7,108.2,65.7),t.bezierCurveTo(108.2,66.2,104.8,80.2,101,97.7),t.bezierCurveTo(94.6,127.5,94.2,129.7,92,133.4),t.bezierCurveTo(88.6,140.7,81,151,75.8,155.6),t.bezierCurveTo(71.6,159.5,68.7,160.3,64.4,158.6),t.bezierCurveTo(60.6,156.5,59.2,154.3,56.7,142.9),t.bezierCurveTo(54.5,134.3,52.9,129.7,49.4,126.2),t.bezierCurveTo(40.5,116.4,25.1,115.2,13.2,122.8),t.bezierCurveTo(7.7,126.7,3.4,132.6,.9,139),t.bezierCurveTo(0,142.5,0,143.3,0,148),t.bezierCurveTo(0,154.3,.4,157.7,3.4,162.8),t.bezierCurveTo(7.7,171.4,16.6,178.2,26.9,180.8),t.bezierCurveTo(37.9,183.7,59.2,180.8,80.1,173.5),t.bezierCurveTo(82.7,172.7,84.4,172.3,84.4,172.3),t.bezierCurveTo(84.4,172.7,54.5,306.4,53.3,310.7),t.bezierCurveTo(53.3,311.6,53.7,312,55.4,312.8),t.bezierCurveTo(58,314.5,62.2,315.9,65.2,315.9),t.bezierCurveTo(68.2,315.9,72.4,314.5,75,312.8),t.bezierCurveTo(76.7,312,77.2,311.6,77.6,309.4),t.bezierCurveTo(77.6,308.2,100.1,196.1,127.9,60.2),t.bezierCurveTo(131.9,40.2,133.1,33.9,136.5,17),t.bezierCurveTo(137.7,11.1,139.7,0,132.4,0),t.closePath(),t.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0})},initThirtySecond:function(e,t,n){var r=this.getRealHeight(n,!0),i=n*.125,s=t-r[0];return new Kinetic.Shape({sceneFunc:function(t){t.translate(e,s),t.scale(i,i),t.beginPath(),t.moveTo(154.4,0),t.bezierCurveTo(152.8,0,146,0,144.3,7.4),t.bezierCurveTo(141.2,20.7,140.5,22.5,138.9,25.3),t.bezierCurveTo(134.2,35.1,127.5,44.5,122.7,47.5),t.bezierCurveTo(120.2,49.2,118,49.2,115.1,47.9),t.bezierCurveTo(111.2,45.8,109.9,43.6,107.4,32.1),t.bezierCurveTo(105.2,23.6,103.6,18.9,100.1,15.5),t.bezierCurveTo(91.2,5.7,75.8,4.5,63.9,12.1),t.bezierCurveTo(58.4,15.9,54.1,21.9,51.6,28.3),t.bezierCurveTo(50.7,31.7,50.7,32.5,50.7,37.2),t.bezierCurveTo(50.7,43.6,51.1,47.1,54.1,52.2),t.bezierCurveTo(58.4,60.7,67.3,67.5,77.6,70),t.bezierCurveTo(82.3,71.4,94.2,71.4,102.3,70),t.bezierCurveTo(109.1,68.8,117.2,66.6,125.3,64.1),t.bezierCurveTo(129.1,62.8,131.7,61.9,132.1,61.9),t.bezierCurveTo(132.1,62.3,117.6,126.3,116.8,128.4),t.bezierCurveTo(114.2,133.9,107.4,144.6,102.3,150.1),t.bezierCurveTo(96.7,155.2,94.2,156.1,89.5,154.4),t.bezierCurveTo(85.7,152.3,84.4,150.1,81.9,138.6),t.bezierCurveTo(79.7,130.1,78,125.4,74.6,122.1),t.bezierCurveTo(65.6,112.2,50.3,111,38.3,118.6),t.bezierCurveTo(32.8,122.5,28.6,128.4,26,134.9),t.bezierCurveTo(25.1,138.2,25.1,139.1,25.1,143.8),t.bezierCurveTo(25.1,150.1,25.6,153.6,28.6,158.7),t.bezierCurveTo(32.8,167.2,41.8,174,52,176.5),t.bezierCurveTo(63.1,179.5,81.4,177,102.3,170.2),t.bezierCurveTo(105.2,168.9,108.2,168,108.2,168),t.bezierCurveTo(108.2,168.5,104.8,182.5,101,200),t.bezierCurveTo(94.6,229.8,94.2,232,92,235.7),t.bezierCurveTo(88.6,243,81,253.3,75.8,258),t.bezierCurveTo(71.6,261.8,68.7,262.6,64.4,260.9),t.bezierCurveTo(60.6,258.8,59.2,256.6,56.7,245.2),t.bezierCurveTo(54.5,236.7,52.9,232,49.4,228.5),t.bezierCurveTo(40.5,218.7,25.1,217.5,13.2,225.1),t.bezierCurveTo(7.7,229,3.4,234.9,.9,241.3),t.bezierCurveTo(0,244.8,0,245.6,0,250.3),t.bezierCurveTo(0,256.6,.4,260,3.4,265.1),t.bezierCurveTo(7.7,273.7,16.6,280.5,26.9,283.1),t.bezierCurveTo(37.9,286,59.2,283.1,80.1,275.8),t.bezierCurveTo(82.7,275,84.4,274.6,84.4,274.6),t.bezierCurveTo(84.4,275,54.5,408.7,53.3,413),t.bezierCurveTo(53.3,413.9,53.7,414.3,55.4,415.2),t.bezierCurveTo(58,416.8,62.2,418.2,65.2,418.2),t.bezierCurveTo(68.2,418.2,72.4,416.8,75,415.2),t.bezierCurveTo(76.7,414.3,77.2,413.9,77.6,411.7),t.bezierCurveTo(77.6,410.5,100.1,298.4,127.9,162.5),t.bezierCurveTo(141.5,94.4,151.4,44.8,158.6,8.7),t.bezierCurveTo(159.5,4.3,157.9,-0.1,154.4,0),t.closePath(),t.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0})},initSixtyFourth:function(e,t,n){var r=this.getRealHeight(n,!0),i=n*.125,s=t-r[0];return new Kinetic.Shape({sceneFunc:function(t){t.translate(e,s),t.scale(i,i),t.beginPath(),t.bezierCurveTo(89,2.9,80.5,10.6,76.7,21.2),t.bezierCurveTo(75.8,24.6,75.8,25.4,75.8,30.1),t.bezierCurveTo(75.8,34.8,75.8,36.5,76.7,39.1),t.bezierCurveTo(79.7,48.5,85.7,55.7,95,59.9),t.bezierCurveTo(101.8,63.4,104.4,63.8,113.8,63.8),t.bezierCurveTo(120.2,63.8,122.7,63.8,127.9,63),t.bezierCurveTo(134.6,61.7,144,59.1,151.3,56.6),t.lineTo(155.9,54.8),t.lineTo(155.5,56.6),t.bezierCurveTo(155.1,57.4,152.1,72.3,148.2,89.3),t.bezierCurveTo(141.5,119.2,141.1,120.9,138.9,124.7),t.bezierCurveTo(134.2,134.5,127.5,143.9,122.7,146.9),t.bezierCurveTo(120.2,148.6,118,148.6,115.1,147.3),t.bezierCurveTo(111.2,145.2,109.9,143,107.4,131.5),t.bezierCurveTo(105.2,123,103.6,118.3,100.1,114.9),t.bezierCurveTo(91.2,105.1,75.8,103.9,63.9,111.5),t.bezierCurveTo(58.4,115.3,54.1,121.3,51.6,127.7),t.bezierCurveTo(50.7,131.1,50.7,131.9,50.7,136.6),t.bezierCurveTo(50.7,143,51.1,146.5,54.1,151.6),t.bezierCurveTo(58.4,160.1,67.3,166.9,77.6,169.4),t.bezierCurveTo(82.3,170.8,94.2,170.8,102.3,169.4),t.bezierCurveTo(109.1,168.2,117.2,166,125.3,163.5),t.bezierCurveTo(129.1,162.3,131.7,161.3,132.1,161.3),t.bezierCurveTo(132.1,161.8,117.6,225.7,116.8,227.8),t.bezierCurveTo(114.2,233.3,107.4,244,102.3,249.5),t.bezierCurveTo(96.7,254.6,94.2,255.6,89.5,253.8),t.bezierCurveTo(85.7,251.7,84.4,249.5,81.9,238),t.bezierCurveTo(79.7,229.5,78,224.8,74.6,221.5),t.bezierCurveTo(65.6,211.6,50.3,210.4,38.3,218),t.bezierCurveTo(32.8,221.9,28.6,227.8,26,234.3),t.bezierCurveTo(25.1,237.6,25.1,238.5,25.1,243.2),t.bezierCurveTo(25.1,249.5,25.6,253,28.6,258.1),t.bezierCurveTo(32.8,266.6,41.8,273.4,52,275.9),t.bezierCurveTo(63.1,278.9,81.4,276.4,102.3,269.6),t.bezierCurveTo(105.2,268.3,108.2,267.4,108.2,267.4),t.bezierCurveTo(108.2,267.9,104.8,281.9,101,299.4),t.bezierCurveTo(94.6,329.2,94.2,331.4,92,335.1),t.bezierCurveTo(88.6,342.4,81,352.7,75.8,357.4),t.bezierCurveTo(71.6,361.2,68.7,362,64.4,360.3),t.bezierCurveTo(60.6,358.2,59.2,356,56.7,344.6),t.bezierCurveTo(54.5,336.1,52.9,331.4,49.4,328),t.bezierCurveTo(40.5,318.1,25.1,316.9,13.2,324.5),t.bezierCurveTo(7.7,328.4,3.4,334.3,.9,340.7),t.bezierCurveTo(0,344.2,0,345,0,349.7),t.bezierCurveTo(0,356,.4,359.4,3.4,364.5),t.bezierCurveTo(7.7,373.1,16.6,379.9,26.9,382.5),t.bezierCurveTo(37.9,385.4,59.2,382.5,80.1,375.2),t.bezierCurveTo(82.7,374.4,84.4,374,84.4,374),t.bezierCurveTo(84.4,374.4,54.5,508.1,53.3,512.4),t.bezierCurveTo(53.3,513.3,53.7,513.7,55.4,514.6),t.bezierCurveTo(58,516.2,62.2,517.6,65.2,517.6),t.bezierCurveTo(68.2,517.6,72.4,516.2,75,514.6),t.bezierCurveTo(76.7,513.7,77.2,513.3,77.6,511.1),t.bezierCurveTo(77.6,509.9,100.1,397.8,127.9,261.9),t.bezierCurveTo(171.7,42.9,177.2,14.8,176.8,13.9),t.bezierCurveTo(175.6,11.8,173.9,11,171.3,11),t.bezierCurveTo(167.5,11,166.6,11.8,162.8,19.1),t.bezierCurveTo(157.3,29.7,151.7,37.4,147.8,40.4),t.bezierCurveTo(145.7,42.1,143.6,42.1,140.2,40.8),t.bezierCurveTo(136.4,38.6,135.1,36.5,132.5,25),t.bezierCurveTo(130,13.5,126.9,8.4,120.6,4.1),t.bezierCurveTo(114.6,.3,107,-0.9,100.1,.7),t.closePath(),t.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0})},simpleRestShape:function(e,t,n){return new Kinetic.Rect({x:e,y:t,width:this.getRealWidth(n),height:this.getRealHeight(n),fill:"black",strokeWidth:0})}}),e}(),Euterpe.Row=function(){function e(t){e.super.call(this,"Euterpe.Row",t),this.type=Euterpe.getConfig(t,"type"),this.group=Euterpe.getConfig(t,"group",undefined),this.groupType=Euterpe.getConfig(t,"groupType",undefined),this.type==="measure"?(this.numberOfLines=5,this.realHeight=[0,57.3]):this.type==="tab"&&(this.numberOfLines=6,this.realHeight=[0,71.5]),this.prepared=[]}return Euterpe.extend(Euterpe.Container,e,{render:function(e,t,n){var r=[],i=0,s=e;for(var o=0;o<this.items.length;o++){var u=this.items[o];u.X=e+u.leftMargin*n,u.Y=t,r.push(u.render(u.X,u.Y,n));var a=u.getRealWidth(n);i+=a,e+=a}r.push(this.renderSelf(s,t,n,i));if(this.type==="measure"){var f=[];this.prepareLedgerLines(f,Euterpe.select("Euterpe.Note",this),t,n),r.push(this.renderLedgerLines(f,n))}return r},prepareLedgerLines:function(e,t,n,r){for(var i=0;i<t.length;i++){var s=t[i];if(typeof s.config.location=="number"){var o=s.headWidth*r,u;s.config.location>this.numberOfLines-1?(u=Math.floor(s.config.location),this.addLedgerLine(s,u,s.X,o,n,e,r)):s.config.location<0&&(u=Math.ceil(s.config.location),this.addLedgerLine(s,u,s.X,o,n,e,r))}}},addLedgerLine:function(e,t,n,r,i,s,o){var u;for(;;){if(t>0&&t<=4||t===0)break;u=!1;var a=Euterpe.getY(t,o,i);if(e.name==="Euterpe.Note"){for(var f=0;f<s.length;f++){var l=s[f];if(l[0]===n&&l[1]===a){u=!0;break}}u||s.push([n,a,r])}t+=t>0?-1:1}},renderLedgerLines:function(e,t){var n=[];for(var r=0;r<e.length;r++){var i=e[r][0],s=e[r][1],o=5*t,u=e[r][2]+o*2;n.push(new Kinetic.Line({points:[0,0,u,0],stroke:"black",strokeWidth:Euterpe.global.lineWidth,x:i-o,y:s}))}return n},renderSelf:function(e,t,n,r){var i=new Kinetic.Line({points:[0,0,r,0],stroke:"black",strokeWidth:Euterpe.global.lineWidth,x:e,y:t}),s=new Kinetic.Group({});s.add(i);for(var o=2;o<this.numberOfLines+1;o++){var u=Euterpe.getY(o-1,n,t),a=i.clone({y:u});s.add(a)}return s}}),e}(),Euterpe.Score=function(){function e(t){this.layer=t.layer,this.lineMargin=Euterpe.getConfig(t,"lineMargin",0),this.titleMargin=Euterpe.getConfig(t,"titleMargin",0),this.musicByMargin=Euterpe.getConfig(t,"musicByMargin",0),this.tuningMargin=Euterpe.getConfig(t,"tuningMargin",0),this.title=Euterpe.getConfig(t,"title",undefined),this.musicBy=Euterpe.getConfig(t,"musicBy",undefined),this.tuning=Euterpe.getConfig(t,"tuning",undefined),this.titleHeight=0,this.musicByHeight=0,this.tuningHeight=0,typeof this.title!="undefined"&&(this.titleText=new Euterpe.Text({text:this.title,fontSize:40,fontFamily:"Serif"}),this.titleWidth=this.titleText.getRealWidth(1),this.titleHeight=this.titleText.getRealHeight(1)),typeof this.musicBy!="undefined"&&(this.musicByText=new Euterpe.Text({fontSize:20,text:"Music by "+this.musicBy,fontFamily:"Serif"}),this.musicByHeight=this.musicByText.getRealHeight(1)),typeof this.tuning!="undefined"&&(this.tuningText=new Euterpe.Text({fontSize:15,text:this.tuning,fontFamily:"Serif",fontStyle:"italic"}),this.tuningHeight=this.tuningText.getRealHeight(1)),e.super.call(this,"Euterpe.Score",t)}return Euterpe.extend(Euterpe.Container,e,{bracketExtraUp:5,bracketExtraDown:5,getRealHeight:function(e,t){var n=this.doGetRealHeight(this.items,e,t),r=0;return r+=this.titleHeight*e,r+=this.titleMargin*e,r+=this.musicByHeight*e,r+=this.musicByMargin*e,r+=this.tuningHeight*e,r+=this.tuningMargin*e,t?n[0]+=r:n+=r,n},render:function(e,t,n){var r=0,i=[],s,o=Euterpe.getGroups(this.items),u=0;for(s=0;s<o.length;s++){var a=o[s];a.groupType==="bracket"&&6>u&&(u=6)}e+=u*n;var f=0;t=this.renderMeta(e,t,n,i);for(s=0;s<this.items.length;s++){var l=this.items[s],c=this.doGetRealHeight([l],n,!0);r!==0&&(r+=c[0]);var h=t+r;l.Y=h,l.X=e,f<o.length&&o[f].first===l.id&&(i.push(this.renderBracket(e-u*n,h,n,o[f].items)),f++),r+=c[1],i.push(l.render(e,h,n))}return i},renderMeta:function(e,t,n,r){var i=this.getRealHeight(n,!0);t-=i[0];var s=(this.titleHeight+this.musicByHeight+this.tuningHeight+this.titleMargin+this.musicByMargin+this.tuningMargin)*n;return typeof this.title!="undefined"&&(t+=this.titleHeight*n/2,r.push(this.renderText(this.titleText,this.titleWidth,e,t,n,!0)),t+=this.titleHeight*n/2,t+=this.titleMargin*n),typeof this.musicBy!="undefined"&&(t+=this.musicByHeight*n/2,r.push(this.renderText(this.musicByText,0,e,t,n)),t+=this.musicByHeight*n/2,t+=this.musicByMargin*n),typeof this.tuning!="undefined"&&(t+=this.tuningHeight*n/2,r.push(this.renderText(this.tuningText,0,e,t,n)),t+=this.tuningHeight*n/2,t+=this.tuningMargin*n),t+=i[0]-s,t},renderText:function(e,t,n,r,i,s){var o=n;if(s){var u=this.items[0].getRealWidth(i);o=n+(u/2-t/2)}return e.render(o,r,i)},doGetRealHeight:function(e,t,n){var r,i=0,s=Euterpe.getGroups(this.items),o=function(e){return _.find(s,function(t){return t.first===e.id})},u=function(e){return _.find(s,function(t){return t.last===e.id})};for(var a=0;a<e.length;a++){var f=e[a],l=f.getRealHeight(t,!0);o(f)&&(l[0]+=this.bracketExtraUp*t),u(f)&&(l[1]+=this.bracketExtraDown*t);var c=l[1]+l[0];typeof r=="undefined"&&(r=l[0]+i),i+=c+this.lineMargin*t}return n?[r,i-r]:i},renderBracket:function(e,t,n,r){var i=this.bracketExtraUp*n,s=this.bracketExtraDown*n,o=this.doGetRealHeight(r,n,!0),u=o[0]-i,a=o[1]-s-this.lineMargin*n;return new Kinetic.Shape({sceneFunc:function(r){r.beginPath();var o=10*n;r.moveTo(e+o,t-u-i),r.lineTo(e,t-u),r.lineTo(e,t+a),r.lineTo(e+o,t+a+s),r.lineTo(e+o/5,t+a),r.lineTo(e+o/5,t-u),r.lineTo(e+o,t-u-i),r.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0})}}),e}(),Euterpe.Sharp=function(){function e(t){e.super.call(this,"Euterpe.Sharp",t),this.realWidth=9,this.realHeight=[11,11]}return Euterpe.extend(Euterpe.Node,e,{render:function(e,t,n){var r=this.realHeight[0]+this.realHeight[1];this.startY=t-r*n/2-n;var i=this.realWidth*n,s=r*n,o=1.5*n,u=new Kinetic.Rect({x:this.X+i/3.6-o/2,y:this.startY+2*n,width:o,height:s,fill:"black",strokeWidth:0}),a=u.clone({x:this.X+i-i/3.6-o/2,y:this.startY}),f=4.5*n,l=this.startY+s/4+3*n;o=3*n;var c=new Kinetic.Line({points:[this.X,l,this.X,l+o,this.X+i,l+o-f,this.X+i,l-f],fill:"black",strokeWidth:0,closed:!0});l=this.startY+s-s/4;var h=c.clone({points:[this.X,l,this.X,l+o,this.X+i,l+o-f,this.X+i,l-f]}),p=[u,a,c,h];return Euterpe.bind(this,p),p}}),e}(),Euterpe.StringNumber=function(){function e(t){this.string=Euterpe.getConfig(t,"string"),this.fontSize=10,this.fontFamily="Arial";if(typeof this.string!="number"||this.string<0||this.string>6)throw"Invalid string value";this.string=this.string.toString(),this.textWidth=5,this.textHeight=7.6,this.realWidth=21.3,this.realHeight=[10.65,10.65],e.super.call(this,"Euterpe.StringNumber",t)}return Euterpe.extend(Euterpe.Node,e,{render:function(e,t,n){var r=[],i=e+this.realWidth*n/2;return r.push(new Kinetic.Circle({x:i,y:t,radius:10*n,fill:"white",stroke:"black",strokeWidth:n})),r.push(new Kinetic.Text({x:i-this.textWidth*n/2,y:t-this.textHeight*n/2,text:this.string,fontSize:this.fontSize*n,fontFamily:this.fontFamily,fill:"black"})),Euterpe.bind(this,r),r}}),e}(),Euterpe.Text=function(){function e(t){this.text=Euterpe.getConfig(t,"text"),this.color=Euterpe.getConfig(t,"color","black"),this.fontFamily=Euterpe.getConfig(t,"fontFamily","Arial"),this.fontSize=Euterpe.getConfig(t,"fontSize",10),this.fontStyle=Euterpe.getConfig(t,"fontStyle","normal");var n=1,r=new Kinetic.Text({x:0,y:0,text:this.text,fontSize:this.fontSize*n,fontFamily:this.fontFamily,fontStyle:this.fontStyle}),i=r.height()/n;this.realWidth=r.width()/n,this.realHeight=[i/2,i/2],e.super.call(this,"Euterpe.Text",t)}return Euterpe.extend(Euterpe.Node,e,{render:function(e,t,n){var r=[new Kinetic.Text({x:e,y:t-(this.realHeight[0]*n+this.realHeight[1]*n)/2,text:this.text,fontSize:this.fontSize*n,fontFamily:this.fontFamily,fontStyle:this.fontStyle,fill:this.color})];return Euterpe.bind(this,r),r}}),e}(),Euterpe.TimeSignature=function(){function e(t){this.numerator=Euterpe.getConfig(t,"numerator",4),this.denominator=Euterpe.getConfig(t,"denominator",4),e.super.call(this,t),this.add(new Euterpe.TimeSignatureShape(this.numerator,0)),this.add(new Euterpe.TimeSignatureShape(this.denominator,2))}return Euterpe.extend(Euterpe.Column,e,{name:"Euterpe.TimeSignature"}),e}(),Euterpe.TimeSignatureShape=function(){function e(t,n){this.yoffset=2;var r={4:[0,24+this.yoffset]};this.digit=t.toString(),this.realWidth=22.4,this.realHeight=r[t],e.super.call(this,"Euterpe.TimeSignatureShape",{location:n})}return Euterpe.extend(Euterpe.Node,e,{render:function(e,t,n){var r=this;this.scale=n,this.startX=e,this.startY=t+this.yoffset*n;var i=[];return this.digit==="4"&&i.push(new Kinetic.Shape({sceneFunc:function(e){var t=r.startX+17.6*n,i=r.startY;e.beginPath(),e.moveTo(t,i),e.lineTo(t-10*r.scale,i),e.bezierCurveTo(t-8.8*r.scale,i+6.8*r.scale,t-10.54*r.scale,i+10.66*r.scale,t-17.6*r.scale,i+16*r.scale),e.lineTo(t-17.6*r.scale,i+17*r.scale),e.lineTo(t-3.6*r.scale,i+17*r.scale),e.lineTo(t-3.6*r.scale,i+22.4*r.scale),e.lineTo(t-5.6*r.scale,i+22.4*r.scale),e.lineTo(t-5.6*r.scale,i+23.4*r.scale),e.lineTo(t-5.6*r.scale,i+23.4*r.scale),e.lineTo(t+4.4*r.scale,i+23.4*r.scale),e.lineTo(t+4.4*r.scale,i+22.4*r.scale),e.lineTo(t+2.4*r.scale,i+22.4*r.scale),e.lineTo(t+2.4*r.scale,i+17*r.scale),e.lineTo(t+4.4*r.scale,i+17*r.scale),e.lineTo(t+4.4*r.scale,i+16*r.scale),e.lineTo(t+2.4*r.scale,i+16*r.scale),e.lineTo(t+2.4*r.scale,i+1.4*r.scale),e.lineTo(t-3.6*r.scale,i+7.2*r.scale),e.lineTo(t-3.6*r.scale,i+16*r.scale),e.lineTo(t-16.6*r.scale,i+16*r.scale),e.lineTo(t,i),e.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0})),Euterpe.bind(this,i),i}}),e}();Euterpe.TrebleClef=function(){function e(t){this.realWidth=36.8,t.location=0,e.super.call(this,"Euterpe.TrebleClef",t)}return Euterpe.extend(Euterpe.Node,e,{realHeight:[26.3,82],render:function(e,t,n){this.startX=e,this.startY=t-27*n,this.scale=.125*n;var r=this,i=new Kinetic.Shape({sceneFunc:function(e){e.beginPath(),e.translate(r.startX,r.startY),e.scale(r.scale,r.scale),e.moveTo(159,3),e.quadraticCurveTo(129,50,117,93),e.quadraticCurveTo(107,126,102,167),e.quadraticCurveTo(101,192,102,210),e.quadraticCurveTo(107,255,116,297),e.quadraticCurveTo(63,351,44,375),e.quadraticCurveTo(24,401,15,429),e.quadraticCurveTo(2,464,3,503),e.quadraticCurveTo(5,540,20,575),e.quadraticCurveTo(29,596,48,615),e.quadraticCurveTo(62,630,87,645),e.quadraticCurveTo(113,660,150,666),e.quadraticCurveTo(177,668,194,665),e.quadraticCurveTo(204,720,213,776),e.quadraticCurveTo(216,795,216,813),e.quadraticCurveTo(203,849,158,857),e.quadraticCurveTo(132,857,120,842),e.quadraticCurveTo(152,845,166,813),e.quadraticCurveTo(165,821,168,802),e.quadraticCurveTo(166,775,151,765),e.quadraticCurveTo(132,750,107,758),e.quadraticCurveTo(86,768,78,789),e.quadraticCurveTo(71,818,90,840),e.quadraticCurveTo(105,857,129,865),e.quadraticCurveTo(149,872,177,865),e.quadraticCurveTo(194,860,209,846),e.quadraticCurveTo(231,828,230,803),e.quadraticCurveTo(221,735,207,662),e.quadraticCurveTo(248,650,267,626),e.quadraticCurveTo(293,599,296,566),e.quadraticCurveTo(300,527,285,494),e.quadraticCurveTo(270,462,234,444),e.quadraticCurveTo(215,435,189,435),e.quadraticCurveTo(177,435,164,438),e.quadraticCurveTo(155,396,146,354),e.quadraticCurveTo(183,315,203,275),e.quadraticCurveTo(219,243,222,210),e.quadraticCurveTo(227,167,221,137),e.quadraticCurveTo(213,93,192,51),e.quadraticCurveTo(180,29,159,3),e.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0}),s=new Kinetic.Shape({sceneFunc:function(e){e.beginPath(),e.translate(r.startX,r.startY),e.scale(r.scale,r.scale),e.moveTo(191,93),e.quadraticCurveTo(179,83,171,93),e.quadraticCurveTo(126,162,131,281),e.quadraticCurveTo(188,239,203,188),e.quadraticCurveTo(209,162,204,135),e.quadraticCurveTo(200,111,191,93),e.fillStrokeShape(this)},fill:"white",stroke:"white",strokeWidth:0}),o=new Kinetic.Shape({sceneFunc:function(e){e.beginPath(),e.translate(r.startX,r.startY),e.scale(r.scale,r.scale),e.moveTo(171,473),e.quadraticCurveTo(188,555,206,648),e.quadraticCurveTo(237,639,255,620),e.quadraticCurveTo(283,588,283,558),e.quadraticCurveTo(285,525,269,501),e.quadraticCurveTo(252,476,216,470),e.quadraticCurveTo(194,465,171,473),e.fillStrokeShape(this)},fill:"white",stroke:"white",strokeWidth:0}),u=new Kinetic.Shape({sceneFunc:function(e){e.beginPath(),e.translate(r.startX,r.startY),e.scale(r.scale,r.scale),e.moveTo(147,446),e.quadraticCurveTo(141,411,132,369),e.quadraticCurveTo(90,401,68,435),e.quadraticCurveTo(45,467,39,503),e.quadraticCurveTo(30,540,45,576),e.quadraticCurveTo(60,612,92,633),e.quadraticCurveTo(123,651,161,654),e.quadraticCurveTo(174,654,188,653),e.fillStrokeShape(this)},fill:"white",stroke:"white",strokeWidth:0}),a=new Kinetic.Shape({sceneFunc:function(e){e.beginPath(),e.translate(r.startX,r.startY),e.scale(r.scale,r.scale),e.moveTo(147,444),e.quadraticCurveTo(120,456,101,480),e.quadraticCurveTo(83,504,84,536),e.quadraticCurveTo(86,567,107,588),e.quadraticCurveTo(114,597,126,605),e.quadraticCurveTo(116,593,107,581),e.quadraticCurveTo(95,560,99,537),e.quadraticCurveTo(105,509,132,491),e.quadraticCurveTo(143,482,164,476),e.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0}),f=[i,s,o,u,a];return Euterpe.bind(this,f),f}}),e}();Euterpe.Column=function(){function e(t){e.super.call(this,"Euterpe.Column",t)}return Euterpe.extend(Euterpe.Container,e,{getRealWidth:function(e,t){var n=Euterpe.getMargins(this,e),r=this.collectItems(),i=_.max(_.map(r,function(n){var r=0,i=0;return n.isNode&&(r=n.getLeftWidth(e),i=n.getRightWidth(e)),n.getRealWidth(e,t)+(t?0:r+i)}));return i+(t?0:n)},getRealHeight:function(e,t){var n=this.collectItems();return Euterpe.getRealHeight(this,n,e,t)},collectItems:function(){var e=this.items;return _.isArray(this.config.aboveItems)&&(e=this.config.aboveItems.concat(this.items)),_.isArray(this.config.belowItems)&&(e=e.concat(this.config.belowItems)),e},render:function(e,t,n){var r=[],i,s,o=0,u=this.collectItems(),a=this.renderSideItems(u,n,r,e,t,!0);e+=a;for(s=0;s<u.length;s++)i=u[s],i.X=e,i.Y=Euterpe.getY(i,n,t),r.push(i.render(i.X,i.Y,n)),a=i.getRealWidth(n),a>o&&(o=a);return this.renderSideItems(this.items,n,r,e+o,t,!1),r},renderSideItems:function(e,t,n,r,i,s){var o=[],u=0,a=0;if(s)for(f=0;f<e.length;f++)e[f].isNode?(c=e[f].getLeftWidth(t),o.push(c),c>u&&(u=c)):o.push(0);for(var f=0;f<e.length;f++){var l=e[f],c=0,h=0;typeof o[f]!="undefined"&&o[f]!==u&&(h=u-o[f]);var p=s?l.leftItems:l.rightItems;for(var d=0;d<p.length;d++){var v=p[d];typeof v.config.location=="undefined"&&(v.config.location=l.config.location),v.X=r+v.leftMargin*t+h+c,v.Y=Euterpe.getY(v,t,i),n.push(v.render(v.X,v.Y,t)),c+=v.getRealWidth(t)}c>a&&(a=c)}return a},reduceWidth:function(e,t){return _.reduce(e,function(e,n){return e+n.getRealWidth(t)},0)}}),e}();Euterpe.ContainerDepth=0,Euterpe.Container=function(){var e=function(e,t){this.id=Euterpe.randomString(20),this.items=[],this.name=this.name||e,this.config=t||{},this.leftMargin=Euterpe.getConfig(t,"leftMargin",0),this.rightMargin=Euterpe.getConfig(t,"rightMargin",0),this.leftItems=[],this.rightItems=[];if(typeof t!="undefined"&&_.isArray(t.items))for(var n=0;n<t.items.length;n++)this.add(t.items[n])};return e.prototype={getRealWidth:function(e,t){var n=t?0:Euterpe.getMargins(this,e);for(var r=0;r<this.items.length;r++)n+=this.items[r].getRealWidth(e,t);return n},getRealHeight:function(e,t){return Euterpe.getRealHeight(this,this.items,e,t)},isContainer:!0,getLeftWidth:function(e){var t=_.map(this.items,function(t){return t.getLeftWidth(e)});return _.max(t)},getRightWidth:function(e){var t=_.map(this.items,function(t){return t.getRightWidth(e)});return _.max(t)},clear:function(){this.items.length=0},size:function(){return this.items.length},add:function(e){var t=this;if(_.isArray(e))return _.each(e,function(e){t.add(e)});e.parent=this,this.items.push(e)},prepend:function(e){e.parentContainer=this,this.items.unshift(e)},insertBefore:function(e,t){for(var n=0;n<this.items.length;n++){var r=this.items[n];if(r.id===e)return this.items.splice(n,0,t)}},baseRender:function(e,t,n,r,i){Euterpe.ContainerDepth+=1;var s=[],o=function(e,t,n,r,i){var s=Euterpe.getY(e,r,n);return e.Y=s,e.render(t,s,r,i)};r=r||o,i=i||o;for(var u=0;u<this.items.length;u++){var a=this.items[u],f=0;Euterpe.log.debug((new Array(Euterpe.ContainerDepth)).join("  "),a),a.isContainer?(a.parentContainer=this,f=a.getRealWidth(n),a.X=e+a.leftMargin*n,a.Y=t,s.push(i(a,a.X,a.Y,n,u)),e+=f):(a.parentContainer=this,f=a.getRealWidth(n),a.X=e+a.leftMargin*n,a.Y=t,s.push(r(a,a.X,a.Y,n,u)),e+=f)}return Euterpe.ContainerDepth-=1,s},render:function(e,t,n){return Euterpe.baseRender(this.items,e,t,n)}},e}();function Euterpe(){}Euterpe.const={LOG_DEBUG:1,LOG_INFO:2,LOG_WARNING:3,LOG_ERROR:4},Euterpe.global={loglevel:Euterpe.const.LOG_INFO},Euterpe.plugins={plugins:[],add:function(){var e=this;_.each(arguments,function(t){e.plugins.push(t)})},fold:function(e,t,n){return _.reduce(this.plugins,function(e,r){return r.process(e,t,n)},e)}},Euterpe.getConfig=function(e,t,n){return typeof e=="undefined"?n:typeof e[t]=="undefined"?n:e[t]},Euterpe.getY=function(e,t,n){var r;if(typeof e=="number")r=e;else{if(typeof e.config=="undefined"||typeof e.config.location=="undefined")return n;r=e.config.location}if(typeof r=="function")return r(t,n);var i=Euterpe.global.linePadding/2+Euterpe.global.lineWidth/2,s,o,u;return r>=0?(o=Math.floor(r),u=Math.ceil(r)>r?i:0,s=Euterpe.global.linePadding*o+Euterpe.global.lineWidth*o,n+s+u):r<0?(o=Math.ceil(r),u=Math.floor(r)<r?i:0,s=Euterpe.global.linePadding*-o+Euterpe.global.lineWidth*-o,n+s*-1-u):n},Euterpe.initNode=function(e,t){e.isNode=!0,e.nodeName=t},Euterpe.extend=function(e,t,n){function r(){}r.prototype=e.prototype,t.prototype=new r,t.prototype.constructor=t,t.super=e,typeof n=="object"&&_.extend(t.prototype,n)},Euterpe.render=function(e,t,n,r,i,s){Euterpe.initLog(),Euterpe.global.root=e,Euterpe.global.background=new Kinetic.Layer({}),Euterpe.global.foreground=new Kinetic.Layer({}),Euterpe.global.linePadding=13*i,Euterpe.global.lineWidth=i;var o=[],u=Euterpe.plugins.fold(e,i,o),a=u.getRealHeight(i,!0);n+=a[0];var f=n+a[1];Euterpe.stage=new Kinetic.Stage({container:s,width:r,height:f}),Euterpe.stage.add(Euterpe.global.foreground),Euterpe.stage.add(Euterpe.global.background);var l=_.flatten(u.render(t+e.leftMargin*i,n,i));for(var c=0;c<l.length;c++)l[c].layer2draw==="background"?Euterpe.global.background.add(l[c]):Euterpe.global.foreground.add(l[c]);for(var h=0;h<o.length;h++){var p=o[h],d=p(u,i);if(typeof d=="undefined")continue;d.layer2draw==="background"?Euterpe.global.background.add(d):Euterpe.global.foreground.add(d)}return Euterpe.stage},Euterpe.getMargins=function(e,t){return e.leftMargin*t+e.rightMargin*t},Euterpe.randomString=function(e){return(new Array(e+1)).join((Math.random().toString(36)+"00000000000000000").slice(2,18)).slice(0,e)},Euterpe.select=function(e,t){var n=function(t){return e[0]==="#"?t.id===e.slice(1,e.length):t.name===e};t=t||Euterpe.global.root;var r=[];if(t.isNode&&n(t))r.push(t);else if(t.isContainer)for(var i=0;i<t.items.length;i++){var s=t.items[i];n(s)&&r.push(s),s.isContainer&&r.push(Euterpe.select(e,s))}return _.flatten(r)},Euterpe.replace=function(e,t,n){for(var r=0;r<e.items.length;r++){var i=e.items[r];if(i.id==t)return n.parentContainer=e,e.items[r]=n,!0;if(i.isContainer&&Euterpe.replace(i,t,n))break}return!1},Euterpe.initLog=function(){var e=window.console||{},t=function(){};Euterpe.log={debug:t,info:t,warn:t,error:t},Euterpe.const.LOG_DEBUG>=Euterpe.global.loglevel&&e.log&&(Euterpe.log.debug=e.debug.bind(e)),Euterpe.const.LOG_INFO>=Euterpe.global.loglevel&&e.info&&(Euterpe.log.info=e.info.bind(e)),Euterpe.const.LOG_WARNING>=Euterpe.global.loglevel&&e.warn&&(Euterpe.log.warn=e.warn.bind(e)),Euterpe.const.LOG_ERROR>=Euterpe.global.loglevel&&e.error&&(Euterpe.log.error=e.error.bind(e))},Euterpe.getDistance=function(e,t,n){var r=0;for(var i=0;i<e.items.length;i++){var s=e.items[i];if(s.id===t.id)break;if(s.isContainer&&Euterpe.select("#"+t.id,s).length>0){r+=s.leftMargin*n,r+=Euterpe.getDistance(s,t,n);break}r+=s.getRealWidth(n)}return r},Euterpe.getRealHeight=function(e,t,n,r){var i=0,s,o,u,a,f;typeof e.realHeight!="undefined"&&(f=Euterpe.getY(e,n,i),s=e.realHeight[0]*n,o=e.realHeight[1]*n);for(var l=0;l<t.length;l++){var c=t[l],h=c.getRealHeight(n,!0);f=Euterpe.getY(c,n,i),u=f-h[0],a=f+h[1];if(typeof s=="undefined"||u<s)s=u;if(typeof o=="undefined"||a>o)o=a}return r?[s*-1,o]:o-s},Euterpe.baseRender=function(e,t,n,r){var i=[],s,o;for(o=0;o<e.length;o++)s=e[o],s.X=t,s.Y=Euterpe.getY(s,r,n),i.push(s.render(s.X,s.Y,r)),t+=s.getRealWidth(r);return i},Euterpe.getGroups=function(e){var t=[],n=null,r=null,i=null,s=[],o=null;for(var u=0;u<e.length;u++){var a=e[u];typeof a.group!="undefined"?(n!==a.group&&(n!==null&&t.push({first:i,last:o,groupType:r,items:_.clone(s)}),i=a.id,n=a.group,r=a.groupType,s.length=0),s.push(a)):t.push({first:undefined,last:undefined,groupType:undefined,items:[a]}),o=a.id}return s.length>0&&t.push({first:i,last:o,groupType:r,items:s}),t},Euterpe.bind=function(e,t){if(typeof e.config.on=="undefined")return;_.isArray(t)?t=_.flatten(t):t=[t];var n={},r=function(r,i){return function(){i.call(r,e,t,n)}},i=_.keys(e.config.on);for(var s=0;s<i.length;s++){var o=i[s];_.each(t,function(t){t.on(o,r(t,e.config.on[o]))})}};Euterpe.Flat=function(){function e(t){this.realWidth=12.25,this.realHeight=[16.3,9],e.super.call(this,"Euterpe.Flat",t)}return Euterpe.extend(Euterpe.Node,e,{render:function(e,t,n){var r=(this.realHeight[0]+this.realHeight[1])*n;this.barWidth=1.5*n,t-=16.25*n;var i=new Kinetic.Line({points:[0,0,0,r],stroke:"black",strokeWidth:this.barWidth,x:e,y:t}),s=t+r,o=e+this.barWidth/2,u=new Kinetic.Shape({sceneFunc:function(e){e.beginPath(),e.moveTo(o,s),e.lineTo(o+7*n,s-5.25*n),e.bezierCurveTo(o+12*n,s-8.75*n,o+12.5*n,s-19.75*n,o,s-13.75*n),e.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0}),a=new Kinetic.Shape({sceneFunc:function(e){e.beginPath(),e.moveTo(o,s-1.25*n),e.bezierCurveTo(o+9.75*n,s-6.75*n,o+8.25*n,s-17.25*n,o,s-12.75*n),e.fillStrokeShape(this)},fill:"white",stroke:"white",strokeWidth:0}),f=[i,u,a];return Euterpe.bind(this,f),f}}),e}();Euterpe.helpers={},Euterpe.helpers.events={highlight:function(e,t){function n(n,r,i){typeof i.fill=="undefined"&&(i.fill={}),typeof i.stroke=="undefined"&&(i.stroke={});for(var s=0;s<r.length;s++){var o=r[s];o.fill()===e&&(i.fill[o._id]=e,o.fill(t)),o.stroke()===e&&(i.stroke[o._id]=e,o.stroke(t))}Euterpe.global.background.draw(),Euterpe.global.foreground.draw()}function r(e,t,n){for(var r=0;r<t.length;r++){var i=t[r];typeof n.fill[i._id]!="undefined"&&i.fill(n.fill[i._id]),typeof n.stroke[i._id]!="undefined"&&i.stroke(n.stroke[i._id])}Euterpe.global.background.draw(),Euterpe.global.foreground.draw()}return[n,r]}};Euterpe.KeySignature=function(){function e(t){this.type=Euterpe.getConfig(t,"type"),this.amount=Euterpe.getConfig(t,"amount");if(this.type!=="sharp"&&this.type!=="flat")throw"Invalid type argument";if(typeof this.amount!="number"||this.amount<1||this.amount>7)throw"amount should be >= 1 and <= 7";e.super.call(this,t);var n={sharp:[0,1.5,-0.5,1,2.5,.5,2],flat:[2,.5,2.5,1,3,1.5,3.5]};for(var r=0;r<this.amount;r++){var i={location:n[this.type][r]};this.add(this.type==="sharp"?new Euterpe.Sharp(i):new Euterpe.Flat(i))}}return Euterpe.extend(Euterpe.Container,e),e}();Euterpe.Natural=function(){function e(t){this.realWidth=11.5,this.realHeight=[20.5,21.5],e.super.call(this,"Euterpe.Natural",t)}return Euterpe.extend(Euterpe.Node,e,{render:function(e,t,n){var r=1.5*n,i=28*n,s=10*n,o=2.5*n,u=1.5*n;t-=i/2+i/4;var a=new Kinetic.Rect({width:r,height:i,fill:"black",stroke:"black",strokeWidth:0,strokeEnabled:!1,x:e,y:t}),f=a.clone({x:e+s,y:t+i/2}),l,c,h=new Kinetic.Shape({sceneFunc:function(n){l=e,c=t+i/2,n.beginPath(),n.moveTo(l,c),n.lineTo(l+s+r,c-u),n.lineTo(l+s+r,c+o),n.lineTo(l,c+o+u),n.lineTo(l,c),n.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0,strokeEnabled:!1}),p=h.clone({sceneFunc:function(n){l=e,c=t+i-o,n.beginPath(),n.moveTo(l,c),n.lineTo(l+s+r,c-u),n.lineTo(l+s+r,c+o),n.lineTo(l,c+o+u),n.lineTo(l,c),n.fillStrokeShape(this)}}),d=[a,f,h,p];return Euterpe.bind(this,d),d}}),e}();Euterpe.Node=function(){var e=function(e,t){this.id=Euterpe.randomString(20),this.name=e,this.config=t||{},this.leftMargin=Euterpe.getConfig(t,"leftMargin",0),this.rightMargin=Euterpe.getConfig(t,"rightMargin",0),this.leftItems=Euterpe.getConfig(t,"leftItems",[]),this.rightItems=Euterpe.getConfig(t,"rightItems",[])};return e.prototype.isNode=!0,e.prototype.getLeftWidth=function(e){return this.reduceWidth(this.leftItems,e)},e.prototype.getRightWidth=function(e){return this.reduceWidth(this.rightItems,e)},e.prototype.getRealWidth=function(e,t){var n=Euterpe.getMargins(this,e);return this.realWidth*e+(t?0:n)},e.prototype.getRealHeight=function(e,t){return typeof this.realHeight=="undefined"?t?[0,0]:0:t?[this.realHeight[0]*e,this.realHeight[1]*e]:this.realHeight[0]*e+this.realHeight[1]*e},e.prototype.clone=function(){var e=new this.constructor(this.config);return e.parentContainer=this.parentContainer,e},e.prototype.reduceWidth=function(e,t){return _.reduce(e,function(e,n){return e+n.getRealWidth(t)},0)},e}();Euterpe.Note=function(){function e(t){this.type=Euterpe.getConfig(t,"type","quarter"),this.beamDir=Euterpe.getConfig(t,"beamDirection",undefined),this.flags=Euterpe.getConfig(t,"flags",0),this.dots=Euterpe.getConfig(t,"dots",0),this.beam=undefined,e.super.call(this,"Euterpe.Note",t),this.headHeight=13.3,this.realHeight=[this.headHeight/2,this.headHeight/2],this.type==="whole"?this.realWidth=this.headWidth=21.2:this.realWidth=this.headWidth=13.6,this.dotWidth=4.5,this.dotMargin=2.5,this.calculateSize()}return Euterpe.extend(Euterpe.Node,e,{beamRealHeight:35,calculateSize:function(){this.beamDir==="up"?this.realHeight=[this.beamRealHeight,this.headHeight/2]:this.beamDir==="down"&&(this.realHeight=[this.headHeight/2,this.beamRealHeight]),this.realWidth+=(this.dotMargin+this.dotWidth)*this.dots,this.flags>0&&(this.realWidth+=13.3)},render:function(e,t,n){this.beamWidth=1.3*n,this.beamHeight=this.beamRealHeight*n,this.scale=n,this.startX=e+this.headWidth*n/2,this.startY=t;var r=[];switch(this.type){case"whole":r=this.initWhole();break;default:r=this.initHalfQuarter()}if(this.dots>0){var i=0,s=this.location;s%1===0&&(i=3*n);var o=e+this.headWidth*n;for(var u=this.dots;u>0;u--)o+=this.dotMargin*n+this.dotWidth*n/2,r.push(new Kinetic.Ellipse({x:o,y:this.Y-i,radius:{x:2*this.scale,y:2*this.scale},fill:"black"})),o+=this.dotWidth*n/2}return Euterpe.bind(this,r),r},initWhole:function(){var e=new Kinetic.Ellipse({x:this.startX,y:this.startY,radius:{x:10.5*this.scale,y:6.5*this.scale},fill:"black"}),t=new Kinetic.Ellipse({x:this.startX,y:this.startY,radius:{x:5.5*this.scale,y:4*this.scale},fill:"white"});return t.rotation(45),[e,t]},initHalfQuarter:function(){var e=[],t=this,n=new Kinetic.Ellipse({x:this.startX,y:this.startY,radius:{x:7.6*this.scale,y:5.6*this.scale},fill:"black"});n.rotation(140),e.push(n);if(this.type==="half"){var r=new Kinetic.Ellipse({x:this.startX,y:this.startY,radius:{x:6.6*this.scale,y:2.5*this.scale},fill:"white"});r.rotation(140),e.push(r)}var i,s;if(typeof this.beamDir=="string"){this.beamDir==="up"?(i=n.x()+n.width()/2-this.beamWidth-this.beamWidth/3,s=n.y(),this.beam=new Kinetic.Line({points:[0,0,0,-this.beamHeight],stroke:"black",strokeWidth:this.beamWidth,x:i,y:s}),e.push(this.beam)):this.beamDir==="down"&&(i=n.x()-n.width()/2+this.beamWidth+this.beamWidth/3,s=n.y(),this.beam=new Kinetic.Line({points:[0,0,0,this.beamHeight],stroke:"black",strokeWidth:this.beamWidth,x:i,y:s}),e.push(this.beam));if(this.flags==1){var o=this.beam.x(),u=this.beam.y()-this.beamHeight,a=new Kinetic.Shape({sceneFunc:function(e){e.beginPath(),e.moveTo(o,u),e.bezierCurveTo(o+6.2*t.scale,u+11.8*t.scale,o+21.4*t.scale,u+10.4*t.scale,o+10*t.scale,u+26.4*t.scale),e.bezierCurveTo(o+19.6*t.scale,u+12.4*t.scale,o+5.4*t.scale,u+10.4*t.scale,o-.2*t.scale,u+7.4*t.scale),e.closePath(),e.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:1});e.push(a)}}return Euterpe.bind(this,e),e}}),e}();Euterpe.PluginAboveBelow=function(){var e=function(t){e.super.call(this,"Euterpe.PluginAboveBelow",t)};return Euterpe.extend(Euterpe.Plugin,e,{roundLine:function(e){var t,n;return e<0?(t=e-Math.ceil(e),t===0?n=e:t>=-0.5?n=Math.ceil(e)-.5:n=Math.floor(e),n):(t=e-Math.floor(e),t===0?n=e:t<=.5?n=Math.floor(e)+.5:n=Math.ceil(e),n)},place:function(e,t,n,r){var i=0,s,o,u,a;typeof r=="number"?s=r:n==="above"?s=0:n==="below"&&(s=4);for(var f=0;f<e.length;f++){var l=e[f];o=l.getRealHeight(t,!0),u=o[0]/this.lineH,a=o[1]/this.lineH,n==="above"?(i=s-this.roundLine(a),s=i-this.roundLine(u)):n==="below"&&(i=s+this.roundLine(a),s=i+this.roundLine(u)),l.config.location=i}},process:function(e,t){this.lineH=Euterpe.global.linePadding+Euterpe.global.lineWidth;var n=Euterpe.select("Euterpe.Column",e);for(var r=0;r<n.length;r++){var i=n[r],s=i.config,o=i.getRealHeight(t,!0),u=this.roundLine(o[0]/this.lineH*-1),a=this.roundLine(o[1]/this.lineH);a<4&&(a=4),_.isArray(s.aboveItems)&&this.place(s.aboveItems,t,"above",u),_.isArray(s.belowItems)&&this.place(s.belowItems,t,"below",a)}return e}}),e}();Euterpe.PluginAccidentals=function(){var e=function(t){e.super.call(this,"Euterpe.PluginAccidentals",t)};return Euterpe.extend(Euterpe.Plugin,e,{process:function(e){var t=Euterpe.select("Euterpe.Note",e);for(var n=0;n<t.length;n++){var r=t[n];if(typeof r.config.sharp=="undefined"&&typeof r.config.flat=="undefined")continue;var i=r.config.sharp||r.config.flat;for(var s=0;s<i;s++)typeof r.config.sharp!="undefined"?r.leftItems.push(new Euterpe.Sharp({})):typeof r.config.flat!="undefined"&&r.leftItems.push(new Euterpe.Flat({}))}return e}}),e}();Euterpe.PluginAlign=function(){var e=function(t){this.totalWidth=Euterpe.getConfig(t,"totalWidth"),this.nodeMargin=Euterpe.getConfig(t,"nodeMargin",5),this.sideMargin=Euterpe.getConfig(t,"sideMargin",3),e.super.call(this,"Euterpe.PluginAlign",t)};return Euterpe.extend(Euterpe.Plugin,e,{process:function(e,t){var n,r;for(n=0;n<e.items.length;n++){r=e.items[n];var i,s=this.collectNodes(r);for(i=0;i<s.length;i++)s[i].leftMargin=this.nodeMargin;this.alignSideItems(r)}var o=Euterpe.getGroups(e.items);for(n=0;n<o.length;n++)this.processGroup(o[n],t);return e},alignSideItems:function(e){var t=Euterpe.select("Euterpe.Column",e);for(var n=0;n<t.length;n++){var r=t[n];for(var i=0;i<r.items.length;i++){var s=r.items[i],o;for(o=0;o<s.leftItems.length;o++)s.leftItems[o].rightMargin=this.sideMargin;for(o=0;o<s.rightItems.length;o++)s.rightItems[o].leftMargin=this.sideMargin}}},getColsBars:function(e){var t=[];for(var n=1;n<e.items.length;n++){var r=e.items[n];(r.name==="Euterpe.Column"||r.name==="Euterpe.Bar")&&t.push(r)}return t},stretchAlign:function(e,t){var n=e.getRealWidth(t),r=this.getColsBars(e),i=this.totalWidth-n,s=i/r.length/t;for(var o=0;o<r.length;o++)r[o].leftMargin+=s},getCols:function(e,t){return _.map(e,function(e){return e[t]})},cleanGroup:function(e){var t=[];for(var n=0;n<e.items.length;n++)t[n]=this.getColsBars(e.items[n]);return t},processGroup:function(e,t){var n=this.cleanGroup(e),r,i,s,o,u=_.max(_.map(n,function(e){return e.length}));for(r=0;r<u;r++){o=this.getCols(n,r);var a={},f={},l={};for(i=0;i<o.length;i++){s=o[i];if(typeof s=="undefined")continue;a[s.id]=Euterpe.getDistance(s.parent,s,t)+s.leftMargin*t+s.getLeftWidth(t),f[s.id]=s.getRealWidth(t,!0),l[s.id]=s.getRightWidth(t)}var c=_.max(_.values(a)),h=_.max(_.values(f)),p=_.max(_.values(l));for(i=0;i<o.length;i++){s=o[i];if(typeof s=="undefined")continue;var d=a[s.id],v=f[s.id],m=l[s.id];d<c&&(s.leftMargin+=(c-d)/t),v<h&&(s.rightMargin+=(h-v)/t),m<p&&(s.rightMargin+=(p-m)/t)}}var g=this;_.each(e.items,function(e){g.stretchAlign(e,t)})},collectNodes:function(e){return _.filter(e.items,function(e){return e.name!=="Euterpe.Bar"&&e.name!=="Euterpe.Column"})}}),e}();Euterpe.Plugin=function(){var e=function(e,t){this.name=e,this.config=t||{}};return e.prototype.isPlugin=!0,e.prototype.process=function(e){return e},e}();Euterpe.PluginNoteBar=function(){var e=function(t){e.super.call(this,"Euterpe.PluginNoteBar",t)};return Euterpe.extend(Euterpe.Plugin,e,{process:function(e,t,n){var r=Euterpe.select("Euterpe.Column",e),i=[],s=[],o=1,u={};for(var a=0;a<r.length;a++){var f=r[a];for(var l=0;l<f.items.length;l++){var c=f.items[l],h=c.config||{};if(h.bar==="begin"||h.bar==="cont"||h.bar==="end")o=h.beamDirection==="down"?-1:1,u[i.length]=o,c.flags=0,s.push(c.id),h.bar==="end"&&(this.adjustBeamHeight(s,o),i.push(_.clone(s)),s.length=0)}}for(var p=0;p<i.length;p++)n.push(this.bind(i[p],u[p]));return e},getTopTwo:function(e,t){var n=_.clone(e);return n.sort(function(e,n){return t===1?e.config.location-n.config.location:n.config.location-e.config.location}),n.length>2?[n[0],n[1]]:n},adjustBeamHeight:function(e,t){e=_.map(e,function(e){return Euterpe.select("#"+e)[0]});if(e.length>2){var n=this.getTopTwo(e,t),r=function(e,n){return Euterpe.getY(e,scale,n)-e.beamRealHeight*scale*t},i=n[0],s=n[1],o=i.parent.parent,u=Euterpe.getDistance(o,i,scale),a=Euterpe.getDistance(o,s,scale);for(var f=0;f<e.length;f++){var l=Math.abs(Euterpe.getY(e[f],scale,0)),c=r(i,l),h=r(s,l),p=(h-c)/(a-u),d=Euterpe.getDistance(o,e[f],scale),v=r(e[f],l),m=p*(d-u)+c,g=v-m;g!==0&&(e[f].beamRealHeight+=g*t/scale,e[f].calculateSize())}}},bind:function(e,t){return function(n,r){var i=Euterpe.select("#"+e[0])[0],s=Euterpe.select("#"+e[e.length-1])[0],o=i.beam.x(),u=i.beam.y()-i.beamHeight*t,a=s.beam.x(),f=s.beam.y()-s.beamHeight*t,l=4*r,c=new Kinetic.Shape({sceneFunc:function(e){e.beginPath(),e.moveTo(o,u),e.lineTo(a,f),e.lineTo(a,f+l*t),e.lineTo(o,u+l*t),e.moveTo(o,u),e.closePath(),e.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0});return c}}}),e}();Euterpe.PluginNoteText=function(){var e=function(t){e.super.call(this,"Euterpe.PluginNoteText",t)};return Euterpe.extend(Euterpe.Plugin,e,{process:function(e){var t=Euterpe.select("Euterpe.Note",e);for(var n=0;n<t.length;n++){var r=t[n];if(typeof r.config.text=="undefined")continue;var i=new Euterpe.Text({text:r.config.text});r.leftItems.push(i)}return e}}),e}();Euterpe.PluginTab=function(){var e=function(t){e.super.call(this,"Euterpe.PluginTab",t)};return Euterpe.extend(Euterpe.Plugin,e,{process:function(e){for(var t=0;t<e.items.length;t++){var n=e.items[t],r=new Euterpe.Row({type:"tab"});for(var i=0;i<n.items.length;i++){var s=n.items[i];if(s.name=="Euterpe.Bar"){r.add(s.clone());continue}var o=new Euterpe.Column({}),u=Euterpe.select("Euterpe.Note",s);for(var a=0;a<u.length;a++){var f=u[a];typeof f.config.tab_location=="number"&&typeof f.config.tab_text=="string"&&(n.group=t.toString(),n.groupType="bracket",r.group=n.group,r.groupType=n.groupType,o.add(new Euterpe.Text({text:f.config.tab_text,location:f.config.tab_location})))}r!==null&&o.items.length>0&&r.add(o)}typeof r.group!="undefined"&&e.items.splice(t+1,0,r)}return e}}),e}();Euterpe.Rest=function(){function e(t){this.type=Euterpe.getConfig(t,"type","long"),e.super.call(this,"Euterpe.Rest",t),this.basicWidth=7;switch(this.type){case"long":this.realWidth=this.basicWidth,this.realHeight=[0,28];break;case"double_whole":this.realWidth=this.basicWidth,this.realHeight=[0,14.5];break;case"whole":this.realWidth=20,this.realHeight=[0,8];break;case"half":this.realWidth=20,this.realHeight=[6,0];break;case"quarter":this.realWidth=20,this.realHeight=[16.75,22.25];break;case"eighth":this.realWidth=20,this.realHeight=[9.5,16.25];break;case"sixteenth":this.realWidth=20,this.realHeight=[9.5,30.25];break;case"thirty-second":this.realWidth=25,this.realHeight=[9.5,43.25];break;case"sixty-fourth":this.realWidth=30,this.realHeight=[9.5,55.75]}}return Euterpe.extend(Euterpe.Node,e,{render:function(e,t,n){var r=e+this.getRealWidth(n)/2,i=[];switch(this.type){case"half":i.push(this.initHalf(r,t,n));break;case"quarter":i.push(this.initQuarter(r,t,n));break;case"eighth":i.push(this.initEighth(r,t,n));break;case"sixteenth":i.push(this.initSixteen(r,t,n));break;case"thirty-second":i.push(this.initThirtySecond(r,t,n));break;case"sixty-fourth":i.push(this.initSixtyFourth(r,t,n));break;default:i.push(this.simpleRestShape(r,t,n))}return Euterpe.bind(this,i),i},initHalf:function(e,t,n){var r=this.getRealHeight(n,!0);return this.simpleRestShape(e,t-r[0],n)},initQuarter:function(e,t,n){var r=n*.125,i=this.getRealHeight(n,!0),s=t-i[0];return new Kinetic.Shape({sceneFunc:function(t){t.translate(e,s),t.scale(r,r),t.beginPath(),t.moveTo(100.2,80.7),t.bezierCurveTo(100.2,100.2,61.1,129.6,61.1,168.7),t.bezierCurveTo(61.1,183.4,90.4,227.5,110,251.9),t.bezierCurveTo(100.2,247,90.4,242.1,75.8,242.1),t.bezierCurveTo(46.4,242.1,36.6,266.6,36.6,281.3),t.bezierCurveTo(36.6,291.1,46.4,300.9,51.3,310.7),t.bezierCurveTo(21.9,291.1,2.4,271.5,2.4,251.9),t.bezierCurveTo(2.4,203,35.8,220.1,60.2,210.3),t.bezierCurveTo(35.8,185.9,12.1,149.2,12.1,134.5),t.bezierCurveTo(12.1,124.7,41.5,90.4,51.3,66),t.lineTo(51.3,51.3),t.bezierCurveTo(51.3,36.6,41.5,17,36.6,2.4),t.bezierCurveTo(56.2,26.8,100.2,70.9,100.2,80.7),t.lineTo(100.2,80.7),t.closePath(),t.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0})},initEighth:function(e,t,n){var r=n*.125,i=this.getRealHeight(n,!0),s=t-i[0];return new Kinetic.Shape({sceneFunc:function(t){t.translate(e,s),t.scale(r,r),t.beginPath(),t.moveTo(92.9,5.2),t.bezierCurveTo(90.4,14.4,88.4,21.5,88.1,21.9),t.bezierCurveTo(84.9,28.7,78.5,37.2,73.6,42.1),t.bezierCurveTo(68.4,47.3,65.5,48.2,61.1,46.5),t.bezierCurveTo(57.4,44.5,56.2,42.4,53.8,31.5),t.bezierCurveTo(51.7,23.4,50.2,19,46.9,15.8),t.bezierCurveTo(38.4,6.5,23.8,5.3,12.6,12.6),t.bezierCurveTo(7.3,16.2,3.3,21.9,.9,28),t.bezierCurveTo(0,31.1,0,32,0,36.4),t.bezierCurveTo(0,40.9,0,42.4,.9,44.9),t.bezierCurveTo(3.6,53.8,9.3,60.7,18.2,64.7),t.bezierCurveTo(24.7,68,27.1,68.4,36,68.4),t.bezierCurveTo(42.5,68.4,44.5,68.4,49.8,67.5),t.bezierCurveTo(57.1,66.3,64.7,63.9,73.2,61.5),t.lineTo(78.5,59.4),t.lineTo(78.5,60.7),t.bezierCurveTo(78,62.3,44.1,190,43.7,190.8),t.bezierCurveTo(43.3,192.4,50.6,195.6,55,195.6),t.bezierCurveTo(59.4,195.6,65.9,192.8,66.3,190.8),t.bezierCurveTo(66.7,190.4,86.1,106.8,110.3,5.1),t.bezierCurveTo(107.1,-2.6,98.1,-0.8,92.9,5.2),t.closePath(),t.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0})},initSixteen:function(e,t,n){var r=this.getRealHeight(n,!0),i=n*.125,s=t-r[0];return new Kinetic.Shape({sceneFunc:function(t){t.translate(e,s),t.scale(i,i),t.beginPath(),t.moveTo(132.4,0),t.bezierCurveTo(126.7,0,121.8,4.5,120.8,9.5),t.bezierCurveTo(118,21.7,117.1,25.3,116.8,26.1),t.bezierCurveTo(114.2,31.6,107.4,42.3,102.3,47.8),t.bezierCurveTo(96.7,52.9,94.2,53.8,89.5,52.1),t.bezierCurveTo(85.7,50,84.4,47.8,81.9,36.3),t.bezierCurveTo(79.7,27.8,78,23.1,74.6,19.8),t.bezierCurveTo(65.6,9.9,50.3,8.6,38.3,16.3),t.bezierCurveTo(32.8,20.2,28.6,26.1,26,32.6),t.bezierCurveTo(25.1,35.9,25.1,36.8,25.1,41.5),t.bezierCurveTo(25.1,47.8,25.6,51.3,28.6,56.3),t.bezierCurveTo(32.8,64.9,41.8,71.7,52,74.2),t.bezierCurveTo(63.1,77.2,81.4,74.7,102.3,67.9),t.bezierCurveTo(105.2,66.6,108.2,65.7,108.2,65.7),t.bezierCurveTo(108.2,66.2,104.8,80.2,101,97.7),t.bezierCurveTo(94.6,127.5,94.2,129.7,92,133.4),t.bezierCurveTo(88.6,140.7,81,151,75.8,155.6),t.bezierCurveTo(71.6,159.5,68.7,160.3,64.4,158.6),t.bezierCurveTo(60.6,156.5,59.2,154.3,56.7,142.9),t.bezierCurveTo(54.5,134.3,52.9,129.7,49.4,126.2),t.bezierCurveTo(40.5,116.4,25.1,115.2,13.2,122.8),t.bezierCurveTo(7.7,126.7,3.4,132.6,.9,139),t.bezierCurveTo(0,142.5,0,143.3,0,148),t.bezierCurveTo(0,154.3,.4,157.7,3.4,162.8),t.bezierCurveTo(7.7,171.4,16.6,178.2,26.9,180.8),t.bezierCurveTo(37.9,183.7,59.2,180.8,80.1,173.5),t.bezierCurveTo(82.7,172.7,84.4,172.3,84.4,172.3),t.bezierCurveTo(84.4,172.7,54.5,306.4,53.3,310.7),t.bezierCurveTo(53.3,311.6,53.7,312,55.4,312.8),t.bezierCurveTo(58,314.5,62.2,315.9,65.2,315.9),t.bezierCurveTo(68.2,315.9,72.4,314.5,75,312.8),t.bezierCurveTo(76.7,312,77.2,311.6,77.6,309.4),t.bezierCurveTo(77.6,308.2,100.1,196.1,127.9,60.2),t.bezierCurveTo(131.9,40.2,133.1,33.9,136.5,17),t.bezierCurveTo(137.7,11.1,139.7,0,132.4,0),t.closePath(),t.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0})},initThirtySecond:function(e,t,n){var r=this.getRealHeight(n,!0),i=n*.125,s=t-r[0];return new Kinetic.Shape({sceneFunc:function(t){t.translate(e,s),t.scale(i,i),t.beginPath(),t.moveTo(154.4,0),t.bezierCurveTo(152.8,0,146,0,144.3,7.4),t.bezierCurveTo(141.2,20.7,140.5,22.5,138.9,25.3),t.bezierCurveTo(134.2,35.1,127.5,44.5,122.7,47.5),t.bezierCurveTo(120.2,49.2,118,49.2,115.1,47.9),t.bezierCurveTo(111.2,45.8,109.9,43.6,107.4,32.1),t.bezierCurveTo(105.2,23.6,103.6,18.9,100.1,15.5),t.bezierCurveTo(91.2,5.7,75.8,4.5,63.9,12.1),t.bezierCurveTo(58.4,15.9,54.1,21.9,51.6,28.3),t.bezierCurveTo(50.7,31.7,50.7,32.5,50.7,37.2),t.bezierCurveTo(50.7,43.6,51.1,47.1,54.1,52.2),t.bezierCurveTo(58.4,60.7,67.3,67.5,77.6,70),t.bezierCurveTo(82.3,71.4,94.2,71.4,102.3,70),t.bezierCurveTo(109.1,68.8,117.2,66.6,125.3,64.1),t.bezierCurveTo(129.1,62.8,131.7,61.9,132.1,61.9),t.bezierCurveTo(132.1,62.3,117.6,126.3,116.8,128.4),t.bezierCurveTo(114.2,133.9,107.4,144.6,102.3,150.1),t.bezierCurveTo(96.7,155.2,94.2,156.1,89.5,154.4),t.bezierCurveTo(85.7,152.3,84.4,150.1,81.9,138.6),t.bezierCurveTo(79.7,130.1,78,125.4,74.6,122.1),t.bezierCurveTo(65.6,112.2,50.3,111,38.3,118.6),t.bezierCurveTo(32.8,122.5,28.6,128.4,26,134.9),t.bezierCurveTo(25.1,138.2,25.1,139.1,25.1,143.8),t.bezierCurveTo(25.1,150.1,25.6,153.6,28.6,158.7),t.bezierCurveTo(32.8,167.2,41.8,174,52,176.5),t.bezierCurveTo(63.1,179.5,81.4,177,102.3,170.2),t.bezierCurveTo(105.2,168.9,108.2,168,108.2,168),t.bezierCurveTo(108.2,168.5,104.8,182.5,101,200),t.bezierCurveTo(94.6,229.8,94.2,232,92,235.7),t.bezierCurveTo(88.6,243,81,253.3,75.8,258),t.bezierCurveTo(71.6,261.8,68.7,262.6,64.4,260.9),t.bezierCurveTo(60.6,258.8,59.2,256.6,56.7,245.2),t.bezierCurveTo(54.5,236.7,52.9,232,49.4,228.5),t.bezierCurveTo(40.5,218.7,25.1,217.5,13.2,225.1),t.bezierCurveTo(7.7,229,3.4,234.9,.9,241.3),t.bezierCurveTo(0,244.8,0,245.6,0,250.3),t.bezierCurveTo(0,256.6,.4,260,3.4,265.1),t.bezierCurveTo(7.7,273.7,16.6,280.5,26.9,283.1),t.bezierCurveTo(37.9,286,59.2,283.1,80.1,275.8),t.bezierCurveTo(82.7,275,84.4,274.6,84.4,274.6),t.bezierCurveTo(84.4,275,54.5,408.7,53.3,413),t.bezierCurveTo(53.3,413.9,53.7,414.3,55.4,415.2),t.bezierCurveTo(58,416.8,62.2,418.2,65.2,418.2),t.bezierCurveTo(68.2,418.2,72.4,416.8,75,415.2),t.bezierCurveTo(76.7,414.3,77.2,413.9,77.6,411.7),t.bezierCurveTo(77.6,410.5,100.1,298.4,127.9,162.5),t.bezierCurveTo(141.5,94.4,151.4,44.8,158.6,8.7),t.bezierCurveTo(159.5,4.3,157.9,-0.1,154.4,0),t.closePath(),t.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0})},initSixtyFourth:function(e,t,n){var r=this.getRealHeight(n,!0),i=n*.125,s=t-r[0];return new Kinetic.Shape({sceneFunc:function(t){t.translate(e,s),t.scale(i,i),t.beginPath(),t.bezierCurveTo(89,2.9,80.5,10.6,76.7,21.2),t.bezierCurveTo(75.8,24.6,75.8,25.4,75.8,30.1),t.bezierCurveTo(75.8,34.8,75.8,36.5,76.7,39.1),t.bezierCurveTo(79.7,48.5,85.7,55.7,95,59.9),t.bezierCurveTo(101.8,63.4,104.4,63.8,113.8,63.8),t.bezierCurveTo(120.2,63.8,122.7,63.8,127.9,63),t.bezierCurveTo(134.6,61.7,144,59.1,151.3,56.6),t.lineTo(155.9,54.8),t.lineTo(155.5,56.6),t.bezierCurveTo(155.1,57.4,152.1,72.3,148.2,89.3),t.bezierCurveTo(141.5,119.2,141.1,120.9,138.9,124.7),t.bezierCurveTo(134.2,134.5,127.5,143.9,122.7,146.9),t.bezierCurveTo(120.2,148.6,118,148.6,115.1,147.3),t.bezierCurveTo(111.2,145.2,109.9,143,107.4,131.5),t.bezierCurveTo(105.2,123,103.6,118.3,100.1,114.9),t.bezierCurveTo(91.2,105.1,75.8,103.9,63.9,111.5),t.bezierCurveTo(58.4,115.3,54.1,121.3,51.6,127.7),t.bezierCurveTo(50.7,131.1,50.7,131.9,50.7,136.6),t.bezierCurveTo(50.7,143,51.1,146.5,54.1,151.6),t.bezierCurveTo(58.4,160.1,67.3,166.9,77.6,169.4),t.bezierCurveTo(82.3,170.8,94.2,170.8,102.3,169.4),t.bezierCurveTo(109.1,168.2,117.2,166,125.3,163.5),t.bezierCurveTo(129.1,162.3,131.7,161.3,132.1,161.3),t.bezierCurveTo(132.1,161.8,117.6,225.7,116.8,227.8),t.bezierCurveTo(114.2,233.3,107.4,244,102.3,249.5),t.bezierCurveTo(96.7,254.6,94.2,255.6,89.5,253.8),t.bezierCurveTo(85.7,251.7,84.4,249.5,81.9,238),t.bezierCurveTo(79.7,229.5,78,224.8,74.6,221.5),t.bezierCurveTo(65.6,211.6,50.3,210.4,38.3,218),t.bezierCurveTo(32.8,221.9,28.6,227.8,26,234.3),t.bezierCurveTo(25.1,237.6,25.1,238.5,25.1,243.2),t.bezierCurveTo(25.1,249.5,25.6,253,28.6,258.1),t.bezierCurveTo(32.8,266.6,41.8,273.4,52,275.9),t.bezierCurveTo(63.1,278.9,81.4,276.4,102.3,269.6),t.bezierCurveTo(105.2,268.3,108.2,267.4,108.2,267.4),t.bezierCurveTo(108.2,267.9,104.8,281.9,101,299.4),t.bezierCurveTo(94.6,329.2,94.2,331.4,92,335.1),t.bezierCurveTo(88.6,342.4,81,352.7,75.8,357.4),t.bezierCurveTo(71.6,361.2,68.7,362,64.4,360.3),t.bezierCurveTo(60.6,358.2,59.2,356,56.7,344.6),t.bezierCurveTo(54.5,336.1,52.9,331.4,49.4,328),t.bezierCurveTo(40.5,318.1,25.1,316.9,13.2,324.5),t.bezierCurveTo(7.7,328.4,3.4,334.3,.9,340.7),t.bezierCurveTo(0,344.2,0,345,0,349.7),t.bezierCurveTo(0,356,.4,359.4,3.4,364.5),t.bezierCurveTo(7.7,373.1,16.6,379.9,26.9,382.5),t.bezierCurveTo(37.9,385.4,59.2,382.5,80.1,375.2),t.bezierCurveTo(82.7,374.4,84.4,374,84.4,374),t.bezierCurveTo(84.4,374.4,54.5,508.1,53.3,512.4),t.bezierCurveTo(53.3,513.3,53.7,513.7,55.4,514.6),t.bezierCurveTo(58,516.2,62.2,517.6,65.2,517.6),t.bezierCurveTo(68.2,517.6,72.4,516.2,75,514.6),t.bezierCurveTo(76.7,513.7,77.2,513.3,77.6,511.1),t.bezierCurveTo(77.6,509.9,100.1,397.8,127.9,261.9),t.bezierCurveTo(171.7,42.9,177.2,14.8,176.8,13.9),t.bezierCurveTo(175.6,11.8,173.9,11,171.3,11),t.bezierCurveTo(167.5,11,166.6,11.8,162.8,19.1),t.bezierCurveTo(157.3,29.7,151.7,37.4,147.8,40.4),t.bezierCurveTo(145.7,42.1,143.6,42.1,140.2,40.8),t.bezierCurveTo(136.4,38.6,135.1,36.5,132.5,25),t.bezierCurveTo(130,13.5,126.9,8.4,120.6,4.1),t.bezierCurveTo(114.6,.3,107,-0.9,100.1,.7),t.closePath(),t.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0})},simpleRestShape:function(e,t,n){return new Kinetic.Rect({x:e,y:t,width:this.getRealWidth(n),height:this.getRealHeight(n),fill:"black",strokeWidth:0})}}),e}();Euterpe.Row=function(){function e(t){e.super.call(this,"Euterpe.Row",t),this.type=Euterpe.getConfig(t,"type"),this.group=Euterpe.getConfig(t,"group",undefined),this.groupType=Euterpe.getConfig(t,"groupType",undefined),this.type==="measure"?(this.numberOfLines=5,this.realHeight=[0,57.3]):this.type==="tab"&&(this.numberOfLines=6,this.realHeight=[0,71.5]),this.prepared=[]}return Euterpe.extend(Euterpe.Container,e,{render:function(e,t,n){var r=[],i=0,s=e;for(var o=0;o<this.items.length;o++){var u=this.items[o];u.X=e+u.leftMargin*n,u.Y=t,r.push(u.render(u.X,u.Y,n));var a=u.getRealWidth(n);i+=a,e+=a}r.push(this.renderSelf(s,t,n,i));if(this.type==="measure"){var f=[];this.prepareLedgerLines(f,Euterpe.select("Euterpe.Note",this),t,n),r.push(this.renderLedgerLines(f,n))}return r},prepareLedgerLines:function(e,t,n,r){for(var i=0;i<t.length;i++){var s=t[i];if(typeof s.config.location=="number"){var o=s.headWidth*r,u;s.config.location>this.numberOfLines-1?(u=Math.floor(s.config.location),this.addLedgerLine(s,u,s.X,o,n,e,r)):s.config.location<0&&(u=Math.ceil(s.config.location),this.addLedgerLine(s,u,s.X,o,n,e,r))}}},addLedgerLine:function(e,t,n,r,i,s,o){var u;for(;;){if(t>0&&t<=4||t===0)break;u=!1;var a=Euterpe.getY(t,o,i);if(e.name==="Euterpe.Note"){for(var f=0;f<s.length;f++){var l=s[f];if(l[0]===n&&l[1]===a){u=!0;break}}u||s.push([n,a,r])}t+=t>0?-1:1}},renderLedgerLines:function(e,t){var n=[];for(var r=0;r<e.length;r++){var i=e[r][0],s=e[r][1],o=5*t,u=e[r][2]+o*2;n.push(new Kinetic.Line({points:[0,0,u,0],stroke:"black",strokeWidth:Euterpe.global.lineWidth,x:i-o,y:s}))}return n},renderSelf:function(e,t,n,r){var i=new Kinetic.Line({points:[0,0,r,0],stroke:"black",strokeWidth:Euterpe.global.lineWidth,x:e,y:t}),s=new Kinetic.Group({});s.add(i);for(var o=2;o<this.numberOfLines+1;o++){var u=Euterpe.getY(o-1,n,t),a=i.clone({y:u});s.add(a)}return s}}),e}();Euterpe.Score=function(){function e(t){this.layer=t.layer,this.lineMargin=Euterpe.getConfig(t,"lineMargin",0),this.titleMargin=Euterpe.getConfig(t,"titleMargin",0),this.musicByMargin=Euterpe.getConfig(t,"musicByMargin",0),this.tuningMargin=Euterpe.getConfig(t,"tuningMargin",0),this.title=Euterpe.getConfig(t,"title",undefined),this.musicBy=Euterpe.getConfig(t,"musicBy",undefined),this.tuning=Euterpe.getConfig(t,"tuning",undefined),this.titleHeight=0,this.musicByHeight=0,this.tuningHeight=0,typeof this.title!="undefined"&&(this.titleText=new Euterpe.Text({text:this.title,fontSize:40,fontFamily:"Serif"}),this.titleWidth=this.titleText.getRealWidth(1),this.titleHeight=this.titleText.getRealHeight(1)),typeof this.musicBy!="undefined"&&(this.musicByText=new Euterpe.Text({fontSize:20,text:"Music by "+this.musicBy,fontFamily:"Serif"}),this.musicByHeight=this.musicByText.getRealHeight(1)),typeof this.tuning!="undefined"&&(this.tuningText=new Euterpe.Text({fontSize:15,text:this.tuning,fontFamily:"Serif",fontStyle:"italic"}),this.tuningHeight=this.tuningText.getRealHeight(1)),e.super.call(this,"Euterpe.Score",t)}return Euterpe.extend(Euterpe.Container,e,{bracketExtraUp:5,bracketExtraDown:5,getRealHeight:function(e,t){var n=this.doGetRealHeight(this.items,e,t),r=0;return r+=this.titleHeight*e,r+=this.titleMargin*e,r+=this.musicByHeight*e,r+=this.musicByMargin*e,r+=this.tuningHeight*e,r+=this.tuningMargin*e,t?n[0]+=r:n+=r,n},render:function(e,t,n){var r=0,i=[],s,o=Euterpe.getGroups(this.items),u=0;for(s=0;s<o.length;s++){var a=o[s];a.groupType==="bracket"&&6>u&&(u=6)}e+=u*n;var f=0;t=this.renderMeta(e,t,n,i);for(s=0;s<this.items.length;s++){var l=this.items[s],c=this.doGetRealHeight([l],n,!0);r!==0&&(r+=c[0]);var h=t+r;l.Y=h,l.X=e,f<o.length&&o[f].first===l.id&&(i.push(this.renderBracket(e-u*n,h,n,o[f].items)),f++),r+=c[1],i.push(l.render(e,h,n))}return i},renderMeta:function(e,t,n,r){var i=this.getRealHeight(n,!0);t-=i[0];var s=(this.titleHeight+this.musicByHeight+this.tuningHeight+this.titleMargin+this.musicByMargin+this.tuningMargin)*n;return typeof this.title!="undefined"&&(t+=this.titleHeight*n/2,r.push(this.renderText(this.titleText,this.titleWidth,e,t,n,!0)),t+=this.titleHeight*n/2,t+=this.titleMargin*n),typeof this.musicBy!="undefined"&&(t+=this.musicByHeight*n/2,r.push(this.renderText(this.musicByText,0,e,t,n)),t+=this.musicByHeight*n/2,t+=this.musicByMargin*n),typeof this.tuning!="undefined"&&(t+=this.tuningHeight*n/2,r.push(this.renderText(this.tuningText,0,e,t,n)),t+=this.tuningHeight*n/2,t+=this.tuningMargin*n),t+=i[0]-s,t},renderText:function(e,t,n,r,i,s){var o=n;if(s){var u=this.items[0].getRealWidth(i);o=n+(u/2-t/2)}return e.render(o,r,i)},doGetRealHeight:function(e,t,n){var r,i=0,s=Euterpe.getGroups(this.items),o=function(e){return _.find(s,function(t){return t.first===e.id})},u=function(e){return _.find(s,function(t){return t.last===e.id})};for(var a=0;a<e.length;a++){var f=e[a],l=f.getRealHeight(t,!0);o(f)&&(l[0]+=this.bracketExtraUp*t),u(f)&&(l[1]+=this.bracketExtraDown*t);var c=l[1]+l[0];typeof r=="undefined"&&(r=l[0]+i),i+=c+this.lineMargin*t}return n?[r,i-r]:i},renderBracket:function(e,t,n,r){var i=this.bracketExtraUp*n,s=this.bracketExtraDown*n,o=this.doGetRealHeight(r,n,!0),u=o[0]-i,a=o[1]-s-this.lineMargin*n;return new Kinetic.Shape({sceneFunc:function(r){r.beginPath();var o=10*n;r.moveTo(e+o,t-u-i),r.lineTo(e,t-u),r.lineTo(e,t+a),r.lineTo(e+o,t+a+s),r.lineTo(e+o/5,t+a),r.lineTo(e+o/5,t-u),r.lineTo(e+o,t-u-i),r.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0})}}),e}();Euterpe.Sharp=function(){function e(t){e.super.call(this,"Euterpe.Sharp",t),this.realWidth=9,this.realHeight=[11,11]}return Euterpe.extend(Euterpe.Node,e,{render:function(e,t,n){var r=this.realHeight[0]+this.realHeight[1];this.startY=t-r*n/2-n;var i=this.realWidth*n,s=r*n,o=1.5*n,u=new Kinetic.Rect({x:this.X+i/3.6-o/2,y:this.startY+2*n,width:o,height:s,fill:"black",strokeWidth:0}),a=u.clone({x:this.X+i-i/3.6-o/2,y:this.startY}),f=4.5*n,l=this.startY+s/4+3*n;o=3*n;var c=new Kinetic.Line({points:[this.X,l,this.X,l+o,this.X+i,l+o-f,this.X+i,l-f],fill:"black",strokeWidth:0,closed:!0});l=this.startY+s-s/4;var h=c.clone({points:[this.X,l,this.X,l+o,this.X+i,l+o-f,this.X+i,l-f]}),p=[u,a,c,h];return Euterpe.bind(this,p),p}}),e}();Euterpe.StringNumber=function(){function e(t){this.string=Euterpe.getConfig(t,"string"),this.fontSize=10,this.fontFamily="Arial";if(typeof this.string!="number"||this.string<0||this.string>6)throw"Invalid string value";this.string=this.string.toString(),this.textWidth=5,this.textHeight=7.6,this.realWidth=21.3,this.realHeight=[10.65,10.65],e.super.call(this,"Euterpe.StringNumber",t)}return Euterpe.extend(Euterpe.Node,e,{render:function(e,t,n){var r=[],i=e+this.realWidth*n/2;return r.push(new Kinetic.Circle({x:i,y:t,radius:10*n,fill:"white",stroke:"black",strokeWidth:n})),r.push(new Kinetic.Text({x:i-this.textWidth*n/2,y:t-this.textHeight*n/2,text:this.string,fontSize:this.fontSize*n,fontFamily:this.fontFamily,fill:"black"})),Euterpe.bind(this,r),r}}),e}();Euterpe.Text=function(){function e(t){this.text=Euterpe.getConfig(t,"text"),this.color=Euterpe.getConfig(t,"color","black"),this.fontFamily=Euterpe.getConfig(t,"fontFamily","Arial"),this.fontSize=Euterpe.getConfig(t,"fontSize",10),this.fontStyle=Euterpe.getConfig(t,"fontStyle","normal");var n=1,r=new Kinetic.Text({x:0,y:0,text:this.text,fontSize:this.fontSize*n,fontFamily:this.fontFamily,fontStyle:this.fontStyle}),i=r.height()/n;this.realWidth=r.width()/n,this.realHeight=[i/2,i/2],e.super.call(this,"Euterpe.Text",t)}return Euterpe.extend(Euterpe.Node,e,{render:function(e,t,n){var r=[new Kinetic.Text({x:e,y:t-(this.realHeight[0]*n+this.realHeight[1]*n)/2,text:this.text,fontSize:this.fontSize*n,fontFamily:this.fontFamily,fontStyle:this.fontStyle,fill:this.color})];return Euterpe.bind(this,r),r}}),e}();Euterpe.TimeSignature=function(){function e(t){this.numerator=Euterpe.getConfig(t,"numerator",4),this.denominator=Euterpe.getConfig(t,"denominator",4),e.super.call(this,t),this.add(new Euterpe.TimeSignatureShape(this.numerator,0)),this.add(new Euterpe.TimeSignatureShape(this.denominator,2))}return Euterpe.extend(Euterpe.Column,e,{name:"Euterpe.TimeSignature"}),e}();Euterpe.TimeSignatureShape=function(){function e(t,n){this.yoffset=2;var r={4:[0,24+this.yoffset]};this.digit=t.toString(),this.realWidth=22.4,this.realHeight=r[t],e.super.call(this,"Euterpe.TimeSignatureShape",{location:n})}return Euterpe.extend(Euterpe.Node,e,{render:function(e,t,n){var r=this;this.scale=n,this.startX=e,this.startY=t+this.yoffset*n;var i=[];return this.digit==="4"&&i.push(new Kinetic.Shape({sceneFunc:function(e){var t=r.startX+17.6*n,i=r.startY;e.beginPath(),e.moveTo(t,i),e.lineTo(t-10*r.scale,i),e.bezierCurveTo(t-8.8*r.scale,i+6.8*r.scale,t-10.54*r.scale,i+10.66*r.scale,t-17.6*r.scale,i+16*r.scale),e.lineTo(t-17.6*r.scale,i+17*r.scale),e.lineTo(t-3.6*r.scale,i+17*r.scale),e.lineTo(t-3.6*r.scale,i+22.4*r.scale),e.lineTo(t-5.6*r.scale,i+22.4*r.scale),e.lineTo(t-5.6*r.scale,i+23.4*r.scale),e.lineTo(t-5.6*r.scale,i+23.4*r.scale),e.lineTo(t+4.4*r.scale,i+23.4*r.scale),e.lineTo(t+4.4*r.scale,i+22.4*r.scale),e.lineTo(t+2.4*r.scale,i+22.4*r.scale),e.lineTo(t+2.4*r.scale,i+17*r.scale),e.lineTo(t+4.4*r.scale,i+17*r.scale),e.lineTo(t+4.4*r.scale,i+16*r.scale),e.lineTo(t+2.4*r.scale,i+16*r.scale),e.lineTo(t+2.4*r.scale,i+1.4*r.scale),e.lineTo(t-3.6*r.scale,i+7.2*r.scale),e.lineTo(t-3.6*r.scale,i+16*r.scale),e.lineTo(t-16.6*r.scale,i+16*r.scale),e.lineTo(t,i),e.fillStrokeShape(this)},fill:"black",stroke:"black",strokeWidth:0})),Euterpe.bind(this,i),i}}),e}();
+/**
+ * @license
+ * Euterpe.js version 0.1
+ *
+ * @author Max E. Kuznetsov <mek@mek.uz.ua>
+ * @copyright MuzMates 2014
+ */
+function Euterpe() {}
+
+Euterpe.const = {
+    LOG_DEBUG: 1,
+    LOG_INFO: 2,
+    LOG_WARNING: 3,
+    LOG_ERROR: 4
+};
+
+Euterpe.global = {
+    loglevel: Euterpe.const.LOG_INFO
+};
+
+Euterpe.plugins = {
+    plugins: [],
+    add: function() {
+        var self = this;
+        _.each(arguments, function(plugin) {
+            self.plugins.push(plugin);
+        });
+    },
+    fold: function(root, scale, extra) {
+        return _.reduce(this.plugins, function(obj, plugin) {
+            return plugin.process(obj, scale, extra);
+        }, root);
+    }
+};
+
+Euterpe.getConfig = function(config, name, defaultVal) {
+    if (typeof config === "undefined") return defaultVal;
+    return typeof config[name] === "undefined" ? defaultVal : config[name];
+};
+
+Euterpe.getY = function(item, scale, y) {
+    var location;
+    if (typeof item === "number") {
+        location = item;
+    } else if (typeof item.config !== "undefined" && typeof item.config.location !== "undefined") {
+        location = item.config.location;
+    } else {
+        return y;
+    }
+    if (typeof location === "function") {
+        return location(scale, y);
+    }
+    var offset = Euterpe.global.linePadding / 2 + Euterpe.global.lineWidth / 2;
+    var off;
+    var d, extra;
+    if (location >= 0) {
+        d = Math.floor(location);
+        extra = Math.ceil(location) > location ? offset : 0;
+        off = Euterpe.global.linePadding * d + Euterpe.global.lineWidth * d;
+        return y + off + extra;
+    } else if (location < 0) {
+        d = Math.ceil(location);
+        extra = Math.floor(location) < location ? offset : 0;
+        off = Euterpe.global.linePadding * -d + Euterpe.global.lineWidth * -d;
+        return y + off * -1 - extra;
+    }
+    return y;
+};
+
+Euterpe.initNode = function(node, name) {
+    node.isNode = true;
+    node.nodeName = name;
+};
+
+Euterpe.extend = function(base, sub, extend) {
+    function Inheritance() {}
+    Inheritance.prototype = base.prototype;
+    sub.prototype = new Inheritance();
+    sub.prototype.constructor = sub;
+    sub.super = base;
+    if (typeof extend === "object") {
+        _.extend(sub.prototype, extend);
+    }
+};
+
+Euterpe.render = function(root, x, y, width, scale, containerId) {
+    Euterpe.initLog();
+    Euterpe.global.root = root;
+    Euterpe.global.background = new Kinetic.Layer({});
+    Euterpe.global.foreground = new Kinetic.Layer({});
+    Euterpe.global.linePadding = 13 * scale;
+    Euterpe.global.lineWidth = scale;
+    var extra = [];
+    var processed = Euterpe.plugins.fold(root, scale, extra);
+    var h = processed.getRealHeight(scale, true);
+    y += h[0];
+    var totalHeight = y + h[1];
+    Euterpe.stage = new Kinetic.Stage({
+        container: containerId,
+        width: width,
+        height: totalHeight
+    });
+    Euterpe.stage.add(Euterpe.global.foreground);
+    Euterpe.stage.add(Euterpe.global.background);
+    var rendered = _.flatten(processed.render(x + root.leftMargin * scale, y, scale));
+    for (var i = 0; i < rendered.length; i++) {
+        if (rendered[i].layer2draw === "background") {
+            Euterpe.global.background.add(rendered[i]);
+        } else {
+            Euterpe.global.foreground.add(rendered[i]);
+        }
+    }
+    for (var j = 0; j < extra.length; j++) {
+        var f = extra[j];
+        var result = f(processed, scale);
+        if (typeof result === "undefined") {
+            continue;
+        }
+        if (result.layer2draw === "background") {
+            Euterpe.global.background.add(result);
+        } else {
+            Euterpe.global.foreground.add(result);
+        }
+    }
+    return Euterpe.stage;
+};
+
+Euterpe.getMargins = function(item, scale) {
+    return item.leftMargin * scale + item.rightMargin * scale;
+};
+
+Euterpe.randomString = function(len) {
+    return new Array(len + 1).join((Math.random().toString(36) + "00000000000000000").slice(2, 18)).slice(0, len);
+};
+
+Euterpe.select = function(selector, root) {
+    var f = function(obj) {
+        if (selector[0] === "#") {
+            return obj.id === selector.slice(1, selector.length);
+        } else {
+            return obj.name === selector;
+        }
+    };
+    root = root || Euterpe.global.root;
+    var r = [];
+    if (root.isNode && f(root)) {
+        r.push(root);
+    } else if (root.isContainer) {
+        for (var i = 0; i < root.items.length; i++) {
+            var item = root.items[i];
+            if (f(item)) {
+                r.push(item);
+            }
+            if (item.isContainer) {
+                r.push(Euterpe.select(selector, item));
+            }
+        }
+    }
+    return _.flatten(r);
+};
+
+Euterpe.replace = function(root, id, obj) {
+    for (var i = 0; i < root.items.length; i++) {
+        var item = root.items[i];
+        if (item.id == id) {
+            obj.parentContainer = root;
+            root.items[i] = obj;
+            return true;
+        }
+        if (item.isContainer) {
+            if (Euterpe.replace(item, id, obj)) {
+                break;
+            }
+        }
+    }
+    return false;
+};
+
+Euterpe.initLog = function() {
+    var console = window.console || {};
+    var stub = function() {};
+    Euterpe.log = {
+        debug: stub,
+        info: stub,
+        warn: stub,
+        error: stub
+    };
+    if (Euterpe.const.LOG_DEBUG >= Euterpe.global.loglevel) {
+        if (console.log) {
+            Euterpe.log.debug = console.debug.bind(console);
+        }
+    }
+    if (Euterpe.const.LOG_INFO >= Euterpe.global.loglevel) {
+        if (console.info) {
+            Euterpe.log.info = console.info.bind(console);
+        }
+    }
+    if (Euterpe.const.LOG_WARNING >= Euterpe.global.loglevel) {
+        if (console.warn) {
+            Euterpe.log.warn = console.warn.bind(console);
+        }
+    }
+    if (Euterpe.const.LOG_ERROR >= Euterpe.global.loglevel) {
+        if (console.error) {
+            Euterpe.log.error = console.error.bind(console);
+        }
+    }
+};
+
+Euterpe.getDistance = function(container, item, scale) {
+    var d = 0;
+    for (var i = 0; i < container.items.length; i++) {
+        var obj = container.items[i];
+        if (obj.id === item.id) {
+            break;
+        } else if (obj.isContainer && Euterpe.select("#" + item.id, obj).length > 0) {
+            d += obj.leftMargin * scale;
+            d += Euterpe.getDistance(obj, item, scale);
+            break;
+        } else {
+            d += obj.getRealWidth(scale);
+        }
+    }
+    return d;
+};
+
+Euterpe.getRealHeight = function(base, items, scale, raw) {
+    var baseY = 0;
+    var upperY, lowerY, up, low;
+    var y;
+    if (typeof base.realHeight !== "undefined") {
+        y = Euterpe.getY(base, scale, baseY);
+        upperY = base.realHeight[0] * scale;
+        lowerY = base.realHeight[1] * scale;
+    }
+    for (var i = 0; i < items.length; i++) {
+        var item = items[i];
+        var h = item.getRealHeight(scale, true);
+        y = Euterpe.getY(item, scale, baseY);
+        up = y - h[0];
+        low = y + h[1];
+        if (typeof upperY === "undefined" || up < upperY) {
+            upperY = up;
+        }
+        if (typeof lowerY === "undefined" || low > lowerY) {
+            lowerY = low;
+        }
+    }
+    if (raw) {
+        return [ upperY * -1, lowerY ];
+    } else {
+        return lowerY - upperY;
+    }
+};
+
+Euterpe.baseRender = function(items, x, y, scale) {
+    var rendered = [];
+    var node;
+    var i;
+    for (i = 0; i < items.length; i++) {
+        node = items[i];
+        node.X = x;
+        node.Y = Euterpe.getY(node, scale, y);
+        rendered.push(node.render(node.X, node.Y, scale));
+        x += node.getRealWidth(scale);
+    }
+    return rendered;
+};
+
+Euterpe.getGroups = function(items) {
+    var groups = [];
+    var curGroup = null;
+    var curGroupType = null;
+    var first = null;
+    var tmp = [];
+    var last = null;
+    for (var i = 0; i < items.length; i++) {
+        var row = items[i];
+        if (typeof row.group !== "undefined") {
+            if (curGroup !== row.group) {
+                if (curGroup !== null) {
+                    groups.push({
+                        first: first,
+                        last: last,
+                        groupType: curGroupType,
+                        items: _.clone(tmp)
+                    });
+                }
+                first = row.id;
+                curGroup = row.group;
+                curGroupType = row.groupType;
+                tmp.length = 0;
+            }
+            tmp.push(row);
+        } else {
+            groups.push({
+                first: undefined,
+                last: undefined,
+                groupType: undefined,
+                items: [ row ]
+            });
+        }
+        last = row.id;
+    }
+    if (tmp.length > 0) {
+        groups.push({
+            first: first,
+            last: last,
+            groupType: curGroupType,
+            items: tmp
+        });
+    }
+    return groups;
+};
+
+Euterpe.bind = function(node, rendered) {
+    if (typeof node.config.on === "undefined") {
+        return;
+    }
+    if (!_.isArray(rendered)) {
+        rendered = [ rendered ];
+    } else {
+        rendered = _.flatten(rendered);
+    }
+    var state = {};
+    var h = function(obj, f) {
+        return function() {
+            f.call(obj, node, rendered, state);
+        };
+    };
+    var events = _.keys(node.config.on);
+    for (var i = 0; i < events.length; i++) {
+        var event = events[i];
+        _.each(rendered, function(obj) {
+            obj.on(event, h(obj, node.config.on[event]));
+        });
+    }
+};
+
+Euterpe.ContainerDepth = 0;
+
+Euterpe.Container = function() {
+    var Container = function(name, config) {
+        this.id = Euterpe.randomString(20);
+        this.items = [];
+        this.name = this.name || name;
+        this.config = config || {};
+        this.leftMargin = Euterpe.getConfig(config, "leftMargin", 0);
+        this.rightMargin = Euterpe.getConfig(config, "rightMargin", 0);
+        this.leftItems = [];
+        this.rightItems = [];
+        if (typeof config !== "undefined" && _.isArray(config.items)) {
+            for (var i = 0; i < config.items.length; i++) {
+                this.add(config.items[i]);
+            }
+        }
+    };
+    Container.prototype = {
+        getRealWidth: function(scale, exludeMargins) {
+            var width = exludeMargins ? 0 : Euterpe.getMargins(this, scale);
+            for (var i = 0; i < this.items.length; i++) {
+                width += this.items[i].getRealWidth(scale, exludeMargins);
+            }
+            return width;
+        },
+        getRealHeight: function(scale, raw) {
+            return Euterpe.getRealHeight(this, this.items, scale, raw);
+        },
+        isContainer: true,
+        getLeftWidth: function(scale) {
+            var ws = _.map(this.items, function(obj) {
+                return obj.getLeftWidth(scale);
+            });
+            return _.max(ws);
+        },
+        getRightWidth: function(scale) {
+            var ws = _.map(this.items, function(obj) {
+                return obj.getRightWidth(scale);
+            });
+            return _.max(ws);
+        },
+        clear: function() {
+            this.items.length = 0;
+        },
+        size: function() {
+            return this.items.length;
+        },
+        add: function(item) {
+            var self = this;
+            if (_.isArray(item)) {
+                return _.each(item, function(itm) {
+                    self.add(itm);
+                });
+            }
+            item.parent = this;
+            this.items.push(item);
+        },
+        prepend: function(item) {
+            item.parentContainer = this;
+            this.items.unshift(item);
+        },
+        insertBefore: function(beforeId, item) {
+            for (var i = 0; i < this.items.length; i++) {
+                var cur = this.items[i];
+                if (cur.id === beforeId) {
+                    return this.items.splice(i, 0, item);
+                }
+            }
+        },
+        baseRender: function(x, y, scale, itemcb, containercb) {
+            Euterpe.ContainerDepth += 1;
+            var acc = [];
+            var cb = function(item, x, y, scale, idx) {
+                var _y = Euterpe.getY(item, scale, y);
+                item.Y = _y;
+                return item.render(x, _y, scale, idx);
+            };
+            itemcb = itemcb || cb;
+            containercb = containercb || cb;
+            for (var i = 0; i < this.items.length; i++) {
+                var item = this.items[i];
+                var width = 0;
+                Euterpe.log.debug(new Array(Euterpe.ContainerDepth).join("  "), item);
+                if (item.isContainer) {
+                    item.parentContainer = this;
+                    width = item.getRealWidth(scale);
+                    item.X = x + item.leftMargin * scale;
+                    item.Y = y;
+                    acc.push(containercb(item, item.X, item.Y, scale, i));
+                    x += width;
+                } else {
+                    item.parentContainer = this;
+                    width = item.getRealWidth(scale);
+                    item.X = x + item.leftMargin * scale;
+                    item.Y = y;
+                    acc.push(itemcb(item, item.X, item.Y, scale, i));
+                    x += width;
+                }
+            }
+            Euterpe.ContainerDepth -= 1;
+            return acc;
+        },
+        render: function(x, y, scale) {
+            return Euterpe.baseRender(this.items, x, y, scale);
+        }
+    };
+    return Container;
+}();
+
+Euterpe.Node = function() {
+    var Node = function(name, config) {
+        this.id = Euterpe.randomString(20);
+        this.name = name;
+        this.config = config || {};
+        this.leftMargin = Euterpe.getConfig(config, "leftMargin", 0);
+        this.rightMargin = Euterpe.getConfig(config, "rightMargin", 0);
+        this.leftItems = Euterpe.getConfig(config, "leftItems", []);
+        this.rightItems = Euterpe.getConfig(config, "rightItems", []);
+    };
+    Node.prototype.isNode = true;
+    Node.prototype.getLeftWidth = function(scale) {
+        return this.reduceWidth(this.leftItems, scale);
+    };
+    Node.prototype.getRightWidth = function(scale) {
+        return this.reduceWidth(this.rightItems, scale);
+    };
+    Node.prototype.getRealWidth = function(scale, bare) {
+        var margins = Euterpe.getMargins(this, scale);
+        return this.realWidth * scale + (bare ? 0 : margins);
+    };
+    Node.prototype.getRealHeight = function(scale, raw) {
+        if (typeof this.realHeight === "undefined") {
+            return raw ? [ 0, 0 ] : 0;
+        } else if (raw) {
+            return [ this.realHeight[0] * scale, this.realHeight[1] * scale ];
+        } else {
+            return this.realHeight[0] * scale + this.realHeight[1] * scale;
+        }
+    };
+    Node.prototype.clone = function() {
+        var cloned = new this.constructor(this.config);
+        cloned.parentContainer = this.parentContainer;
+        return cloned;
+    };
+    Node.prototype.reduceWidth = function(list, scale) {
+        return _.reduce(list, function(acc, x) {
+            return acc + x.getRealWidth(scale);
+        }, 0);
+    };
+    return Node;
+}();
+
+Euterpe.Row = function() {
+    function Row(config) {
+        Row.super.call(this, "Euterpe.Row", config);
+        this.type = Euterpe.getConfig(config, "type");
+        this.group = Euterpe.getConfig(config, "group", undefined);
+        this.groupType = Euterpe.getConfig(config, "groupType", undefined);
+        if (this.type === "measure") {
+            this.numberOfLines = 5;
+            this.realHeight = [ 0, 57.3 ];
+        } else if (this.type === "tab") {
+            this.numberOfLines = 6;
+            this.realHeight = [ 0, 71.5 ];
+        }
+        this.prepared = [];
+    }
+    Euterpe.extend(Euterpe.Container, Row, {
+        render: function(x, y, scale) {
+            var rendered = [];
+            var totalWidth = 0;
+            var origX = x;
+            for (var i = 0; i < this.items.length; i++) {
+                var column = this.items[i];
+                column.X = x + column.leftMargin * scale;
+                column.Y = y;
+                rendered.push(column.render(column.X, column.Y, scale));
+                var w = column.getRealWidth(scale);
+                totalWidth += w;
+                x += w;
+            }
+            rendered.push(this.renderSelf(origX, y, scale, totalWidth));
+            if (this.type === "measure") {
+                var lines = [];
+                this.prepareLedgerLines(lines, Euterpe.select("Euterpe.Note", this), y, scale);
+                rendered.push(this.renderLedgerLines(lines, scale));
+            }
+            return rendered;
+        },
+        prepareLedgerLines: function(lines, notes, y, scale) {
+            for (var i = 0; i < notes.length; i++) {
+                var note = notes[i];
+                if (typeof note.config.location === "number") {
+                    var width = note.headWidth * scale;
+                    var d;
+                    if (note.config.location > this.numberOfLines - 1) {
+                        d = Math.floor(note.config.location);
+                        this.addLedgerLine(note, d, note.X, width, y, lines, scale);
+                    } else if (note.config.location < 0) {
+                        d = Math.ceil(note.config.location);
+                        this.addLedgerLine(note, d, note.X, width, y, lines, scale);
+                    }
+                }
+            }
+        },
+        addLedgerLine: function(item, pos, x, width, baseY, lines, scale) {
+            var found;
+            while (true) {
+                if (pos > 0 && pos <= 4 || pos === 0) {
+                    break;
+                }
+                found = false;
+                var _y = Euterpe.getY(pos, scale, baseY);
+                if (item.name === "Euterpe.Note") {
+                    for (var i = 0; i < lines.length; i++) {
+                        var line = lines[i];
+                        if (line[0] === x && line[1] === _y) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        lines.push([ x, _y, width ]);
+                    }
+                }
+                pos += pos > 0 ? -1 : 1;
+            }
+        },
+        renderLedgerLines: function(lines, scale) {
+            var r = [];
+            for (var i = 0; i < lines.length; i++) {
+                var x = lines[i][0];
+                var y = lines[i][1];
+                var shift = 5 * scale;
+                var width = lines[i][2] + shift * 2;
+                r.push(new Kinetic.Line({
+                    points: [ 0, 0, width, 0 ],
+                    stroke: "black",
+                    strokeWidth: Euterpe.global.lineWidth,
+                    x: x - shift,
+                    y: y
+                }));
+            }
+            return r;
+        },
+        renderSelf: function(x, y, scale, width) {
+            var line1 = new Kinetic.Line({
+                points: [ 0, 0, width, 0 ],
+                stroke: "black",
+                strokeWidth: Euterpe.global.lineWidth,
+                x: x,
+                y: y
+            });
+            var rendered = new Kinetic.Group({});
+            rendered.add(line1);
+            for (var i = 2; i < this.numberOfLines + 1; i++) {
+                var _y = Euterpe.getY(i - 1, scale, y);
+                var line = line1.clone({
+                    y: _y
+                });
+                rendered.add(line);
+            }
+            return rendered;
+        }
+    });
+    return Row;
+}();
+
+Euterpe.Column = function() {
+    function Column(config) {
+        Column.super.call(this, "Euterpe.Column", config);
+    }
+    Euterpe.extend(Euterpe.Container, Column, {
+        getRealWidth: function(scale, bare) {
+            var margins = Euterpe.getMargins(this, scale);
+            var items = this.collectItems();
+            var w = _.max(_.map(items, function(item) {
+                var left = 0;
+                var right = 0;
+                if (item.isNode) {
+                    left = item.getLeftWidth(scale);
+                    right = item.getRightWidth(scale);
+                }
+                return item.getRealWidth(scale, bare) + (bare ? 0 : left + right);
+            }));
+            return w + (bare ? 0 : margins);
+        },
+        getRealHeight: function(scale, raw) {
+            var items = this.collectItems();
+            return Euterpe.getRealHeight(this, items, scale, raw);
+        },
+        collectItems: function() {
+            var items = this.items;
+            if (_.isArray(this.config.aboveItems)) {
+                items = this.config.aboveItems.concat(this.items);
+            }
+            if (_.isArray(this.config.belowItems)) {
+                items = items.concat(this.config.belowItems);
+            }
+            return items;
+        },
+        render: function(x, y, scale) {
+            var rendered = [];
+            var node;
+            var i;
+            var maxw = 0;
+            var items = this.collectItems();
+            var w = this.renderSideItems(items, scale, rendered, x, y, true);
+            x += w;
+            for (i = 0; i < items.length; i++) {
+                node = items[i];
+                node.X = x;
+                node.Y = Euterpe.getY(node, scale, y);
+                rendered.push(node.render(node.X, node.Y, scale));
+                w = node.getRealWidth(scale);
+                if (w > maxw) {
+                    maxw = w;
+                }
+            }
+            this.renderSideItems(this.items, scale, rendered, x + maxw, y, false);
+            return rendered;
+        },
+        renderSideItems: function(items, scale, rendered, x, y, isLeft) {
+            var ws = [];
+            var maxw = 0;
+            var lw = 0;
+            if (isLeft) {
+                for (i = 0; i < items.length; i++) {
+                    if (items[i].isNode) {
+                        w = items[i].getLeftWidth(scale);
+                        ws.push(w);
+                        if (w > maxw) {
+                            maxw = w;
+                        }
+                    } else {
+                        ws.push(0);
+                    }
+                }
+            }
+            for (var i = 0; i < items.length; i++) {
+                var node = items[i];
+                var w = 0;
+                var offset = 0;
+                if (typeof ws[i] !== "undefined" && ws[i] !== maxw) {
+                    offset = maxw - ws[i];
+                }
+                var side = isLeft ? node.leftItems : node.rightItems;
+                for (var l = 0; l < side.length; l++) {
+                    var obj = side[l];
+                    if (typeof obj.config.location === "undefined") {
+                        obj.config.location = node.config.location;
+                    }
+                    obj.X = x + obj.leftMargin * scale + offset + w;
+                    obj.Y = Euterpe.getY(obj, scale, y);
+                    rendered.push(obj.render(obj.X, obj.Y, scale));
+                    w += obj.getRealWidth(scale);
+                }
+                if (w > lw) {
+                    lw = w;
+                }
+            }
+            return lw;
+        },
+        reduceWidth: function(list, scale) {
+            return _.reduce(list, function(acc, x) {
+                return acc + x.getRealWidth(scale);
+            }, 0);
+        }
+    });
+    return Column;
+}();
+
+Euterpe.Bar = function() {
+    function Bar(config) {
+        this.leftType = Euterpe.getConfig(config, "leftType", "none");
+        this.rightType = Euterpe.getConfig(config, "rightType", "none");
+        this.number = Euterpe.getConfig(config, "number", undefined);
+        this.numberOffset = 0;
+        this.numberHeight = [ 0, 0 ];
+        if (typeof this.number !== "undefined") {
+            this.numberItem = new Euterpe.Text({
+                text: this.number.toString()
+            });
+            this.numberOffset = 3;
+            this.numberHeight = this.numberItem.getRealHeight(1, true);
+        }
+        this.leftWidth = this.widths[this.leftType];
+        this.rightWidth = this.widths[this.rightType];
+        this.realWidth = this.leftWidth + this.rightWidth;
+        Bar.super.call(this, "Euterpe.Bar", config);
+    }
+    Euterpe.extend(Euterpe.Node, Bar, {
+        widths: {
+            none: 0,
+            single: 2,
+            "double": 7,
+            "double bold": 13,
+            repeat: 24
+        },
+        getRealHeight: function(scale, raw) {
+            if (typeof this.realHeight === "undefined") {
+                this.realHeight = _.clone(this.parent.realHeight);
+                this.realHeight[0] += this.numberHeight[0] + this.numberHeight[1];
+                this.realHeight[0] += this.numberOffset;
+            }
+            return Euterpe.Node.prototype.getRealHeight.call(this, scale, raw);
+        },
+        render: function(x, y, scale) {
+            var rendered = [];
+            var top = Euterpe.getY(0, scale, y);
+            var barY = top - Euterpe.global.lineWidth / 2;
+            if (this.leftWidth > 0) {
+                rendered.push(this.initBar(this.leftType, x, barY, scale, false));
+            }
+            if (this.rightWidth > 0) {
+                rendered.push(this.initBar(this.rightType, x + this.leftWidth * scale, barY, scale, true));
+            }
+            if (typeof this.number !== "undefined") {
+                rendered.push(this.renderNumber(x, y, scale));
+            }
+            return rendered;
+        },
+        renderNumber: function(x, y, scale) {
+            return this.numberItem.render(x + this.leftWidth * scale, y - this.numberOffset * scale - this.numberHeight[1] * scale, scale);
+        },
+        initBar: function(type, x, y, scale, isRight) {
+            var lines = this.parent.numberOfLines;
+            var bar = new Kinetic.Group({});
+            var barWidth = 2 * scale;
+            var dotDiameter = 6 * scale;
+            var offset = 5 * scale;
+            var startX = x;
+            var b1, b2;
+            var linePadding = Euterpe.global.linePadding;
+            var lineWidth = Euterpe.global.lineWidth;
+            var barHeight = linePadding * (lines - 1) + lineWidth * lines - lineWidth / 2 + lineWidth / 2;
+            if (type === "single") {
+                startX = x + barWidth / 2;
+                var b = new Kinetic.Line({
+                    points: [ 0, 0, 0, barHeight ],
+                    stroke: "black",
+                    strokeWidth: barWidth,
+                    x: startX,
+                    y: y
+                });
+                bar.add(b);
+            } else if (type === "double") {
+                startX = x + barWidth / 2;
+                b1 = new Kinetic.Line({
+                    points: [ 0, 0, 0, barHeight ],
+                    stroke: "black",
+                    strokeWidth: barWidth,
+                    x: startX,
+                    y: y
+                });
+                b2 = b1.clone({
+                    x: startX + offset
+                });
+                bar.add(b1);
+                bar.add(b2);
+            } else if (type === "double bold" || type === "repeat") {
+                var x1, x2, x3, sw1, sw2, sw3;
+                var bigWidth = barWidth * 3;
+                var barf = function(sw, x) {
+                    return new Kinetic.Line({
+                        points: [ 0, 0, 0, barHeight ],
+                        stroke: "black",
+                        strokeWidth: sw,
+                        x: x,
+                        y: y
+                    });
+                };
+                var circlef = function(x) {
+                    var line2 = Euterpe.getY(1, scale, y);
+                    var line3 = Euterpe.getY(2, scale, y);
+                    var g = new Kinetic.Group();
+                    var dot = new Kinetic.Circle({
+                        x: x,
+                        y: line2 + 7 * scale,
+                        radius: dotDiameter / 2,
+                        fill: "black",
+                        strokeWidth: 0
+                    });
+                    g.add(dot);
+                    g.add(dot.clone({
+                        y: line3 + 7 * scale
+                    }));
+                    return g;
+                };
+                var objs = [];
+                if (isRight) {
+                    sw1 = bigWidth;
+                    sw2 = barWidth;
+                    sw3 = dotDiameter;
+                    x1 = x + sw1 / 2;
+                    x2 = x + sw1 + offset + sw2 / 2;
+                    x3 = x + sw1 + offset + sw2 + offset + sw3 / 2;
+                    objs.push(barf(sw1, x1));
+                    objs.push(barf(sw2, x2));
+                    if (type === "repeat") {
+                        objs.push(circlef(x3));
+                    }
+                } else if (type == "repeat") {
+                    sw1 = dotDiameter;
+                    sw2 = barWidth;
+                    sw3 = bigWidth;
+                    x1 = x + sw1 / 2;
+                    x2 = x + sw1 + offset + sw2 / 2;
+                    x3 = x + sw1 + offset + sw2 + offset + sw3 / 2;
+                    objs.push(circlef(x1));
+                    objs.push(barf(sw2, x2));
+                    objs.push(barf(sw3, x3));
+                } else {
+                    sw1 = barWidth;
+                    sw2 = bigWidth;
+                    x1 = x + sw1 / 2;
+                    x2 = x + sw1 + offset + sw2 / 2;
+                    objs.push(barf(sw1, x1));
+                    objs.push(barf(sw2, x2));
+                }
+                _.each(objs, function(obj) {
+                    bar.add(obj);
+                });
+            }
+            return bar;
+        }
+    });
+    return Bar;
+}();
+
+Euterpe.Text = function() {
+    function Text(config) {
+        this.text = Euterpe.getConfig(config, "text");
+        this.color = Euterpe.getConfig(config, "color", "black");
+        this.fontFamily = Euterpe.getConfig(config, "fontFamily", "Arial");
+        this.fontSize = Euterpe.getConfig(config, "fontSize", 10);
+        this.fontStyle = Euterpe.getConfig(config, "fontStyle", "normal");
+        var scale = 1;
+        var tmp = new Kinetic.Text({
+            x: 0,
+            y: 0,
+            text: this.text,
+            fontSize: this.fontSize * scale,
+            fontFamily: this.fontFamily,
+            fontStyle: this.fontStyle
+        });
+        var h = tmp.height() / scale;
+        this.realWidth = tmp.width() / scale;
+        this.realHeight = [ h / 2, h / 2 ];
+        Text.super.call(this, "Euterpe.Text", config);
+    }
+    Euterpe.extend(Euterpe.Node, Text, {
+        render: function(x, y, scale) {
+            var rendered = [ new Kinetic.Text({
+                x: x,
+                y: y - (this.realHeight[0] * scale + this.realHeight[1] * scale) / 2,
+                text: this.text,
+                fontSize: this.fontSize * scale,
+                fontFamily: this.fontFamily,
+                fontStyle: this.fontStyle,
+                fill: this.color
+            }) ];
+            Euterpe.bind(this, rendered);
+            return rendered;
+        }
+    });
+    return Text;
+}();
+
+Euterpe.Rest = function() {
+    function Rest(config) {
+        this.type = Euterpe.getConfig(config, "type", "long");
+        Rest.super.call(this, "Euterpe.Rest", config);
+        this.basicWidth = 7;
+        switch (this.type) {
+          case "long":
+            this.realWidth = this.basicWidth;
+            this.realHeight = [ 0, 28 ];
+            break;
+
+          case "double_whole":
+            this.realWidth = this.basicWidth;
+            this.realHeight = [ 0, 14.5 ];
+            break;
+
+          case "whole":
+            this.realWidth = 20;
+            this.realHeight = [ 0, 8 ];
+            break;
+
+          case "half":
+            this.realWidth = 20;
+            this.realHeight = [ 6, 0 ];
+            break;
+
+          case "quarter":
+            this.realWidth = 20;
+            this.realHeight = [ 16.75, 22.25 ];
+            break;
+
+          case "eighth":
+            this.realWidth = 20;
+            this.realHeight = [ 9.5, 16.25 ];
+            break;
+
+          case "sixteenth":
+            this.realWidth = 20;
+            this.realHeight = [ 9.5, 30.25 ];
+            break;
+
+          case "thirty-second":
+            this.realWidth = 25;
+            this.realHeight = [ 9.5, 43.25 ];
+            break;
+
+          case "sixty-fourth":
+            this.realWidth = 30;
+            this.realHeight = [ 9.5, 55.75 ];
+            break;
+        }
+    }
+    Euterpe.extend(Euterpe.Node, Rest, {
+        render: function(x, y, scale) {
+            var startX = x + this.getRealWidth(scale) / 2;
+            var rendered = [];
+            switch (this.type) {
+              case "half":
+                rendered.push(this.initHalf(startX, y, scale));
+                break;
+
+              case "quarter":
+                rendered.push(this.initQuarter(startX, y, scale));
+                break;
+
+              case "eighth":
+                rendered.push(this.initEighth(startX, y, scale));
+                break;
+
+              case "sixteenth":
+                rendered.push(this.initSixteen(startX, y, scale));
+                break;
+
+              case "thirty-second":
+                rendered.push(this.initThirtySecond(startX, y, scale));
+                break;
+
+              case "sixty-fourth":
+                rendered.push(this.initSixtyFourth(startX, y, scale));
+                break;
+
+              default:
+                rendered.push(this.simpleRestShape(startX, y, scale));
+            }
+            Euterpe.bind(this, rendered);
+            return rendered;
+        },
+        initHalf: function(x, y, scale) {
+            var h = this.getRealHeight(scale, true);
+            return this.simpleRestShape(x, y - h[0], scale);
+        },
+        initQuarter: function(x, y, scale) {
+            var sc = scale * .125;
+            var h = this.getRealHeight(scale, true);
+            var startY = y - h[0];
+            return new Kinetic.Shape({
+                sceneFunc: function(ctx) {
+                    ctx.translate(x, startY);
+                    ctx.scale(sc, sc);
+                    ctx.beginPath();
+                    ctx.moveTo(100.2, 80.7);
+                    ctx.bezierCurveTo(100.2, 100.2, 61.1, 129.6, 61.1, 168.7);
+                    ctx.bezierCurveTo(61.1, 183.4, 90.4, 227.5, 110, 251.9);
+                    ctx.bezierCurveTo(100.2, 247, 90.4, 242.1, 75.8, 242.1);
+                    ctx.bezierCurveTo(46.4, 242.1, 36.6, 266.6, 36.6, 281.3);
+                    ctx.bezierCurveTo(36.6, 291.1, 46.4, 300.9, 51.3, 310.7);
+                    ctx.bezierCurveTo(21.9, 291.1, 2.4, 271.5, 2.4, 251.9);
+                    ctx.bezierCurveTo(2.4, 203, 35.8, 220.1, 60.2, 210.3);
+                    ctx.bezierCurveTo(35.8, 185.9, 12.1, 149.2, 12.1, 134.5);
+                    ctx.bezierCurveTo(12.1, 124.7, 41.5, 90.4, 51.3, 66);
+                    ctx.lineTo(51.3, 51.3);
+                    ctx.bezierCurveTo(51.3, 36.6, 41.5, 17, 36.6, 2.4);
+                    ctx.bezierCurveTo(56.2, 26.8, 100.2, 70.9, 100.2, 80.7);
+                    ctx.lineTo(100.2, 80.7);
+                    ctx.closePath();
+                    ctx.fillStrokeShape(this);
+                },
+                fill: "black",
+                stroke: "black",
+                strokeWidth: 0
+            });
+        },
+        initEighth: function(x, y, scale) {
+            var sc = scale * .125;
+            var h = this.getRealHeight(scale, true);
+            var startY = y - h[0];
+            return new Kinetic.Shape({
+                sceneFunc: function(ctx) {
+                    ctx.translate(x, startY);
+                    ctx.scale(sc, sc);
+                    ctx.beginPath();
+                    ctx.moveTo(92.9, 5.2);
+                    ctx.bezierCurveTo(90.4, 14.4, 88.4, 21.5, 88.1, 21.9);
+                    ctx.bezierCurveTo(84.9, 28.7, 78.5, 37.2, 73.6, 42.1);
+                    ctx.bezierCurveTo(68.4, 47.3, 65.5, 48.2, 61.1, 46.5);
+                    ctx.bezierCurveTo(57.4, 44.5, 56.2, 42.4, 53.8, 31.5);
+                    ctx.bezierCurveTo(51.7, 23.4, 50.2, 19, 46.9, 15.8);
+                    ctx.bezierCurveTo(38.4, 6.5, 23.8, 5.3, 12.6, 12.6);
+                    ctx.bezierCurveTo(7.3, 16.2, 3.3, 21.9, .9, 28);
+                    ctx.bezierCurveTo(0, 31.1, 0, 32, 0, 36.4);
+                    ctx.bezierCurveTo(0, 40.9, 0, 42.4, .9, 44.9);
+                    ctx.bezierCurveTo(3.6, 53.8, 9.3, 60.7, 18.2, 64.7);
+                    ctx.bezierCurveTo(24.7, 68, 27.1, 68.4, 36, 68.4);
+                    ctx.bezierCurveTo(42.5, 68.4, 44.5, 68.4, 49.8, 67.5);
+                    ctx.bezierCurveTo(57.1, 66.3, 64.7, 63.9, 73.2, 61.5);
+                    ctx.lineTo(78.5, 59.4);
+                    ctx.lineTo(78.5, 60.7);
+                    ctx.bezierCurveTo(78, 62.3, 44.1, 190, 43.7, 190.8);
+                    ctx.bezierCurveTo(43.3, 192.4, 50.6, 195.6, 55, 195.6);
+                    ctx.bezierCurveTo(59.4, 195.6, 65.9, 192.8, 66.3, 190.8);
+                    ctx.bezierCurveTo(66.7, 190.4, 86.1, 106.8, 110.3, 5.1);
+                    ctx.bezierCurveTo(107.1, -2.6, 98.1, -.8, 92.9, 5.2);
+                    ctx.closePath();
+                    ctx.fillStrokeShape(this);
+                },
+                fill: "black",
+                stroke: "black",
+                strokeWidth: 0
+            });
+        },
+        initSixteen: function(x, y, scale) {
+            var h = this.getRealHeight(scale, true);
+            var sc = scale * .125;
+            var startY = y - h[0];
+            return new Kinetic.Shape({
+                sceneFunc: function(ctx) {
+                    ctx.translate(x, startY);
+                    ctx.scale(sc, sc);
+                    ctx.beginPath();
+                    ctx.moveTo(132.4, 0);
+                    ctx.bezierCurveTo(126.7, 0, 121.8, 4.5, 120.8, 9.5);
+                    ctx.bezierCurveTo(118, 21.7, 117.1, 25.3, 116.8, 26.1);
+                    ctx.bezierCurveTo(114.2, 31.6, 107.4, 42.3, 102.3, 47.8);
+                    ctx.bezierCurveTo(96.7, 52.9, 94.2, 53.8, 89.5, 52.1);
+                    ctx.bezierCurveTo(85.7, 50, 84.4, 47.8, 81.9, 36.3);
+                    ctx.bezierCurveTo(79.7, 27.8, 78, 23.1, 74.6, 19.8);
+                    ctx.bezierCurveTo(65.6, 9.9, 50.3, 8.6, 38.3, 16.3);
+                    ctx.bezierCurveTo(32.8, 20.2, 28.6, 26.1, 26, 32.6);
+                    ctx.bezierCurveTo(25.1, 35.9, 25.1, 36.8, 25.1, 41.5);
+                    ctx.bezierCurveTo(25.1, 47.8, 25.6, 51.3, 28.6, 56.3);
+                    ctx.bezierCurveTo(32.8, 64.9, 41.8, 71.7, 52, 74.2);
+                    ctx.bezierCurveTo(63.1, 77.2, 81.4, 74.7, 102.3, 67.9);
+                    ctx.bezierCurveTo(105.2, 66.6, 108.2, 65.7, 108.2, 65.7);
+                    ctx.bezierCurveTo(108.2, 66.2, 104.8, 80.2, 101, 97.7);
+                    ctx.bezierCurveTo(94.6, 127.5, 94.2, 129.7, 92, 133.4);
+                    ctx.bezierCurveTo(88.6, 140.7, 81, 151, 75.8, 155.6);
+                    ctx.bezierCurveTo(71.6, 159.5, 68.7, 160.3, 64.4, 158.6);
+                    ctx.bezierCurveTo(60.6, 156.5, 59.2, 154.3, 56.7, 142.9);
+                    ctx.bezierCurveTo(54.5, 134.3, 52.9, 129.7, 49.4, 126.2);
+                    ctx.bezierCurveTo(40.5, 116.4, 25.1, 115.2, 13.2, 122.8);
+                    ctx.bezierCurveTo(7.7, 126.7, 3.4, 132.6, .9, 139);
+                    ctx.bezierCurveTo(0, 142.5, 0, 143.3, 0, 148);
+                    ctx.bezierCurveTo(0, 154.3, .4, 157.7, 3.4, 162.8);
+                    ctx.bezierCurveTo(7.7, 171.4, 16.6, 178.2, 26.9, 180.8);
+                    ctx.bezierCurveTo(37.9, 183.7, 59.2, 180.8, 80.1, 173.5);
+                    ctx.bezierCurveTo(82.7, 172.7, 84.4, 172.3, 84.4, 172.3);
+                    ctx.bezierCurveTo(84.4, 172.7, 54.5, 306.4, 53.3, 310.7);
+                    ctx.bezierCurveTo(53.3, 311.6, 53.7, 312, 55.4, 312.8);
+                    ctx.bezierCurveTo(58, 314.5, 62.2, 315.9, 65.2, 315.9);
+                    ctx.bezierCurveTo(68.2, 315.9, 72.4, 314.5, 75, 312.8);
+                    ctx.bezierCurveTo(76.7, 312, 77.2, 311.6, 77.6, 309.4);
+                    ctx.bezierCurveTo(77.6, 308.2, 100.1, 196.1, 127.9, 60.2);
+                    ctx.bezierCurveTo(131.9, 40.2, 133.1, 33.9, 136.5, 17);
+                    ctx.bezierCurveTo(137.7, 11.1, 139.7, 0, 132.4, 0);
+                    ctx.closePath();
+                    ctx.fillStrokeShape(this);
+                },
+                fill: "black",
+                stroke: "black",
+                strokeWidth: 0
+            });
+        },
+        initThirtySecond: function(x, y, scale) {
+            var h = this.getRealHeight(scale, true);
+            var sc = scale * .125;
+            var startY = y - h[0];
+            return new Kinetic.Shape({
+                sceneFunc: function(ctx) {
+                    ctx.translate(x, startY);
+                    ctx.scale(sc, sc);
+                    ctx.beginPath();
+                    ctx.moveTo(154.4, 0);
+                    ctx.bezierCurveTo(152.8, 0, 146, -0, 144.3, 7.4);
+                    ctx.bezierCurveTo(141.2, 20.7, 140.5, 22.5, 138.9, 25.3);
+                    ctx.bezierCurveTo(134.2, 35.1, 127.5, 44.5, 122.7, 47.5);
+                    ctx.bezierCurveTo(120.2, 49.2, 118, 49.2, 115.1, 47.9);
+                    ctx.bezierCurveTo(111.2, 45.8, 109.9, 43.6, 107.4, 32.1);
+                    ctx.bezierCurveTo(105.2, 23.6, 103.6, 18.9, 100.1, 15.5);
+                    ctx.bezierCurveTo(91.2, 5.7, 75.8, 4.5, 63.9, 12.1);
+                    ctx.bezierCurveTo(58.4, 15.9, 54.1, 21.9, 51.6, 28.3);
+                    ctx.bezierCurveTo(50.7, 31.7, 50.7, 32.5, 50.7, 37.2);
+                    ctx.bezierCurveTo(50.7, 43.6, 51.1, 47.1, 54.1, 52.2);
+                    ctx.bezierCurveTo(58.4, 60.7, 67.3, 67.5, 77.6, 70);
+                    ctx.bezierCurveTo(82.3, 71.4, 94.2, 71.4, 102.3, 70);
+                    ctx.bezierCurveTo(109.1, 68.8, 117.2, 66.6, 125.3, 64.1);
+                    ctx.bezierCurveTo(129.1, 62.8, 131.7, 61.9, 132.1, 61.9);
+                    ctx.bezierCurveTo(132.1, 62.3, 117.6, 126.3, 116.8, 128.4);
+                    ctx.bezierCurveTo(114.2, 133.9, 107.4, 144.6, 102.3, 150.1);
+                    ctx.bezierCurveTo(96.7, 155.2, 94.2, 156.1, 89.5, 154.4);
+                    ctx.bezierCurveTo(85.7, 152.3, 84.4, 150.1, 81.9, 138.6);
+                    ctx.bezierCurveTo(79.7, 130.1, 78, 125.4, 74.6, 122.1);
+                    ctx.bezierCurveTo(65.6, 112.2, 50.3, 111, 38.3, 118.6);
+                    ctx.bezierCurveTo(32.8, 122.5, 28.6, 128.4, 26, 134.9);
+                    ctx.bezierCurveTo(25.1, 138.2, 25.1, 139.1, 25.1, 143.8);
+                    ctx.bezierCurveTo(25.1, 150.1, 25.6, 153.6, 28.6, 158.7);
+                    ctx.bezierCurveTo(32.8, 167.2, 41.8, 174, 52, 176.5);
+                    ctx.bezierCurveTo(63.1, 179.5, 81.4, 177, 102.3, 170.2);
+                    ctx.bezierCurveTo(105.2, 168.9, 108.2, 168, 108.2, 168);
+                    ctx.bezierCurveTo(108.2, 168.5, 104.8, 182.5, 101, 200);
+                    ctx.bezierCurveTo(94.6, 229.8, 94.2, 232, 92, 235.7);
+                    ctx.bezierCurveTo(88.6, 243, 81, 253.3, 75.8, 258);
+                    ctx.bezierCurveTo(71.6, 261.8, 68.7, 262.6, 64.4, 260.9);
+                    ctx.bezierCurveTo(60.6, 258.8, 59.2, 256.6, 56.7, 245.2);
+                    ctx.bezierCurveTo(54.5, 236.7, 52.9, 232, 49.4, 228.5);
+                    ctx.bezierCurveTo(40.5, 218.7, 25.1, 217.5, 13.2, 225.1);
+                    ctx.bezierCurveTo(7.7, 229, 3.4, 234.9, .9, 241.3);
+                    ctx.bezierCurveTo(0, 244.8, 0, 245.6, 0, 250.3);
+                    ctx.bezierCurveTo(0, 256.6, .4, 260, 3.4, 265.1);
+                    ctx.bezierCurveTo(7.7, 273.7, 16.6, 280.5, 26.9, 283.1);
+                    ctx.bezierCurveTo(37.9, 286, 59.2, 283.1, 80.1, 275.8);
+                    ctx.bezierCurveTo(82.7, 275, 84.4, 274.6, 84.4, 274.6);
+                    ctx.bezierCurveTo(84.4, 275, 54.5, 408.7, 53.3, 413);
+                    ctx.bezierCurveTo(53.3, 413.9, 53.7, 414.3, 55.4, 415.2);
+                    ctx.bezierCurveTo(58, 416.8, 62.2, 418.2, 65.2, 418.2);
+                    ctx.bezierCurveTo(68.2, 418.2, 72.4, 416.8, 75, 415.2);
+                    ctx.bezierCurveTo(76.7, 414.3, 77.2, 413.9, 77.6, 411.7);
+                    ctx.bezierCurveTo(77.6, 410.5, 100.1, 298.4, 127.9, 162.5);
+                    ctx.bezierCurveTo(141.5, 94.4, 151.4, 44.8, 158.6, 8.7);
+                    ctx.bezierCurveTo(159.5, 4.3, 157.9, -.1, 154.4, 0);
+                    ctx.closePath();
+                    ctx.fillStrokeShape(this);
+                },
+                fill: "black",
+                stroke: "black",
+                strokeWidth: 0
+            });
+        },
+        initSixtyFourth: function(x, y, scale) {
+            var h = this.getRealHeight(scale, true);
+            var sc = scale * .125;
+            var startY = y - h[0];
+            return new Kinetic.Shape({
+                sceneFunc: function(ctx) {
+                    ctx.translate(x, startY);
+                    ctx.scale(sc, sc);
+                    ctx.beginPath();
+                    ctx.bezierCurveTo(89, 2.9, 80.5, 10.6, 76.7, 21.2);
+                    ctx.bezierCurveTo(75.8, 24.6, 75.8, 25.4, 75.8, 30.1);
+                    ctx.bezierCurveTo(75.8, 34.8, 75.8, 36.5, 76.7, 39.1);
+                    ctx.bezierCurveTo(79.7, 48.5, 85.7, 55.7, 95, 59.9);
+                    ctx.bezierCurveTo(101.8, 63.4, 104.4, 63.8, 113.8, 63.8);
+                    ctx.bezierCurveTo(120.2, 63.8, 122.7, 63.8, 127.9, 63);
+                    ctx.bezierCurveTo(134.6, 61.7, 144, 59.1, 151.3, 56.6);
+                    ctx.lineTo(155.9, 54.8);
+                    ctx.lineTo(155.5, 56.6);
+                    ctx.bezierCurveTo(155.1, 57.4, 152.1, 72.3, 148.2, 89.3);
+                    ctx.bezierCurveTo(141.5, 119.2, 141.1, 120.9, 138.9, 124.7);
+                    ctx.bezierCurveTo(134.2, 134.5, 127.5, 143.9, 122.7, 146.9);
+                    ctx.bezierCurveTo(120.2, 148.6, 118, 148.6, 115.1, 147.3);
+                    ctx.bezierCurveTo(111.2, 145.2, 109.9, 143, 107.4, 131.5);
+                    ctx.bezierCurveTo(105.2, 123, 103.6, 118.3, 100.1, 114.9);
+                    ctx.bezierCurveTo(91.2, 105.1, 75.8, 103.9, 63.9, 111.5);
+                    ctx.bezierCurveTo(58.4, 115.3, 54.1, 121.3, 51.6, 127.7);
+                    ctx.bezierCurveTo(50.7, 131.1, 50.7, 131.9, 50.7, 136.6);
+                    ctx.bezierCurveTo(50.7, 143, 51.1, 146.5, 54.1, 151.6);
+                    ctx.bezierCurveTo(58.4, 160.1, 67.3, 166.9, 77.6, 169.4);
+                    ctx.bezierCurveTo(82.3, 170.8, 94.2, 170.8, 102.3, 169.4);
+                    ctx.bezierCurveTo(109.1, 168.2, 117.2, 166, 125.3, 163.5);
+                    ctx.bezierCurveTo(129.1, 162.3, 131.7, 161.3, 132.1, 161.3);
+                    ctx.bezierCurveTo(132.1, 161.8, 117.6, 225.7, 116.8, 227.8);
+                    ctx.bezierCurveTo(114.2, 233.3, 107.4, 244, 102.3, 249.5);
+                    ctx.bezierCurveTo(96.7, 254.6, 94.2, 255.6, 89.5, 253.8);
+                    ctx.bezierCurveTo(85.7, 251.7, 84.4, 249.5, 81.9, 238);
+                    ctx.bezierCurveTo(79.7, 229.5, 78, 224.8, 74.6, 221.5);
+                    ctx.bezierCurveTo(65.6, 211.6, 50.3, 210.4, 38.3, 218);
+                    ctx.bezierCurveTo(32.8, 221.9, 28.6, 227.8, 26, 234.3);
+                    ctx.bezierCurveTo(25.1, 237.6, 25.1, 238.5, 25.1, 243.2);
+                    ctx.bezierCurveTo(25.1, 249.5, 25.6, 253, 28.6, 258.1);
+                    ctx.bezierCurveTo(32.8, 266.6, 41.8, 273.4, 52, 275.9);
+                    ctx.bezierCurveTo(63.1, 278.9, 81.4, 276.4, 102.3, 269.6);
+                    ctx.bezierCurveTo(105.2, 268.3, 108.2, 267.4, 108.2, 267.4);
+                    ctx.bezierCurveTo(108.2, 267.9, 104.8, 281.9, 101, 299.4);
+                    ctx.bezierCurveTo(94.6, 329.2, 94.2, 331.4, 92, 335.1);
+                    ctx.bezierCurveTo(88.6, 342.4, 81, 352.7, 75.8, 357.4);
+                    ctx.bezierCurveTo(71.6, 361.2, 68.7, 362, 64.4, 360.3);
+                    ctx.bezierCurveTo(60.6, 358.2, 59.2, 356, 56.7, 344.6);
+                    ctx.bezierCurveTo(54.5, 336.1, 52.9, 331.4, 49.4, 328);
+                    ctx.bezierCurveTo(40.5, 318.1, 25.1, 316.9, 13.2, 324.5);
+                    ctx.bezierCurveTo(7.7, 328.4, 3.4, 334.3, .9, 340.7);
+                    ctx.bezierCurveTo(0, 344.2, 0, 345, 0, 349.7);
+                    ctx.bezierCurveTo(0, 356, .4, 359.4, 3.4, 364.5);
+                    ctx.bezierCurveTo(7.7, 373.1, 16.6, 379.9, 26.9, 382.5);
+                    ctx.bezierCurveTo(37.9, 385.4, 59.2, 382.5, 80.1, 375.2);
+                    ctx.bezierCurveTo(82.7, 374.4, 84.4, 374, 84.4, 374);
+                    ctx.bezierCurveTo(84.4, 374.4, 54.5, 508.1, 53.3, 512.4);
+                    ctx.bezierCurveTo(53.3, 513.3, 53.7, 513.7, 55.4, 514.6);
+                    ctx.bezierCurveTo(58, 516.2, 62.2, 517.6, 65.2, 517.6);
+                    ctx.bezierCurveTo(68.2, 517.6, 72.4, 516.2, 75, 514.6);
+                    ctx.bezierCurveTo(76.7, 513.7, 77.2, 513.3, 77.6, 511.1);
+                    ctx.bezierCurveTo(77.6, 509.9, 100.1, 397.8, 127.9, 261.9);
+                    ctx.bezierCurveTo(171.7, 42.9, 177.2, 14.8, 176.8, 13.9);
+                    ctx.bezierCurveTo(175.6, 11.8, 173.9, 11, 171.3, 11);
+                    ctx.bezierCurveTo(167.5, 11, 166.6, 11.8, 162.8, 19.1);
+                    ctx.bezierCurveTo(157.3, 29.7, 151.7, 37.4, 147.8, 40.4);
+                    ctx.bezierCurveTo(145.7, 42.1, 143.6, 42.1, 140.2, 40.8);
+                    ctx.bezierCurveTo(136.4, 38.6, 135.1, 36.5, 132.5, 25);
+                    ctx.bezierCurveTo(130, 13.5, 126.9, 8.4, 120.6, 4.1);
+                    ctx.bezierCurveTo(114.6, .3, 107, -.9, 100.1, .7);
+                    ctx.closePath();
+                    ctx.fillStrokeShape(this);
+                },
+                fill: "black",
+                stroke: "black",
+                strokeWidth: 0
+            });
+        },
+        simpleRestShape: function(x, y, scale) {
+            return new Kinetic.Rect({
+                x: x,
+                y: y,
+                width: this.getRealWidth(scale),
+                height: this.getRealHeight(scale),
+                fill: "black",
+                strokeWidth: 0
+            });
+        }
+    });
+    return Rest;
+}();
+
+Euterpe.StringNumber = function() {
+    function StringNumber(config) {
+        this.string = Euterpe.getConfig(config, "string");
+        this.fontSize = 10;
+        this.fontFamily = "Arial";
+        if (typeof this.string !== "number" || this.string < 0 || this.string > 6) {
+            throw "Invalid string value";
+        } else {
+            this.string = this.string.toString();
+        }
+        this.textWidth = 5;
+        this.textHeight = 7.6;
+        this.realWidth = 21.3;
+        this.realHeight = [ 10.65, 10.65 ];
+        StringNumber.super.call(this, "Euterpe.StringNumber", config);
+    }
+    Euterpe.extend(Euterpe.Node, StringNumber, {
+        render: function(x, y, scale) {
+            var rendered = [];
+            var startX = x + this.realWidth * scale / 2;
+            rendered.push(new Kinetic.Circle({
+                x: startX,
+                y: y,
+                radius: 10 * scale,
+                fill: "white",
+                stroke: "black",
+                strokeWidth: scale
+            }));
+            rendered.push(new Kinetic.Text({
+                x: startX - this.textWidth * scale / 2,
+                y: y - this.textHeight * scale / 2,
+                text: this.string,
+                fontSize: this.fontSize * scale,
+                fontFamily: this.fontFamily,
+                fill: "black"
+            }));
+            Euterpe.bind(this, rendered);
+            return rendered;
+        }
+    });
+    return StringNumber;
+}();
+
+Euterpe.KeySignature = function() {
+    function KeySignature(config) {
+        this.type = Euterpe.getConfig(config, "type");
+        this.amount = Euterpe.getConfig(config, "amount");
+        if (this.type !== "sharp" && this.type !== "flat") {
+            throw "Invalid type argument";
+        }
+        if (typeof this.amount !== "number" || this.amount < 1 || this.amount > 7) {
+            throw "amount should be >= 1 and <= 7";
+        }
+        KeySignature.super.call(this, config);
+        var locations = {
+            sharp: [ 0, 1.5, -.5, 1, 2.5, .5, 2 ],
+            flat: [ 2, .5, 2.5, 1, 3, 1.5, 3.5 ]
+        };
+        for (var i = 0; i < this.amount; i++) {
+            var cfg = {
+                location: locations[this.type][i]
+            };
+            this.add(this.type === "sharp" ? new Euterpe.Sharp(cfg) : new Euterpe.Flat(cfg));
+        }
+    }
+    Euterpe.extend(Euterpe.Container, KeySignature);
+    return KeySignature;
+}();
+
+Euterpe.Plugin = function() {
+    var Plugin = function(name, config) {
+        this.name = name;
+        this.config = config || {};
+    };
+    Plugin.prototype.isPlugin = true;
+    Plugin.prototype.process = function(item) {
+        return item;
+    };
+    return Plugin;
+}();
+
+Euterpe.PluginNoteBar = function() {
+    var PluginNoteBar = function(config) {
+        PluginNoteBar.super.call(this, "Euterpe.PluginNoteBar", config);
+    };
+    Euterpe.extend(Euterpe.Plugin, PluginNoteBar, {
+        process: function(root, scale, extra) {
+            var columns = Euterpe.select("Euterpe.Column", root);
+            var ids = [];
+            var current = [];
+            var dir = 1;
+            var dirs = {};
+            for (var i = 0; i < columns.length; i++) {
+                var column = columns[i];
+                for (var j = 0; j < column.items.length; j++) {
+                    var item = column.items[j];
+                    var cfg = item.config || {};
+                    if (cfg.bar === "begin" || cfg.bar === "cont" || cfg.bar === "end") {
+                        dir = cfg.beamDirection === "down" ? -1 : 1;
+                        dirs[ids.length] = dir;
+                        item.flags = 0;
+                        current.push(item.id);
+                        if (cfg.bar === "end") {
+                            this.adjustBeamHeight(current, dir);
+                            ids.push(_.clone(current));
+                            current.length = 0;
+                        }
+                    }
+                }
+            }
+            for (var k = 0; k < ids.length; k++) {
+                extra.push(this.bind(ids[k], dirs[k]));
+            }
+            return root;
+        },
+        getTopTwo: function(items, dir) {
+            var sorted = _.clone(items);
+            sorted.sort(function(a, b) {
+                if (dir === 1) {
+                    return a.config.location - b.config.location;
+                } else {
+                    return b.config.location - a.config.location;
+                }
+            });
+            if (sorted.length > 2) {
+                return [ sorted[0], sorted[1] ];
+            } else {
+                return sorted;
+            }
+        },
+        adjustBeamHeight: function(ids, dir) {
+            ids = _.map(ids, function(obj) {
+                return Euterpe.select("#" + obj)[0];
+            });
+            if (ids.length > 2) {
+                var sorted = this.getTopTwo(ids, dir);
+                var getY = function(item, baseY) {
+                    return Euterpe.getY(item, scale, baseY) - item.beamRealHeight * scale * dir;
+                };
+                var first = sorted[0];
+                var last = sorted[1];
+                var row = first.parent.parent;
+                var firstX = Euterpe.getDistance(row, first, scale);
+                var lastX = Euterpe.getDistance(row, last, scale);
+                for (var i = 0; i < ids.length; i++) {
+                    var base = Math.abs(Euterpe.getY(ids[i], scale, 0));
+                    var firstY = getY(first, base);
+                    var lastY = getY(last, base);
+                    var slope = (lastY - firstY) / (lastX - firstX);
+                    var X = Euterpe.getDistance(row, ids[i], scale);
+                    var curY = getY(ids[i], base);
+                    var newY = slope * (X - firstX) + firstY;
+                    var diff = curY - newY;
+                    if (diff !== 0) {
+                        ids[i].beamRealHeight += diff * dir / scale;
+                        ids[i].calculateSize();
+                    }
+                }
+            }
+        },
+        bind: function(ids, dir) {
+            return function(root, scale) {
+                var first = Euterpe.select("#" + ids[0])[0];
+                var last = Euterpe.select("#" + ids[ids.length - 1])[0];
+                var sx = first.beam.x();
+                var sy = first.beam.y() - first.beamHeight * dir;
+                var lx = last.beam.x();
+                var ly = last.beam.y() - last.beamHeight * dir;
+                var width = 4 * scale;
+                var bar = new Kinetic.Shape({
+                    sceneFunc: function(ctx) {
+                        ctx.beginPath();
+                        ctx.moveTo(sx, sy);
+                        ctx.lineTo(lx, ly);
+                        ctx.lineTo(lx, ly + width * dir);
+                        ctx.lineTo(sx, sy + width * dir);
+                        ctx.moveTo(sx, sy);
+                        ctx.closePath();
+                        ctx.fillStrokeShape(this);
+                    },
+                    fill: "black",
+                    stroke: "black",
+                    strokeWidth: 0
+                });
+                return bar;
+            };
+        }
+    });
+    return PluginNoteBar;
+}();
+
+Euterpe.PluginNoteText = function() {
+    var PluginNoteText = function(config) {
+        PluginNoteText.super.call(this, "Euterpe.PluginNoteText", config);
+    };
+    Euterpe.extend(Euterpe.Plugin, PluginNoteText, {
+        process: function(root) {
+            var notes = Euterpe.select("Euterpe.Note", root);
+            for (var i = 0; i < notes.length; i++) {
+                var note = notes[i];
+                if (typeof note.config.text === "undefined") {
+                    continue;
+                }
+                var txt = new Euterpe.Text({
+                    text: note.config.text
+                });
+                note.leftItems.push(txt);
+            }
+            return root;
+        }
+    });
+    return PluginNoteText;
+}();
+
+Euterpe.PluginAccidentals = function() {
+    var PluginAccidentals = function(config) {
+        PluginAccidentals.super.call(this, "Euterpe.PluginAccidentals", config);
+    };
+    Euterpe.extend(Euterpe.Plugin, PluginAccidentals, {
+        process: function(root) {
+            var notes = Euterpe.select("Euterpe.Note", root);
+            for (var i = 0; i < notes.length; i++) {
+                var note = notes[i];
+                if (typeof note.config.sharp === "undefined" && typeof note.config.flat === "undefined") {
+                    continue;
+                }
+                var count = note.config.sharp || note.config.flat;
+                for (var x = 0; x < count; x++) {
+                    if (typeof note.config.sharp !== "undefined") {
+                        note.leftItems.push(new Euterpe.Sharp({}));
+                    } else if (typeof note.config.flat !== "undefined") {
+                        note.leftItems.push(new Euterpe.Flat({}));
+                    }
+                }
+            }
+            return root;
+        }
+    });
+    return PluginAccidentals;
+}();
+
+Euterpe.PluginAboveBelow = function() {
+    var PluginAboveBelow = function(config) {
+        PluginAboveBelow.super.call(this, "Euterpe.PluginAboveBelow", config);
+    };
+    Euterpe.extend(Euterpe.Plugin, PluginAboveBelow, {
+        roundLine: function(val) {
+            var d, r;
+            if (val < 0) {
+                d = val - Math.ceil(val);
+                if (d === 0) {
+                    r = val;
+                } else if (d >= -.5) {
+                    r = Math.ceil(val) - .5;
+                } else {
+                    r = Math.floor(val);
+                }
+                return r;
+            } else {
+                d = val - Math.floor(val);
+                if (d === 0) {
+                    r = val;
+                } else if (d <= .5) {
+                    r = Math.floor(val) + .5;
+                } else {
+                    r = Math.ceil(val);
+                }
+                return r;
+            }
+        },
+        place: function(items, scale, pos, startLoc) {
+            var loc = 0, prevLoc;
+            var h, up, down;
+            if (typeof startLoc === "number") {
+                prevLoc = startLoc;
+            } else if (pos === "above") {
+                prevLoc = 0;
+            } else if (pos === "below") {
+                prevLoc = 4;
+            }
+            for (var j = 0; j < items.length; j++) {
+                var item = items[j];
+                h = item.getRealHeight(scale, true);
+                up = h[0] / this.lineH;
+                down = h[1] / this.lineH;
+                if (pos === "above") {
+                    loc = prevLoc - this.roundLine(down);
+                    prevLoc = loc - this.roundLine(up);
+                } else if (pos === "below") {
+                    loc = prevLoc + this.roundLine(down);
+                    prevLoc = loc + this.roundLine(up);
+                }
+                item.config.location = loc;
+            }
+        },
+        process: function(root, scale) {
+            this.lineH = Euterpe.global.linePadding + Euterpe.global.lineWidth;
+            var columns = Euterpe.select("Euterpe.Column", root);
+            for (var i = 0; i < columns.length; i++) {
+                var column = columns[i];
+                var cfg = column.config;
+                var h = column.getRealHeight(scale, true);
+                var up = this.roundLine(h[0] / this.lineH * -1);
+                var down = this.roundLine(h[1] / this.lineH);
+                if (down < 4) {
+                    down = 4;
+                }
+                if (_.isArray(cfg.aboveItems)) {
+                    this.place(cfg.aboveItems, scale, "above", up);
+                }
+                if (_.isArray(cfg.belowItems)) {
+                    this.place(cfg.belowItems, scale, "below", down);
+                }
+            }
+            return root;
+        }
+    });
+    return PluginAboveBelow;
+}();
+
+Euterpe.PluginTab = function() {
+    var PluginTab = function(config) {
+        PluginTab.super.call(this, "Euterpe.PluginTab", config);
+    };
+    Euterpe.extend(Euterpe.Plugin, PluginTab, {
+        process: function(root) {
+            for (var i = 0; i < root.items.length; i++) {
+                var row = root.items[i];
+                var tab = new Euterpe.Row({
+                    type: "tab"
+                });
+                for (var j = 0; j < row.items.length; j++) {
+                    var col = row.items[j];
+                    if (col.name == "Euterpe.Bar") {
+                        tab.add(col.clone());
+                        continue;
+                    }
+                    var tcol = new Euterpe.Column({});
+                    var notes = Euterpe.select("Euterpe.Note", col);
+                    for (var z = 0; z < notes.length; z++) {
+                        var note = notes[z];
+                        if (typeof note.config.tab_location === "number" && typeof note.config.tab_text === "string") {
+                            row.group = i.toString();
+                            row.groupType = "bracket";
+                            tab.group = row.group;
+                            tab.groupType = row.groupType;
+                            tcol.add(new Euterpe.Text({
+                                text: note.config.tab_text,
+                                location: note.config.tab_location
+                            }));
+                        }
+                    }
+                    if (tab !== null && tcol.items.length > 0) {
+                        tab.add(tcol);
+                    }
+                }
+                if (typeof tab.group !== "undefined") {
+                    root.items.splice(i + 1, 0, tab);
+                }
+            }
+            return root;
+        }
+    });
+    return PluginTab;
+}();
+
+Euterpe.PluginAlign = function() {
+    var PluginAlign = function(config) {
+        this.totalWidth = Euterpe.getConfig(config, "totalWidth");
+        this.nodeMargin = Euterpe.getConfig(config, "nodeMargin", 5);
+        this.sideMargin = Euterpe.getConfig(config, "sideMargin", 3);
+        PluginAlign.super.call(this, "Euterpe.PluginAlign", config);
+    };
+    Euterpe.extend(Euterpe.Plugin, PluginAlign, {
+        process: function(root, scale) {
+            var i, row;
+            for (i = 0; i < root.items.length; i++) {
+                row = root.items[i];
+                var j;
+                var nodes = this.collectNodes(row);
+                for (j = 0; j < nodes.length; j++) {
+                    nodes[j].leftMargin = this.nodeMargin;
+                }
+                this.alignSideItems(row);
+            }
+            var groups = Euterpe.getGroups(root.items);
+            for (i = 0; i < groups.length; i++) {
+                this.processGroup(groups[i], scale);
+            }
+            return root;
+        },
+        alignSideItems: function(row) {
+            var cols = Euterpe.select("Euterpe.Column", row);
+            for (var i = 0; i < cols.length; i++) {
+                var col = cols[i];
+                for (var j = 0; j < col.items.length; j++) {
+                    var item = col.items[j];
+                    var z;
+                    for (z = 0; z < item.leftItems.length; z++) {
+                        item.leftItems[z].rightMargin = this.sideMargin;
+                    }
+                    for (z = 0; z < item.rightItems.length; z++) {
+                        item.rightItems[z].leftMargin = this.sideMargin;
+                    }
+                }
+            }
+        },
+        getColsBars: function(row) {
+            var r = [];
+            for (var j = 1; j < row.items.length; j++) {
+                var col = row.items[j];
+                if (col.name === "Euterpe.Column" || col.name === "Euterpe.Bar") {
+                    r.push(col);
+                }
+            }
+            return r;
+        },
+        stretchAlign: function(row, scale) {
+            var rowWidth = row.getRealWidth(scale);
+            var cols = this.getColsBars(row);
+            var diff = this.totalWidth - rowWidth;
+            var margin = diff / cols.length / scale;
+            for (var j = 0; j < cols.length; j++) {
+                cols[j].leftMargin += margin;
+            }
+        },
+        getCols: function(items, i) {
+            return _.map(items, function(a) {
+                return a[i];
+            });
+        },
+        cleanGroup: function(group) {
+            var r = [];
+            for (var i = 0; i < group.items.length; i++) {
+                r[i] = this.getColsBars(group.items[i]);
+            }
+            return r;
+        },
+        processGroup: function(group, scale) {
+            var items = this.cleanGroup(group);
+            var i, j, col, cols;
+            var size = _.max(_.map(items, function(row) {
+                return row.length;
+            }));
+            for (i = 0; i < size; i++) {
+                cols = this.getCols(items, i);
+                var colDist = {};
+                var colWidth = {};
+                var rightWidth = {};
+                for (j = 0; j < cols.length; j++) {
+                    col = cols[j];
+                    if (typeof col === "undefined") {
+                        continue;
+                    }
+                    colDist[col.id] = Euterpe.getDistance(col.parent, col, scale) + col.leftMargin * scale + col.getLeftWidth(scale);
+                    colWidth[col.id] = col.getRealWidth(scale, true);
+                    rightWidth[col.id] = col.getRightWidth(scale);
+                }
+                var distance = _.max(_.values(colDist));
+                var width = _.max(_.values(colWidth));
+                var rwidth = _.max(_.values(rightWidth));
+                for (j = 0; j < cols.length; j++) {
+                    col = cols[j];
+                    if (typeof col === "undefined") {
+                        continue;
+                    }
+                    var d = colDist[col.id];
+                    var w = colWidth[col.id];
+                    var rw = rightWidth[col.id];
+                    if (d < distance) {
+                        col.leftMargin += (distance - d) / scale;
+                    }
+                    if (w < width) {
+                        col.rightMargin += (width - w) / scale;
+                    }
+                    if (rw < rwidth) {
+                        col.rightMargin += (rwidth - rw) / scale;
+                    }
+                }
+            }
+            var self = this;
+            _.each(group.items, function(row) {
+                self.stretchAlign(row, scale);
+            });
+        },
+        collectNodes: function(row) {
+            return _.filter(row.items, function(item) {
+                return item.name !== "Euterpe.Bar" && item.name !== "Euterpe.Column";
+            });
+        }
+    });
+    return PluginAlign;
+}();
+
+Euterpe.Score = function() {
+    function Score(config) {
+        this.layer = config.layer;
+        this.lineMargin = Euterpe.getConfig(config, "lineMargin", 0);
+        this.titleMargin = Euterpe.getConfig(config, "titleMargin", 0);
+        this.musicByMargin = Euterpe.getConfig(config, "musicByMargin", 0);
+        this.tuningMargin = Euterpe.getConfig(config, "tuningMargin", 0);
+        this.title = Euterpe.getConfig(config, "title", undefined);
+        this.musicBy = Euterpe.getConfig(config, "musicBy", undefined);
+        this.tuning = Euterpe.getConfig(config, "tuning", undefined);
+        this.titleHeight = 0;
+        this.musicByHeight = 0;
+        this.tuningHeight = 0;
+        if (typeof this.title !== "undefined") {
+            this.titleText = new Euterpe.Text({
+                text: this.title,
+                fontSize: 40,
+                fontFamily: "Serif"
+            });
+            this.titleWidth = this.titleText.getRealWidth(1);
+            this.titleHeight = this.titleText.getRealHeight(1);
+        }
+        if (typeof this.musicBy !== "undefined") {
+            this.musicByText = new Euterpe.Text({
+                fontSize: 20,
+                text: "Music by " + this.musicBy,
+                fontFamily: "Serif"
+            });
+            this.musicByHeight = this.musicByText.getRealHeight(1);
+        }
+        if (typeof this.tuning !== "undefined") {
+            this.tuningText = new Euterpe.Text({
+                fontSize: 15,
+                text: this.tuning,
+                fontFamily: "Serif",
+                fontStyle: "italic"
+            });
+            this.tuningHeight = this.tuningText.getRealHeight(1);
+        }
+        Score.super.call(this, "Euterpe.Score", config);
+    }
+    Euterpe.extend(Euterpe.Container, Score, {
+        bracketExtraUp: 5,
+        bracketExtraDown: 5,
+        getRealHeight: function(scale, raw) {
+            var h = this.doGetRealHeight(this.items, scale, raw);
+            var acc = 0;
+            acc += this.titleHeight * scale;
+            acc += this.titleMargin * scale;
+            acc += this.musicByHeight * scale;
+            acc += this.musicByMargin * scale;
+            acc += this.tuningHeight * scale;
+            acc += this.tuningMargin * scale;
+            if (raw) {
+                h[0] += acc;
+            } else {
+                h += acc;
+            }
+            return h;
+        },
+        render: function(origX, y, scale) {
+            var yoff = 0;
+            var rendered = [];
+            var i;
+            var groups = Euterpe.getGroups(this.items);
+            var xOff = 0;
+            for (i = 0; i < groups.length; i++) {
+                var group = groups[i];
+                if (group.groupType === "bracket") {
+                    if (6 > xOff) {
+                        xOff = 6;
+                    }
+                }
+            }
+            origX += xOff * scale;
+            var gid = 0;
+            y = this.renderMeta(origX, y, scale, rendered);
+            for (i = 0; i < this.items.length; i++) {
+                var row = this.items[i];
+                var h = this.doGetRealHeight([ row ], scale, true);
+                if (yoff !== 0) {
+                    yoff += h[0];
+                }
+                var _y = y + yoff;
+                row.Y = _y;
+                row.X = origX;
+                if (gid < groups.length && groups[gid].first === row.id) {
+                    rendered.push(this.renderBracket(origX - xOff * scale, _y, scale, groups[gid].items));
+                    gid++;
+                }
+                yoff += h[1];
+                rendered.push(row.render(origX, _y, scale));
+            }
+            return rendered;
+        },
+        renderMeta: function(x, y, scale, rendered) {
+            var h = this.getRealHeight(scale, true);
+            y -= h[0];
+            var metaHeight = (this.titleHeight + this.musicByHeight + this.tuningHeight + this.titleMargin + this.musicByMargin + this.tuningMargin) * scale;
+            if (typeof this.title !== "undefined") {
+                y += this.titleHeight * scale / 2;
+                rendered.push(this.renderText(this.titleText, this.titleWidth, x, y, scale, true));
+                y += this.titleHeight * scale / 2;
+                y += this.titleMargin * scale;
+            }
+            if (typeof this.musicBy !== "undefined") {
+                y += this.musicByHeight * scale / 2;
+                rendered.push(this.renderText(this.musicByText, 0, x, y, scale));
+                y += this.musicByHeight * scale / 2;
+                y += this.musicByMargin * scale;
+            }
+            if (typeof this.tuning !== "undefined") {
+                y += this.tuningHeight * scale / 2;
+                rendered.push(this.renderText(this.tuningText, 0, x, y, scale));
+                y += this.tuningHeight * scale / 2;
+                y += this.tuningMargin * scale;
+            }
+            y += h[0] - metaHeight;
+            return y;
+        },
+        renderText: function(obj, width, x, y, scale, center) {
+            var _x = x;
+            if (center) {
+                var totalW = this.items[0].getRealWidth(scale);
+                _x = x + (totalW / 2 - width / 2);
+            }
+            return obj.render(_x, y, scale);
+        },
+        doGetRealHeight: function(items, scale, raw) {
+            var yup;
+            var yoff = 0;
+            var groups = Euterpe.getGroups(this.items);
+            var isGroupFirst = function(item) {
+                return _.find(groups, function(o) {
+                    return o.first === item.id;
+                });
+            };
+            var isGroupLast = function(item) {
+                return _.find(groups, function(o) {
+                    return o.last === item.id;
+                });
+            };
+            for (var i = 0; i < items.length; i++) {
+                var item = items[i];
+                var h = item.getRealHeight(scale, true);
+                if (isGroupFirst(item)) {
+                    h[0] += this.bracketExtraUp * scale;
+                }
+                if (isGroupLast(item)) {
+                    h[1] += this.bracketExtraDown * scale;
+                }
+                var rh = h[1] + h[0];
+                if (typeof yup === "undefined") {
+                    yup = h[0] + yoff;
+                }
+                yoff += rh + this.lineMargin * scale;
+            }
+            if (raw) {
+                return [ yup, yoff - yup ];
+            } else {
+                return yoff;
+            }
+        },
+        renderBracket: function(x, y, scale, rows) {
+            var exUp = this.bracketExtraUp * scale;
+            var exDown = this.bracketExtraDown * scale;
+            var h = this.doGetRealHeight(rows, scale, true);
+            var up = h[0] - exUp;
+            var down = h[1] - exDown - this.lineMargin * scale;
+            return new Kinetic.Shape({
+                sceneFunc: function(ctx) {
+                    ctx.beginPath();
+                    var xoff = 10 * scale;
+                    ctx.moveTo(x + xoff, y - up - exUp);
+                    ctx.lineTo(x, y - up);
+                    ctx.lineTo(x, y + down);
+                    ctx.lineTo(x + xoff, y + down + exDown);
+                    ctx.lineTo(x + xoff / 5, y + down);
+                    ctx.lineTo(x + xoff / 5, y - up);
+                    ctx.lineTo(x + xoff, y - up - exUp);
+                    ctx.fillStrokeShape(this);
+                },
+                fill: "black",
+                stroke: "black",
+                strokeWidth: 0
+            });
+        }
+    });
+    return Score;
+}();
+
+Euterpe.Note = function() {
+    function Note(config) {
+        this.type = Euterpe.getConfig(config, "type", "quarter");
+        this.beamDir = Euterpe.getConfig(config, "beamDirection", undefined);
+        this.flags = Euterpe.getConfig(config, "flags", 0);
+        this.dots = Euterpe.getConfig(config, "dots", 0);
+        this.beam = undefined;
+        Note.super.call(this, "Euterpe.Note", config);
+        this.headHeight = 13.3;
+        this.realHeight = [ this.headHeight / 2, this.headHeight / 2 ];
+        if (this.type === "whole") {
+            this.realWidth = this.headWidth = 21.2;
+        } else {
+            this.realWidth = this.headWidth = 13.6;
+        }
+        this.dotWidth = 4.5;
+        this.dotMargin = 2.5;
+        this.calculateSize();
+    }
+    Euterpe.extend(Euterpe.Node, Note, {
+        beamRealHeight: 35,
+        calculateSize: function() {
+            if (this.beamDir === "up") {
+                this.realHeight = [ this.beamRealHeight, this.headHeight / 2 ];
+            } else if (this.beamDir === "down") {
+                this.realHeight = [ this.headHeight / 2, this.beamRealHeight ];
+            }
+            this.realWidth += (this.dotMargin + this.dotWidth) * this.dots;
+            if (this.flags > 0) {
+                this.realWidth += 13.3;
+            }
+        },
+        render: function(x, y, scale) {
+            this.beamWidth = 1.3 * scale;
+            this.beamHeight = this.beamRealHeight * scale;
+            this.scale = scale;
+            this.startX = x + this.headWidth * scale / 2;
+            this.startY = y;
+            var rendered = [];
+            switch (this.type) {
+              case "whole":
+                rendered = this.initWhole();
+                break;
+
+              default:
+                rendered = this.initHalfQuarter();
+            }
+            if (this.dots > 0) {
+                var yOff = 0;
+                var line = this.location;
+                if (line % 1 === 0) {
+                    yOff = 3 * scale;
+                }
+                var _x = x + this.headWidth * scale;
+                for (var i = this.dots; i > 0; i--) {
+                    _x += this.dotMargin * scale + this.dotWidth * scale / 2;
+                    rendered.push(new Kinetic.Ellipse({
+                        x: _x,
+                        y: this.Y - yOff,
+                        radius: {
+                            x: 2 * this.scale,
+                            y: 2 * this.scale
+                        },
+                        fill: "black"
+                    }));
+                    _x += this.dotWidth * scale / 2;
+                }
+            }
+            Euterpe.bind(this, rendered);
+            return rendered;
+        },
+        initWhole: function() {
+            var extEl = new Kinetic.Ellipse({
+                x: this.startX,
+                y: this.startY,
+                radius: {
+                    x: 10.5 * this.scale,
+                    y: 6.5 * this.scale
+                },
+                fill: "black"
+            });
+            var intEl = new Kinetic.Ellipse({
+                x: this.startX,
+                y: this.startY,
+                radius: {
+                    x: 5.5 * this.scale,
+                    y: 4 * this.scale
+                },
+                fill: "white"
+            });
+            intEl.rotation(45);
+            return [ extEl, intEl ];
+        },
+        initHalfQuarter: function() {
+            var rendered = [];
+            var self = this;
+            var extEl = new Kinetic.Ellipse({
+                x: this.startX,
+                y: this.startY,
+                radius: {
+                    x: 7.6 * this.scale,
+                    y: 5.6 * this.scale
+                },
+                fill: "black"
+            });
+            extEl.rotation(140);
+            rendered.push(extEl);
+            if (this.type === "half") {
+                var intEl = new Kinetic.Ellipse({
+                    x: this.startX,
+                    y: this.startY,
+                    radius: {
+                        x: 6.6 * this.scale,
+                        y: 2.5 * this.scale
+                    },
+                    fill: "white"
+                });
+                intEl.rotation(140);
+                rendered.push(intEl);
+            }
+            var bX, bY;
+            if (typeof this.beamDir === "string") {
+                if (this.beamDir === "up") {
+                    bX = extEl.x() + extEl.width() / 2 - this.beamWidth - this.beamWidth / 3;
+                    bY = extEl.y();
+                    this.beam = new Kinetic.Line({
+                        points: [ 0, 0, 0, -this.beamHeight ],
+                        stroke: "black",
+                        strokeWidth: this.beamWidth,
+                        x: bX,
+                        y: bY
+                    });
+                    rendered.push(this.beam);
+                } else if (this.beamDir === "down") {
+                    bX = extEl.x() - extEl.width() / 2 + this.beamWidth + this.beamWidth / 3;
+                    bY = extEl.y();
+                    this.beam = new Kinetic.Line({
+                        points: [ 0, 0, 0, this.beamHeight ],
+                        stroke: "black",
+                        strokeWidth: this.beamWidth,
+                        x: bX,
+                        y: bY
+                    });
+                    rendered.push(this.beam);
+                }
+                if (this.flags == 1) {
+                    var fx = this.beam.x();
+                    var fy = this.beam.y() - this.beamHeight;
+                    var flag = new Kinetic.Shape({
+                        sceneFunc: function(ctx) {
+                            ctx.beginPath();
+                            ctx.moveTo(fx, fy);
+                            ctx.bezierCurveTo(fx + 6.2 * self.scale, fy + 11.8 * self.scale, fx + 21.4 * self.scale, fy + 10.4 * self.scale, fx + 10 * self.scale, fy + 26.4 * self.scale);
+                            ctx.bezierCurveTo(fx + 19.6 * self.scale, fy + 12.4 * self.scale, fx + 5.4 * self.scale, fy + 10.4 * self.scale, fx - .2 * self.scale, fy + 7.4 * self.scale);
+                            ctx.closePath();
+                            ctx.fillStrokeShape(this);
+                        },
+                        fill: "black",
+                        stroke: "black",
+                        strokeWidth: 1
+                    });
+                    rendered.push(flag);
+                }
+            }
+            Euterpe.bind(this, rendered);
+            return rendered;
+        }
+    });
+    return Note;
+}();
+
+Euterpe.TrebleClef = function() {
+    function TrebleClef(config) {
+        this.realWidth = 36.8;
+        config.location = 0;
+        TrebleClef.super.call(this, "Euterpe.TrebleClef", config);
+    }
+    Euterpe.extend(Euterpe.Node, TrebleClef, {
+        realHeight: [ 26.3, 82 ],
+        render: function(x, y, scale) {
+            this.startX = x;
+            this.startY = y - 27 * scale;
+            this.scale = .125 * scale;
+            var self = this;
+            var shape1 = new Kinetic.Shape({
+                sceneFunc: function(ctx) {
+                    ctx.beginPath();
+                    ctx.translate(self.startX, self.startY);
+                    ctx.scale(self.scale, self.scale);
+                    ctx.moveTo(159, 3);
+                    ctx.quadraticCurveTo(129, 50, 117, 93);
+                    ctx.quadraticCurveTo(107, 126, 102, 167);
+                    ctx.quadraticCurveTo(101, 192, 102, 210);
+                    ctx.quadraticCurveTo(107, 255, 116, 297);
+                    ctx.quadraticCurveTo(63, 351, 44, 375);
+                    ctx.quadraticCurveTo(24, 401, 15, 429);
+                    ctx.quadraticCurveTo(2, 464, 3, 503);
+                    ctx.quadraticCurveTo(5, 540, 20, 575);
+                    ctx.quadraticCurveTo(29, 596, 48, 615);
+                    ctx.quadraticCurveTo(62, 630, 87, 645);
+                    ctx.quadraticCurveTo(113, 660, 150, 666);
+                    ctx.quadraticCurveTo(177, 668, 194, 665);
+                    ctx.quadraticCurveTo(204, 720, 213, 776);
+                    ctx.quadraticCurveTo(216, 795, 216, 813);
+                    ctx.quadraticCurveTo(203, 849, 158, 857);
+                    ctx.quadraticCurveTo(132, 857, 120, 842);
+                    ctx.quadraticCurveTo(152, 845, 166, 813);
+                    ctx.quadraticCurveTo(165, 821, 168, 802);
+                    ctx.quadraticCurveTo(166, 775, 151, 765);
+                    ctx.quadraticCurveTo(132, 750, 107, 758);
+                    ctx.quadraticCurveTo(86, 768, 78, 789);
+                    ctx.quadraticCurveTo(71, 818, 90, 840);
+                    ctx.quadraticCurveTo(105, 857, 129, 865);
+                    ctx.quadraticCurveTo(149, 872, 177, 865);
+                    ctx.quadraticCurveTo(194, 860, 209, 846);
+                    ctx.quadraticCurveTo(231, 828, 230, 803);
+                    ctx.quadraticCurveTo(221, 735, 207, 662);
+                    ctx.quadraticCurveTo(248, 650, 267, 626);
+                    ctx.quadraticCurveTo(293, 599, 296, 566);
+                    ctx.quadraticCurveTo(300, 527, 285, 494);
+                    ctx.quadraticCurveTo(270, 462, 234, 444);
+                    ctx.quadraticCurveTo(215, 435, 189, 435);
+                    ctx.quadraticCurveTo(177, 435, 164, 438);
+                    ctx.quadraticCurveTo(155, 396, 146, 354);
+                    ctx.quadraticCurveTo(183, 315, 203, 275);
+                    ctx.quadraticCurveTo(219, 243, 222, 210);
+                    ctx.quadraticCurveTo(227, 167, 221, 137);
+                    ctx.quadraticCurveTo(213, 93, 192, 51);
+                    ctx.quadraticCurveTo(180, 29, 159, 3);
+                    ctx.fillStrokeShape(this);
+                },
+                fill: "black",
+                stroke: "black",
+                strokeWidth: 0
+            });
+            var shape2 = new Kinetic.Shape({
+                sceneFunc: function(ctx) {
+                    ctx.beginPath();
+                    ctx.translate(self.startX, self.startY);
+                    ctx.scale(self.scale, self.scale);
+                    ctx.moveTo(191, 93);
+                    ctx.quadraticCurveTo(179, 83, 171, 93);
+                    ctx.quadraticCurveTo(126, 162, 131, 281);
+                    ctx.quadraticCurveTo(188, 239, 203, 188);
+                    ctx.quadraticCurveTo(209, 162, 204, 135);
+                    ctx.quadraticCurveTo(200, 111, 191, 93);
+                    ctx.fillStrokeShape(this);
+                },
+                fill: "white",
+                stroke: "white",
+                strokeWidth: 0
+            });
+            var shape3 = new Kinetic.Shape({
+                sceneFunc: function(ctx) {
+                    ctx.beginPath();
+                    ctx.translate(self.startX, self.startY);
+                    ctx.scale(self.scale, self.scale);
+                    ctx.moveTo(171, 473);
+                    ctx.quadraticCurveTo(188, 555, 206, 648);
+                    ctx.quadraticCurveTo(237, 639, 255, 620);
+                    ctx.quadraticCurveTo(283, 588, 283, 558);
+                    ctx.quadraticCurveTo(285, 525, 269, 501);
+                    ctx.quadraticCurveTo(252, 476, 216, 470);
+                    ctx.quadraticCurveTo(194, 465, 171, 473);
+                    ctx.fillStrokeShape(this);
+                },
+                fill: "white",
+                stroke: "white",
+                strokeWidth: 0
+            });
+            var shape4 = new Kinetic.Shape({
+                sceneFunc: function(ctx) {
+                    ctx.beginPath();
+                    ctx.translate(self.startX, self.startY);
+                    ctx.scale(self.scale, self.scale);
+                    ctx.moveTo(147, 446);
+                    ctx.quadraticCurveTo(141, 411, 132, 369);
+                    ctx.quadraticCurveTo(90, 401, 68, 435);
+                    ctx.quadraticCurveTo(45, 467, 39, 503);
+                    ctx.quadraticCurveTo(30, 540, 45, 576);
+                    ctx.quadraticCurveTo(60, 612, 92, 633);
+                    ctx.quadraticCurveTo(123, 651, 161, 654);
+                    ctx.quadraticCurveTo(174, 654, 188, 653);
+                    ctx.fillStrokeShape(this);
+                },
+                fill: "white",
+                stroke: "white",
+                strokeWidth: 0
+            });
+            var shape5 = new Kinetic.Shape({
+                sceneFunc: function(ctx) {
+                    ctx.beginPath();
+                    ctx.translate(self.startX, self.startY);
+                    ctx.scale(self.scale, self.scale);
+                    ctx.moveTo(147, 444);
+                    ctx.quadraticCurveTo(120, 456, 101, 480);
+                    ctx.quadraticCurveTo(83, 504, 84, 536);
+                    ctx.quadraticCurveTo(86, 567, 107, 588);
+                    ctx.quadraticCurveTo(114, 597, 126, 605);
+                    ctx.quadraticCurveTo(116, 593, 107, 581);
+                    ctx.quadraticCurveTo(95, 560, 99, 537);
+                    ctx.quadraticCurveTo(105, 509, 132, 491);
+                    ctx.quadraticCurveTo(143, 482, 164, 476);
+                    ctx.fillStrokeShape(this);
+                },
+                fill: "black",
+                stroke: "black",
+                strokeWidth: 0
+            });
+            var rendered = [ shape1, shape2, shape3, shape4, shape5 ];
+            Euterpe.bind(this, rendered);
+            return rendered;
+        }
+    });
+    return TrebleClef;
+}();
+
+Euterpe.Sharp = function() {
+    function Sharp(config) {
+        Sharp.super.call(this, "Euterpe.Sharp", config);
+        this.realWidth = 9;
+        this.realHeight = [ 11, 11 ];
+    }
+    Euterpe.extend(Euterpe.Node, Sharp, {
+        render: function(x, y, scale) {
+            var h = this.realHeight[0] + this.realHeight[1];
+            this.startY = y - h * scale / 2 - scale;
+            var width = this.realWidth * scale, height = h * scale, lineWidth = 1.5 * scale;
+            var verticalLine1 = new Kinetic.Rect({
+                x: this.X + width / 3.6 - lineWidth / 2,
+                y: this.startY + 2 * scale,
+                width: lineWidth,
+                height: height,
+                fill: "black",
+                strokeWidth: 0
+            });
+            var verticalLine2 = verticalLine1.clone({
+                x: this.X + width - width / 3.6 - lineWidth / 2,
+                y: this.startY
+            });
+            var angleFactor = 4.5 * scale, _y = this.startY + height / 4 + 3 * scale;
+            lineWidth = 3 * scale;
+            var horizontalLine1 = new Kinetic.Line({
+                points: [ this.X, _y, this.X, _y + lineWidth, this.X + width, _y + lineWidth - angleFactor, this.X + width, _y - angleFactor ],
+                fill: "black",
+                strokeWidth: 0,
+                closed: true
+            });
+            _y = this.startY + height - height / 4;
+            var horizontalLine2 = horizontalLine1.clone({
+                points: [ this.X, _y, this.X, _y + lineWidth, this.X + width, _y + lineWidth - angleFactor, this.X + width, _y - angleFactor ]
+            });
+            var rendered = [ verticalLine1, verticalLine2, horizontalLine1, horizontalLine2 ];
+            Euterpe.bind(this, rendered);
+            return rendered;
+        }
+    });
+    return Sharp;
+}();
+
+Euterpe.Flat = function() {
+    function Flat(config) {
+        this.realWidth = 12.25;
+        this.realHeight = [ 16.3, 9 ];
+        Flat.super.call(this, "Euterpe.Flat", config);
+    }
+    Euterpe.extend(Euterpe.Node, Flat, {
+        render: function(x, y, scale) {
+            var height = (this.realHeight[0] + this.realHeight[1]) * scale;
+            this.barWidth = 1.5 * scale;
+            y -= 16.25 * scale;
+            var bar = new Kinetic.Line({
+                points: [ 0, 0, 0, height ],
+                stroke: "black",
+                strokeWidth: this.barWidth,
+                x: x,
+                y: y
+            });
+            var _y = y + height;
+            var _x = x + this.barWidth / 2;
+            var curve1 = new Kinetic.Shape({
+                sceneFunc: function(ctx) {
+                    ctx.beginPath();
+                    ctx.moveTo(_x, _y);
+                    ctx.lineTo(_x + 7 * scale, _y - 5.25 * scale);
+                    ctx.bezierCurveTo(_x + 12 * scale, _y - 8.75 * scale, _x + 12.5 * scale, _y - 19.75 * scale, _x, _y - 13.75 * scale);
+                    ctx.fillStrokeShape(this);
+                },
+                fill: "black",
+                stroke: "black",
+                strokeWidth: 0
+            });
+            var curve2 = new Kinetic.Shape({
+                sceneFunc: function(ctx) {
+                    ctx.beginPath();
+                    ctx.moveTo(_x, _y - 1.25 * scale);
+                    ctx.bezierCurveTo(_x + 9.75 * scale, _y - 6.75 * scale, _x + 8.25 * scale, _y - 17.25 * scale, _x, _y - 12.75 * scale);
+                    ctx.fillStrokeShape(this);
+                },
+                fill: "white",
+                stroke: "white",
+                strokeWidth: 0
+            });
+            var rendered = [ bar, curve1, curve2 ];
+            Euterpe.bind(this, rendered);
+            return rendered;
+        }
+    });
+    return Flat;
+}();
+
+Euterpe.Natural = function() {
+    function Natural(config) {
+        this.realWidth = 11.5;
+        this.realHeight = [ 20.5, 21.5 ];
+        Natural.super.call(this, "Euterpe.Natural", config);
+    }
+    Euterpe.extend(Euterpe.Node, Natural, {
+        render: function(x, y, scale) {
+            var vbarWidth = 1.5 * scale;
+            var vbarHeight = 28 * scale;
+            var hbarWidth = 10 * scale;
+            var hbarHeight = 2.5 * scale;
+            var off = 1.5 * scale;
+            y -= vbarHeight / 2 + vbarHeight / 4;
+            var vbar1 = new Kinetic.Rect({
+                width: vbarWidth,
+                height: vbarHeight,
+                fill: "black",
+                stroke: "black",
+                strokeWidth: 0,
+                strokeEnabled: false,
+                x: x,
+                y: y
+            });
+            var vbar2 = vbar1.clone({
+                x: x + hbarWidth,
+                y: y + vbarHeight / 2
+            });
+            var _x, _y;
+            var hbar1 = new Kinetic.Shape({
+                sceneFunc: function(ctx) {
+                    _x = x;
+                    _y = y + vbarHeight / 2;
+                    ctx.beginPath();
+                    ctx.moveTo(_x, _y);
+                    ctx.lineTo(_x + hbarWidth + vbarWidth, _y - off);
+                    ctx.lineTo(_x + hbarWidth + vbarWidth, _y + hbarHeight);
+                    ctx.lineTo(_x, _y + hbarHeight + off);
+                    ctx.lineTo(_x, _y);
+                    ctx.fillStrokeShape(this);
+                },
+                fill: "black",
+                stroke: "black",
+                strokeWidth: 0,
+                strokeEnabled: false
+            });
+            var hbar2 = hbar1.clone({
+                sceneFunc: function(ctx) {
+                    _x = x;
+                    _y = y + vbarHeight - hbarHeight;
+                    ctx.beginPath();
+                    ctx.moveTo(_x, _y);
+                    ctx.lineTo(_x + hbarWidth + vbarWidth, _y - off);
+                    ctx.lineTo(_x + hbarWidth + vbarWidth, _y + hbarHeight);
+                    ctx.lineTo(_x, _y + hbarHeight + off);
+                    ctx.lineTo(_x, _y);
+                    ctx.fillStrokeShape(this);
+                }
+            });
+            var assets = [ vbar1, vbar2, hbar1, hbar2 ];
+            Euterpe.bind(this, assets);
+            return assets;
+        }
+    });
+    return Natural;
+}();
+
+Euterpe.TimeSignature = function() {
+    function TimeSignature(config) {
+        this.numerator = Euterpe.getConfig(config, "numerator", 4);
+        this.denominator = Euterpe.getConfig(config, "denominator", 4);
+        TimeSignature.super.call(this, config);
+        this.add(new Euterpe.TimeSignatureShape(this.numerator, 0));
+        this.add(new Euterpe.TimeSignatureShape(this.denominator, 2));
+    }
+    Euterpe.extend(Euterpe.Column, TimeSignature, {
+        name: "Euterpe.TimeSignature"
+    });
+    return TimeSignature;
+}();
+
+Euterpe.TimeSignatureShape = function() {
+    function TimeSignatureShape(digit, location) {
+        this.yoffset = 2;
+        var heights = {
+            4: [ 0, 24 + this.yoffset ]
+        };
+        this.digit = digit.toString();
+        this.realWidth = 22.4;
+        this.realHeight = heights[digit];
+        TimeSignatureShape.super.call(this, "Euterpe.TimeSignatureShape", {
+            location: location
+        });
+    }
+    Euterpe.extend(Euterpe.Node, TimeSignatureShape, {
+        render: function(startX, startY, scale) {
+            var self = this;
+            this.scale = scale;
+            this.startX = startX;
+            this.startY = startY + this.yoffset * scale;
+            var assets = [];
+            if (this.digit === "4") {
+                assets.push(new Kinetic.Shape({
+                    sceneFunc: function(ctx) {
+                        var x = self.startX + 17.6 * scale;
+                        var y = self.startY;
+                        ctx.beginPath();
+                        ctx.moveTo(x, y);
+                        ctx.lineTo(x - 10 * self.scale, y);
+                        ctx.bezierCurveTo(x - 8.8 * self.scale, y + 6.8 * self.scale, x - 10.54 * self.scale, y + 10.66 * self.scale, x - 17.6 * self.scale, y + 16 * self.scale);
+                        ctx.lineTo(x - 17.6 * self.scale, y + 17 * self.scale);
+                        ctx.lineTo(x - 3.6 * self.scale, y + 17 * self.scale);
+                        ctx.lineTo(x - 3.6 * self.scale, y + 22.4 * self.scale);
+                        ctx.lineTo(x - 5.6 * self.scale, y + 22.4 * self.scale);
+                        ctx.lineTo(x - 5.6 * self.scale, y + 23.4 * self.scale);
+                        ctx.lineTo(x - 5.6 * self.scale, y + 23.4 * self.scale);
+                        ctx.lineTo(x + 4.4 * self.scale, y + 23.4 * self.scale);
+                        ctx.lineTo(x + 4.4 * self.scale, y + 22.4 * self.scale);
+                        ctx.lineTo(x + 2.4 * self.scale, y + 22.4 * self.scale);
+                        ctx.lineTo(x + 2.4 * self.scale, y + 17 * self.scale);
+                        ctx.lineTo(x + 4.4 * self.scale, y + 17 * self.scale);
+                        ctx.lineTo(x + 4.4 * self.scale, y + 16 * self.scale);
+                        ctx.lineTo(x + 2.4 * self.scale, y + 16 * self.scale);
+                        ctx.lineTo(x + 2.4 * self.scale, y + 1.4 * self.scale);
+                        ctx.lineTo(x - 3.6 * self.scale, y + 7.2 * self.scale);
+                        ctx.lineTo(x - 3.6 * self.scale, y + 16 * self.scale);
+                        ctx.lineTo(x - 16.6 * self.scale, y + 16 * self.scale);
+                        ctx.lineTo(x, y);
+                        ctx.fillStrokeShape(this);
+                    },
+                    fill: "black",
+                    stroke: "black",
+                    strokeWidth: 0
+                }));
+            }
+            Euterpe.bind(this, assets);
+            return assets;
+        }
+    });
+    return TimeSignatureShape;
+}();
