@@ -41,20 +41,19 @@ Euterpe.PluginNoteBar = (function() {
                         dir = cfg.beamDirection === 'down' ? -1: 1;
                         dirs[ids.length] = dir;
 
+                        item.__note_bar_flags = item.flags;
                         item.flags = 0;
                         current.push(item.id);
 
                         if(cfg.bar === 'end') {
-                            this.adjustBeamHeight(current, dir);
+                            this.adjustBeamHeight(current, dir, scale);
                             ids.push(_.clone(current));
 
                             current.length = 0;
                         }
                     }
-
                 }
             }
-
 
             for(var k=0; k < ids.length; k++) {
                extra.push(this.bind(ids[k], dirs[k]));
@@ -85,7 +84,7 @@ Euterpe.PluginNoteBar = (function() {
         },
 
         /** @private */
-        adjustBeamHeight: function(ids, dir) {
+        adjustBeamHeight: function(ids, dir, scale) {
             ids = _.map(ids, function(obj) {return Euterpe.select("#"+obj)[0];});
 
             if(ids.length > 2) {
@@ -125,6 +124,21 @@ Euterpe.PluginNoteBar = (function() {
         /** @private */
         bind: function(ids, dir) {
             return function(root, scale) {
+                var scene = function(sx, sy, lx, ly, off, width, dir) {
+                        return function(ctx) {
+                            ctx.beginPath();
+                            ctx.moveTo(sx, sy + off);
+                            ctx.lineTo(lx, ly + off);
+                            ctx.lineTo(lx, ly + off + width * dir);
+                            ctx.lineTo(sx, sy + off + width * dir);
+                            ctx.moveTo(sx, sy);
+
+                            ctx.closePath();
+
+                            ctx.fillStrokeShape(this);
+                        }
+                };
+
                 var first = Euterpe.select("#"+ids[0])[0];
                 var last = Euterpe.select("#"+ids[ids.length-1])[0];
                 var sx = first.beam.x();
@@ -133,25 +147,24 @@ Euterpe.PluginNoteBar = (function() {
                 var ly = last.beam.y() - last.beamHeight * dir;
                 var width = 4 * scale;
 
-                var bar = new Kinetic.Shape({
-                    sceneFunc: function(ctx) {
-                        ctx.beginPath();
-                        ctx.moveTo(sx, sy);
-                        ctx.lineTo(lx, ly);
-                        ctx.lineTo(lx, ly + width * dir);
-                        ctx.lineTo(sx, sy + width * dir);
-                        ctx.moveTo(sx, sy);
+                var flags = first.__note_bar_flags;
+                var off = 0;
+                var assets = [];
 
-                        ctx.closePath();
+                for(var i=0; i < flags; i++) {
+                    var bar = new Kinetic.Shape({
+                        sceneFunc: scene(sx, sy, lx, ly, off, width, dir),
+                        fill: 'black',
+                        stroke: 'black',
+                        strokeWidth: 0
+                    });
 
-                        ctx.fillStrokeShape(this);
-                    },
-                    fill: 'black',
-                    stroke: 'black',
-                    strokeWidth: 0
-                });
+                    off += width * dir + 3 * scale;
 
-                return bar;
+                    assets.push(bar);
+                }
+
+                return assets;
             };
         }
     });

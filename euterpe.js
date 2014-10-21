@@ -2458,6 +2458,7 @@ Euterpe.TimeSignatureShape = function() {
     function TimeSignatureShape(digit, location) {
         this.yoffset = 2;
         var heights = {
+            2: [ 0, 24 + this.yoffset ],
             4: [ 0, 24 + this.yoffset ]
         };
         this.digit = digit.toString();
@@ -2469,47 +2470,47 @@ Euterpe.TimeSignatureShape = function() {
     }
     Euterpe.extend(Euterpe.Node, TimeSignatureShape, {
         render: function(startX, startY, scale) {
-            var self = this;
-            this.scale = scale;
-            this.startX = startX;
-            this.startY = startY + this.yoffset * scale;
+            var startX = startX;
+            var startY = startY + this.yoffset * scale;
             var assets = [];
             if (this.digit === "4") {
-                assets.push(new Kinetic.Shape({
-                    sceneFunc: function(ctx) {
-                        var x = self.startX + 17.6 * scale;
-                        var y = self.startY;
-                        ctx.beginPath();
-                        ctx.moveTo(x, y);
-                        ctx.lineTo(x - 10 * self.scale, y);
-                        ctx.bezierCurveTo(x - 8.8 * self.scale, y + 6.8 * self.scale, x - 10.54 * self.scale, y + 10.66 * self.scale, x - 17.6 * self.scale, y + 16 * self.scale);
-                        ctx.lineTo(x - 17.6 * self.scale, y + 17 * self.scale);
-                        ctx.lineTo(x - 3.6 * self.scale, y + 17 * self.scale);
-                        ctx.lineTo(x - 3.6 * self.scale, y + 22.4 * self.scale);
-                        ctx.lineTo(x - 5.6 * self.scale, y + 22.4 * self.scale);
-                        ctx.lineTo(x - 5.6 * self.scale, y + 23.4 * self.scale);
-                        ctx.lineTo(x - 5.6 * self.scale, y + 23.4 * self.scale);
-                        ctx.lineTo(x + 4.4 * self.scale, y + 23.4 * self.scale);
-                        ctx.lineTo(x + 4.4 * self.scale, y + 22.4 * self.scale);
-                        ctx.lineTo(x + 2.4 * self.scale, y + 22.4 * self.scale);
-                        ctx.lineTo(x + 2.4 * self.scale, y + 17 * self.scale);
-                        ctx.lineTo(x + 4.4 * self.scale, y + 17 * self.scale);
-                        ctx.lineTo(x + 4.4 * self.scale, y + 16 * self.scale);
-                        ctx.lineTo(x + 2.4 * self.scale, y + 16 * self.scale);
-                        ctx.lineTo(x + 2.4 * self.scale, y + 1.4 * self.scale);
-                        ctx.lineTo(x - 3.6 * self.scale, y + 7.2 * self.scale);
-                        ctx.lineTo(x - 3.6 * self.scale, y + 16 * self.scale);
-                        ctx.lineTo(x - 16.6 * self.scale, y + 16 * self.scale);
-                        ctx.lineTo(x, y);
-                        ctx.fillStrokeShape(this);
-                    },
-                    fill: "black",
-                    stroke: "black",
-                    strokeWidth: 0
-                }));
+                assets.push(this.shape4(startX, startY, scale));
             }
             Euterpe.bind(this, assets);
             return assets;
+        },
+        shape4: function(startX, y, scale) {
+            return new Kinetic.Shape({
+                sceneFunc: function(ctx) {
+                    var x = startX + 17.6 * scale;
+                    ctx.beginPath();
+                    ctx.moveTo(x, y);
+                    ctx.lineTo(x - 10 * self.scale, y);
+                    ctx.bezierCurveTo(x - 8.8 * self.scale, y + 6.8 * self.scale, x - 10.54 * self.scale, y + 10.66 * self.scale, x - 17.6 * self.scale, y + 16 * self.scale);
+                    ctx.lineTo(x - 17.6 * self.scale, y + 17 * self.scale);
+                    ctx.lineTo(x - 3.6 * self.scale, y + 17 * self.scale);
+                    ctx.lineTo(x - 3.6 * self.scale, y + 22.4 * self.scale);
+                    ctx.lineTo(x - 5.6 * self.scale, y + 22.4 * self.scale);
+                    ctx.lineTo(x - 5.6 * self.scale, y + 23.4 * self.scale);
+                    ctx.lineTo(x - 5.6 * self.scale, y + 23.4 * self.scale);
+                    ctx.lineTo(x + 4.4 * self.scale, y + 23.4 * self.scale);
+                    ctx.lineTo(x + 4.4 * self.scale, y + 22.4 * self.scale);
+                    ctx.lineTo(x + 2.4 * self.scale, y + 22.4 * self.scale);
+                    ctx.lineTo(x + 2.4 * self.scale, y + 17 * self.scale);
+                    ctx.lineTo(x + 4.4 * self.scale, y + 17 * self.scale);
+                    ctx.lineTo(x + 4.4 * self.scale, y + 16 * self.scale);
+                    ctx.lineTo(x + 2.4 * self.scale, y + 16 * self.scale);
+                    ctx.lineTo(x + 2.4 * self.scale, y + 1.4 * self.scale);
+                    ctx.lineTo(x - 3.6 * self.scale, y + 7.2 * self.scale);
+                    ctx.lineTo(x - 3.6 * self.scale, y + 16 * self.scale);
+                    ctx.lineTo(x - 16.6 * self.scale, y + 16 * self.scale);
+                    ctx.lineTo(x, y);
+                    ctx.fillStrokeShape(this);
+                },
+                fill: "black",
+                stroke: "black",
+                strokeWidth: 0
+            });
         }
     });
     return TimeSignatureShape;

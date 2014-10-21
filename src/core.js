@@ -195,14 +195,21 @@ Euterpe.render = function(root, x, y, width, scale, containerId) {
         if(typeof result === 'undefined') {
             continue;
         }
-
-        if(result.layer2draw === 'background') {
-            Euterpe.global.background.add(result);
+        else if(_.isArray(result)) {
+            result = _.flatten(result);
         }
         else {
-            Euterpe.global.foreground.add(result);
+            result = [result];
         }
 
+        for(i=0; i < result.length; i++) {
+            if(result[i].layer2draw === 'background') {
+                Euterpe.global.background.add(result[i]);
+            }
+            else {
+                Euterpe.global.foreground.add(result[i]);
+            }
+        }
     }
 
     return Euterpe.stage;

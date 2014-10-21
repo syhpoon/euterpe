@@ -250,30 +250,60 @@ Euterpe.Note = (function() {
                 // Check for flags
                 if(this.flags == 1) {
                     var fx = this.beam.x();
-                    var fy = this.beam.y() - this.beamHeight;
+                    var fy, flag;
 
-                    var flag = new Kinetic.Shape({
-                        sceneFunc: function(ctx) {
-                            ctx.beginPath();
-                            ctx.moveTo(fx, fy);
-                            ctx.bezierCurveTo(
-                                fx + 6.2 * self.scale, fy + 11.8 * self.scale,
-                                fx + 21.4 * self.scale, fy + 10.4 * self.scale,
-                                fx + 10 * self.scale, fy + 26.4 * self.scale);
+                    if(this.beamDir === 'up') {
+                        fy =  this.beam.y() - this.beamHeight;
 
-                            ctx.bezierCurveTo(
-                                fx + 19.6 * self.scale, fy + 12.4 * self.scale,
-                                fx + 5.4 * self.scale, fy + 10.4 * self.scale,
-                                fx - 0.2 * self.scale, fy + 7.4 * self.scale);
+                        flag = new Kinetic.Shape({
+                            sceneFunc: function(ctx) {
+                                ctx.beginPath();
+                                ctx.moveTo(fx, fy);
+                                ctx.bezierCurveTo(
+                                    fx + 6.2 * self.scale, fy + 11.8 * self.scale,
+                                    fx + 21.4 * self.scale, fy + 10.4 * self.scale,
+                                    fx + 10 * self.scale, fy + 26.4 * self.scale);
 
-                            ctx.closePath();
+                                ctx.bezierCurveTo(
+                                    fx + 19.6 * self.scale, fy + 12.4 * self.scale,
+                                    fx + 5.4 * self.scale, fy + 10.4 * self.scale,
+                                    fx - 0.2 * self.scale, fy + 7.4 * self.scale);
 
-                            ctx.fillStrokeShape(this);
-                        },
-                        fill: 'black',
-                        stroke: 'black',
-                        strokeWidth: 1
-                    });
+                                ctx.closePath();
+
+                                ctx.fillStrokeShape(this);
+                            },
+                            fill: 'black',
+                            stroke: 'black',
+                            strokeWidth: 0
+                        });
+                    }
+                    else if(this.beamDir === 'down') {
+                        fy =  this.beam.y() + this.beamHeight;
+
+                        flag = new Kinetic.Shape({
+                            sceneFunc: function(ctx) {
+                                ctx.beginPath();
+                                ctx.moveTo(fx, fy);
+                                ctx.bezierCurveTo(
+                                    fx + 6.2 * self.scale, fy - 11.8 * self.scale,
+                                    fx + 21.4 * self.scale, fy - 10.4 * self.scale,
+                                    fx + 10 * self.scale, fy - 26.4 * self.scale);
+
+                                ctx.bezierCurveTo(
+                                    fx + 19.6 * self.scale, fy - 12.4 * self.scale,
+                                    fx + 5.4 * self.scale, fy - 10.4 * self.scale,
+                                    fx - 0.2 * self.scale, fy - 7.4 * self.scale);
+
+                                ctx.closePath();
+
+                                ctx.fillStrokeShape(this);
+                            },
+                            fill: 'black',
+                            stroke: 'black',
+                            strokeWidth: 0
+                        });
+                    }
 
                     rendered.push(flag);
                 }
