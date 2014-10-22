@@ -139,29 +139,47 @@ Euterpe.PluginNoteBar = (function() {
                         }
                 };
 
-                var first = Euterpe.select("#"+ids[0])[0];
-                var last = Euterpe.select("#"+ids[ids.length-1])[0];
-                var sx = first.beam.x();
-                var sy = first.beam.y() - first.beamHeight * dir;
-                var lx = last.beam.x();
-                var ly = last.beam.y() - last.beamHeight * dir;
-                var width = 4 * scale;
-
-                var flags = first.__note_bar_flags;
-                var off = 0;
                 var assets = [];
+                var width = 4 * scale;
+                var partial = 10 * scale;
 
-                for(var i=0; i < flags; i++) {
-                    var bar = new Kinetic.Shape({
-                        sceneFunc: scene(sx, sy, lx, ly, off, width, dir),
-                        fill: 'black',
-                        stroke: 'black',
-                        strokeWidth: 0
-                    });
+                for(var z=0; z < ids.length - 1; z += 1) {
+                    var first = Euterpe.select("#"+ids[z])[0];
+                    var second = Euterpe.select("#"+ids[z+1])[0];
 
-                    off += width * dir + 3 * scale;
+                    var sx = first.beam.x();
+                    var sy = first.beam.y() - first.beamHeight * dir;
+                    var lx = second.beam.x();
+                    var ly = second.beam.y() - second.beamHeight * dir;
+                    var slope = (ly - sy) / (lx - sx);
+                    var fflags = first.__note_bar_flags;
+                    var sflags = second.__note_bar_flags;
+                    var flags = _.max([fflags, sflags]);
 
-                    assets.push(bar);
+                    var off = 0;
+
+                    for(var i=0; i < flags; i++) {
+                        if(fflags > i && sflags > i) {}
+                        else if(fflags > i) {
+                            lx = sx + partial;
+                            ly = sy + partial * slope;
+                        }
+                        else if(sflags > i) {
+                            sx = lx - partial;
+                            sy = ly - partial * slope;
+                        }
+
+                        var bar = new Kinetic.Shape({
+                            sceneFunc: scene(sx, sy, lx, ly, off, width, dir),
+                            fill: 'black',
+                            stroke: 'black',
+                            strokeWidth: 0
+                        });
+
+                        off += (width * dir + 3 * dir * scale);
+
+                        assets.push(bar);
+                    }
                 }
 
                 return assets;
