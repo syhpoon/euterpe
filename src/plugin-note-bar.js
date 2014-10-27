@@ -11,7 +11,9 @@
 Euterpe.PluginNoteBar = (function() {
     /**
      * PluginNoteBar [plugin]
-     * Adds 'bar' = "begin"|"cont"|"end" attribute to Euterpe.Note
+     * Adds attributes to Euterpe.Note:
+     * 'bar' = "begin"|"cont"|"end"
+     * 'bar_id' - Optional bar id
      *
      * @constructor
      * @param {Object} config - Configuration parameters
@@ -25,7 +27,7 @@ Euterpe.PluginNoteBar = (function() {
             var columns = Euterpe.select("Euterpe.Column", root);
 
             var ids = [];
-            var current = [];
+            var current = {};
             var dir = 1;
             var dirs = {};
 
@@ -35,6 +37,11 @@ Euterpe.PluginNoteBar = (function() {
                 for(var j=0; j < column.items.length; j++) {
                     var item = column.items[j];
                     var cfg = item.config || {};
+                    var bar_id = cfg.bar_id || Euterpe.randomString(10);
+
+                    if(!_.isArray(current[bar_id])) {
+                        current[bar_id] = [];
+                    }
 
                     if(cfg.bar === 'begin' || cfg.bar === 'cont' ||
                         cfg.bar === 'end') {
@@ -43,11 +50,11 @@ Euterpe.PluginNoteBar = (function() {
 
                         item.__note_bar_flags = item.flags;
                         item.flags = 0;
-                        current.push(item.id);
+                        current[bar_id].push(item.id);
 
                         if(cfg.bar === 'end') {
-                            this.adjustBeamHeight(current, dir, scale);
-                            ids.push(_.clone(current));
+                            this.adjustBeamHeight(current[bar_id], dir, scale);
+                            ids.push(_.clone(current[bar_id]));
 
                             current.length = 0;
                         }
@@ -102,6 +109,10 @@ Euterpe.PluginNoteBar = (function() {
 
                 // Change the beam height of all intermediate notes
                 for(var i=0; i < ids.length; i++) {
+                    if(ids[i].id === first.id || ids[i].id === last.id) {
+                        continue;
+                    }
+
                     var base = Math.abs(Euterpe.getY(ids[i], scale, 0));
 
                     var firstY = getY(first, base);
@@ -123,6 +134,8 @@ Euterpe.PluginNoteBar = (function() {
 
         /** @private */
         bind: function(ids, dir) {
+            ids = _.map(ids, function(obj) {return Euterpe.select("#"+obj)[0];});
+
             return function(root, scale) {
                 var scene = function(sx, sy, lx, ly, off, width, dir) {
                         return function(ctx) {
@@ -143,34 +156,40 @@ Euterpe.PluginNoteBar = (function() {
                 var width = 4 * scale;
                 var partial = 10 * scale;
 
-                for(var z=0; z < ids.length - 1; z += 1) {
-                    var first = Euterpe.select("#"+ids[z])[0];
-                    var second = Euterpe.select("#"+ids[z+1])[0];
+                var gfirst = ids[0];
+                var glast = ids[ids.length - 1];
+                var gfx = gfirst.beam.x();
+                var gfy = gfirst.beam.y() - gfirst.beamHeight * dir;
+                var lx = glast.beam.x();
+                var ly = glast.beam.y() - glast.beamHeight * dir;
+                var slope = (ly - gfy) / (lx - gfx);
 
-                    var sx = first.beam.x();
-                    var sy = first.beam.y() - first.beamHeight * dir;
-                    var lx = second.beam.x();
-                    var ly = second.beam.y() - second.beamHeight * dir;
-                    var slope = (ly - sy) / (lx - sx);
+                for(var z=0; z < ids.length - 1; z++) {
+                    var first = ids[z];
+                    var fx = first.beam.x();
+                    var fy = first.beam.y() - first.beamHeight * dir;
                     var fflags = first.__note_bar_flags;
+                    var second = ids[z+1];
+                    var sx = second.beam.x();
+                    var sy = second.beam.y() - second.beamHeight * dir;
                     var sflags = second.__note_bar_flags;
                     var flags = _.max([fflags, sflags]);
-
                     var off = 0;
 
                     for(var i=0; i < flags; i++) {
-                        if(fflags > i && sflags > i) {}
+                        if(fflags > i && sflags > i) {
+                        }
                         else if(fflags > i) {
-                            lx = sx + partial;
-                            ly = sy + partial * slope;
+                            sx = fx + partial;
+                            sy = fy + partial * slope;
                         }
                         else if(sflags > i) {
-                            sx = lx - partial;
-                            sy = ly - partial * slope;
+                            fx = sx - partial;
+                            fy = sy - partial * slope;
                         }
 
                         var bar = new Kinetic.Shape({
-                            sceneFunc: scene(sx, sy, lx, ly, off, width, dir),
+                            sceneFunc: scene(fx, fy, sx, sy, off, width, dir),
                             fill: 'black',
                             stroke: 'black',
                             strokeWidth: 0
