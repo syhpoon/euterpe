@@ -6,14 +6,14 @@ var width = 1300;
 Euterpe.plugins.add(
     new Euterpe.PluginNoteBar(),
     new Euterpe.PluginAccidentals(),
-    new Euterpe.PluginNoteText(),
     new Euterpe.PluginAboveBelow(),
     new Euterpe.PluginTab(),
     new Euterpe.PluginAlign({
         totalWidth: width - 100,
         nodeMargin: 20,
         sideMargin: 5
-    })
+    }),
+    new Euterpe.PluginNoteText()
 );
 
 var root = new Euterpe.Score({
@@ -278,6 +278,7 @@ var root = new Euterpe.Score({
                             beamDirection: "up",
                             type: "quarter",
                             location: 3,
+                            flags: 1,
                             bar: "begin"
                         })
                     ]
@@ -291,6 +292,7 @@ var root = new Euterpe.Score({
                             beamDirection: "up",
                             type: "quarter",
                             location: 4,
+                            flags: 1,
                             bar: "end"
                         })
                     ]
@@ -304,6 +306,7 @@ var root = new Euterpe.Score({
                             beamDirection: "up",
                             type: "quarter",
                             location: 1,
+                            flags: 1,
                             bar: "begin"
                         })
                     ]
@@ -317,6 +320,7 @@ var root = new Euterpe.Score({
                             beamDirection: "up",
                             type: "quarter",
                             location: -0.5,
+                            flags: 1,
                             bar: "end"
                         })
                     ]
@@ -330,6 +334,7 @@ var root = new Euterpe.Score({
                             beamDirection: "up",
                             type: "quarter",
                             location: 1.5,
+                            flags: 2,
                             bar: "begin"
                         })
                     ]
@@ -343,6 +348,7 @@ var root = new Euterpe.Score({
                             beamDirection: "up",
                             type: "quarter",
                             location: 0,
+                            flags: 1,
                             bar: "cont"
                         })
                     ]
@@ -356,6 +362,7 @@ var root = new Euterpe.Score({
                             beamDirection: "up",
                             type: "quarter",
                             location: -0.5,
+                            flags: 2,
                             bar: "cont"
                         })
                     ]
@@ -368,6 +375,7 @@ var root = new Euterpe.Score({
                             beamDirection: "up",
                             type: "quarter",
                             location: 3,
+                            flags: 3,
                             bar: "end"
                         })
                     ]
@@ -381,6 +389,7 @@ var root = new Euterpe.Score({
                             beamDirection: "down",
                             type: "quarter",
                             location: 1.5,
+                            flags: 3,
                             bar: "begin"
                         })
                     ]
@@ -394,6 +403,7 @@ var root = new Euterpe.Score({
                             beamDirection: "down",
                             type: "quarter",
                             location: 0,
+                            flags: 1,
                             bar: "cont"
                         })
                     ]
@@ -407,6 +417,7 @@ var root = new Euterpe.Score({
                             beamDirection: "down",
                             type: "quarter",
                             location: -0.5,
+                            flags: 1,
                             bar: "cont"
                         })
                     ]
@@ -419,6 +430,7 @@ var root = new Euterpe.Score({
                             beamDirection: "down",
                             type: "quarter",
                             location: 3,
+                            flags: 2,
                             bar: "end"
                         })
                     ]
@@ -432,6 +444,7 @@ var root = new Euterpe.Score({
                             beamDirection: "down",
                             type: "quarter",
                             location: 0,
+                            flags: 1,
                             bar: "begin"
                         })
                     ]
@@ -445,6 +458,7 @@ var root = new Euterpe.Score({
                             beamDirection: "down",
                             type: "quarter",
                             location: 1.5,
+                            flags: 1,
                             bar: "end"
                         })
                     ]
