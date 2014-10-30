@@ -29,7 +29,7 @@ Euterpe.KeySignature = (function() {
             throw "amount should be >= 1 and <= 7";
         }
 
-        KeySignature.super.call(this, config);
+        KeySignature.super.call(this, "Euterpe.KeySignature", config);
 
         var locations = {
             "sharp": [0, 1.5, -0.5, 1, 2.5, 0.5, 2],

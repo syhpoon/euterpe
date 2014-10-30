@@ -30,6 +30,7 @@ Euterpe.PluginNoteBar = (function() {
             var current = {};
             var dir = 1;
             var dirs = {};
+            var bid = null;
 
             for(var i=0; i < columns.length; i++) {
                 var column = columns[i];
@@ -37,7 +38,12 @@ Euterpe.PluginNoteBar = (function() {
                 for(var j=0; j < column.items.length; j++) {
                     var item = column.items[j];
                     var cfg = item.config || {};
-                    var bar_id = cfg.bar_id || Euterpe.randomString(10);
+
+                    if(cfg.bar === 'begin') {
+                        bid = Euterpe.randomString(10);
+                    }
+
+                    var bar_id = cfg.bar_id || bid;
 
                     if(!_.isArray(current[bar_id])) {
                         current[bar_id] = [];
@@ -45,6 +51,7 @@ Euterpe.PluginNoteBar = (function() {
 
                     if(cfg.bar === 'begin' || cfg.bar === 'cont' ||
                         cfg.bar === 'end') {
+
                         dir = cfg.beamDirection === 'down' ? -1: 1;
                         dirs[ids.length] = dir;
 
@@ -119,7 +126,8 @@ Euterpe.PluginNoteBar = (function() {
                     var lastY = getY(last, base);
                     var slope = (lastY - firstY) / (lastX - firstX);
 
-                    var X = Euterpe.getDistance(row, ids[i], scale);
+                    var X = Euterpe.getDistance(row, ids[i], scale) +
+                            ids[i].getLeftWidth(scale);
                     var curY = getY(ids[i], base);
                     var newY = slope * (X - firstX) + firstY;
                     var diff = curY - newY;
@@ -149,7 +157,7 @@ Euterpe.PluginNoteBar = (function() {
                             ctx.closePath();
 
                             ctx.fillStrokeShape(this);
-                        }
+                        };
                 };
 
                 var assets = [];
@@ -163,29 +171,40 @@ Euterpe.PluginNoteBar = (function() {
                 var lx = glast.beam.x();
                 var ly = glast.beam.y() - glast.beamHeight * dir;
                 var slope = (ly - gfy) / (lx - gfx);
+                var flags = _.max(_.map(ids, function(obj) {
+                    return obj.__note_bar_flags;
+                }));
 
-                for(var z=0; z < ids.length - 1; z++) {
-                    var first = ids[z];
-                    var fx = first.beam.x();
-                    var fy = first.beam.y() - first.beamHeight * dir;
-                    var fflags = first.__note_bar_flags;
-                    var second = ids[z+1];
-                    var sx = second.beam.x();
-                    var sy = second.beam.y() - second.beamHeight * dir;
-                    var sflags = second.__note_bar_flags;
-                    var flags = _.max([fflags, sflags]);
-                    var off = 0;
+                var off = 0;
 
-                    for(var i=0; i < flags; i++) {
-                        if(fflags > i && sflags > i) {
+                for(var f=1; f <= flags; f++) {
+                    for(var i=0; i < ids.length; i++) {
+                        var cols = [];
+
+                        while(i < ids.length && ids[i].__note_bar_flags >= f) {
+                            cols.push(ids[i++]);
                         }
-                        else if(fflags > i) {
-                            sx = fx + partial;
-                            sy = fy + partial * slope;
+
+                        if(cols.length === 0) {
+                            continue;
                         }
-                        else if(sflags > i) {
-                            fx = sx - partial;
-                            fy = sy - partial * slope;
+
+                        var first = cols[0];
+                        var fx = first.beam.x();
+                        var fy = first.beam.y() - first.beamHeight * dir;
+                        var second = cols.length > 1 ? cols[cols.length - 1]: first;
+                        var sx = second.beam.x();
+                        var sy = second.beam.y() - second.beamHeight * dir;
+
+                        if(first.id === second.id) {
+                            if(i === ids.length) {
+                                fx = sx - partial;
+                                fy = sy - partial * slope;
+                            }
+                            else {
+                                sx = fx + partial;
+                                sy = fy + partial * slope;
+                            }
                         }
 
                         var bar = new Kinetic.Shape({
@@ -195,10 +214,10 @@ Euterpe.PluginNoteBar = (function() {
                             strokeWidth: 0
                         });
 
-                        off += (width * dir + 3 * dir * scale);
-
                         assets.push(bar);
                     }
+
+                    off += (width * dir + 3 * dir * scale);
                 }
 
                 return assets;
