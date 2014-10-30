@@ -115,11 +115,17 @@ Euterpe.render = function(root, x, y, width, scale, containerId) {
         var result = f(processed, scale);
         if (typeof result === "undefined") {
             continue;
-        }
-        if (result.layer2draw === "background") {
-            Euterpe.global.background.add(result);
+        } else if (_.isArray(result)) {
+            result = _.flatten(result);
         } else {
-            Euterpe.global.foreground.add(result);
+            result = [ result ];
+        }
+        for (i = 0; i < result.length; i++) {
+            if (result[i].layer2draw === "background") {
+                Euterpe.global.background.add(result[i]);
+            } else {
+                Euterpe.global.foreground.add(result[i]);
+            }
         }
     }
     return Euterpe.stage;
@@ -1330,7 +1336,7 @@ Euterpe.KeySignature = function() {
         if (typeof this.amount !== "number" || this.amount < 1 || this.amount > 7) {
             throw "amount should be >= 1 and <= 7";
         }
-        KeySignature.super.call(this, config);
+        KeySignature.super.call(this, "Euterpe.KeySignature", config);
         var locations = {
             sharp: [ 0, 1.5, -.5, 1, 2.5, .5, 2 ],
             flat: [ 2, .5, 2.5, 1, 3, 1.5, 3.5 ]
@@ -1366,22 +1372,31 @@ Euterpe.PluginNoteBar = function() {
         process: function(root, scale, extra) {
             var columns = Euterpe.select("Euterpe.Column", root);
             var ids = [];
-            var current = [];
+            var current = {};
             var dir = 1;
             var dirs = {};
+            var bid = null;
             for (var i = 0; i < columns.length; i++) {
                 var column = columns[i];
                 for (var j = 0; j < column.items.length; j++) {
                     var item = column.items[j];
                     var cfg = item.config || {};
+                    if (cfg.bar === "begin") {
+                        bid = Euterpe.randomString(10);
+                    }
+                    var bar_id = cfg.bar_id || bid;
+                    if (!_.isArray(current[bar_id])) {
+                        current[bar_id] = [];
+                    }
                     if (cfg.bar === "begin" || cfg.bar === "cont" || cfg.bar === "end") {
                         dir = cfg.beamDirection === "down" ? -1 : 1;
                         dirs[ids.length] = dir;
+                        item.__note_bar_flags = item.flags;
                         item.flags = 0;
-                        current.push(item.id);
+                        current[bar_id].push(item.id);
                         if (cfg.bar === "end") {
-                            this.adjustBeamHeight(current, dir);
-                            ids.push(_.clone(current));
+                            this.adjustBeamHeight(current[bar_id], dir, scale);
+                            ids.push(_.clone(current[bar_id]));
                             current.length = 0;
                         }
                     }
@@ -1407,7 +1422,7 @@ Euterpe.PluginNoteBar = function() {
                 return sorted;
             }
         },
-        adjustBeamHeight: function(ids, dir) {
+        adjustBeamHeight: function(ids, dir, scale) {
             ids = _.map(ids, function(obj) {
                 return Euterpe.select("#" + obj)[0];
             });
@@ -1422,11 +1437,14 @@ Euterpe.PluginNoteBar = function() {
                 var firstX = Euterpe.getDistance(row, first, scale);
                 var lastX = Euterpe.getDistance(row, last, scale);
                 for (var i = 0; i < ids.length; i++) {
+                    if (ids[i].id === first.id || ids[i].id === last.id) {
+                        continue;
+                    }
                     var base = Math.abs(Euterpe.getY(ids[i], scale, 0));
                     var firstY = getY(first, base);
                     var lastY = getY(last, base);
                     var slope = (lastY - firstY) / (lastX - firstX);
-                    var X = Euterpe.getDistance(row, ids[i], scale);
+                    var X = Euterpe.getDistance(row, ids[i], scale) + ids[i].getLeftWidth(scale);
                     var curY = getY(ids[i], base);
                     var newY = slope * (X - firstX) + firstY;
                     var diff = curY - newY;
@@ -1438,30 +1456,71 @@ Euterpe.PluginNoteBar = function() {
             }
         },
         bind: function(ids, dir) {
+            ids = _.map(ids, function(obj) {
+                return Euterpe.select("#" + obj)[0];
+            });
             return function(root, scale) {
-                var first = Euterpe.select("#" + ids[0])[0];
-                var last = Euterpe.select("#" + ids[ids.length - 1])[0];
-                var sx = first.beam.x();
-                var sy = first.beam.y() - first.beamHeight * dir;
-                var lx = last.beam.x();
-                var ly = last.beam.y() - last.beamHeight * dir;
-                var width = 4 * scale;
-                var bar = new Kinetic.Shape({
-                    sceneFunc: function(ctx) {
+                var scene = function(sx, sy, lx, ly, off, width, dir) {
+                    return function(ctx) {
                         ctx.beginPath();
-                        ctx.moveTo(sx, sy);
-                        ctx.lineTo(lx, ly);
-                        ctx.lineTo(lx, ly + width * dir);
-                        ctx.lineTo(sx, sy + width * dir);
+                        ctx.moveTo(sx, sy + off);
+                        ctx.lineTo(lx, ly + off);
+                        ctx.lineTo(lx, ly + off + width * dir);
+                        ctx.lineTo(sx, sy + off + width * dir);
                         ctx.moveTo(sx, sy);
                         ctx.closePath();
                         ctx.fillStrokeShape(this);
-                    },
-                    fill: "black",
-                    stroke: "black",
-                    strokeWidth: 0
-                });
-                return bar;
+                    };
+                };
+                var assets = [];
+                var width = 4 * scale;
+                var partial = 10 * scale;
+                var gfirst = ids[0];
+                var glast = ids[ids.length - 1];
+                var gfx = gfirst.beam.x();
+                var gfy = gfirst.beam.y() - gfirst.beamHeight * dir;
+                var lx = glast.beam.x();
+                var ly = glast.beam.y() - glast.beamHeight * dir;
+                var slope = (ly - gfy) / (lx - gfx);
+                var flags = _.max(_.map(ids, function(obj) {
+                    return obj.__note_bar_flags;
+                }));
+                var off = 0;
+                for (var f = 1; f <= flags; f++) {
+                    for (var i = 0; i < ids.length; i++) {
+                        var cols = [];
+                        while (i < ids.length && ids[i].__note_bar_flags >= f) {
+                            cols.push(ids[i++]);
+                        }
+                        if (cols.length === 0) {
+                            continue;
+                        }
+                        var first = cols[0];
+                        var fx = first.beam.x();
+                        var fy = first.beam.y() - first.beamHeight * dir;
+                        var second = cols.length > 1 ? cols[cols.length - 1] : first;
+                        var sx = second.beam.x();
+                        var sy = second.beam.y() - second.beamHeight * dir;
+                        if (first.id === second.id) {
+                            if (i === ids.length) {
+                                fx = sx - partial;
+                                fy = sy - partial * slope;
+                            } else {
+                                sx = fx + partial;
+                                sy = fy + partial * slope;
+                            }
+                        }
+                        var bar = new Kinetic.Shape({
+                            sceneFunc: scene(fx, fy, sx, sy, off, width, dir),
+                            fill: "black",
+                            stroke: "black",
+                            strokeWidth: 0
+                        });
+                        assets.push(bar);
+                    }
+                    off += width * dir + 3 * dir * scale;
+                }
+                return assets;
             };
         }
     });
@@ -2109,20 +2168,38 @@ Euterpe.Note = function() {
                 }
                 if (this.flags == 1) {
                     var fx = this.beam.x();
-                    var fy = this.beam.y() - this.beamHeight;
-                    var flag = new Kinetic.Shape({
-                        sceneFunc: function(ctx) {
-                            ctx.beginPath();
-                            ctx.moveTo(fx, fy);
-                            ctx.bezierCurveTo(fx + 6.2 * self.scale, fy + 11.8 * self.scale, fx + 21.4 * self.scale, fy + 10.4 * self.scale, fx + 10 * self.scale, fy + 26.4 * self.scale);
-                            ctx.bezierCurveTo(fx + 19.6 * self.scale, fy + 12.4 * self.scale, fx + 5.4 * self.scale, fy + 10.4 * self.scale, fx - .2 * self.scale, fy + 7.4 * self.scale);
-                            ctx.closePath();
-                            ctx.fillStrokeShape(this);
-                        },
-                        fill: "black",
-                        stroke: "black",
-                        strokeWidth: 1
-                    });
+                    var fy, flag;
+                    if (this.beamDir === "up") {
+                        fy = this.beam.y() - this.beamHeight;
+                        flag = new Kinetic.Shape({
+                            sceneFunc: function(ctx) {
+                                ctx.beginPath();
+                                ctx.moveTo(fx, fy);
+                                ctx.bezierCurveTo(fx + 6.2 * self.scale, fy + 11.8 * self.scale, fx + 21.4 * self.scale, fy + 10.4 * self.scale, fx + 10 * self.scale, fy + 26.4 * self.scale);
+                                ctx.bezierCurveTo(fx + 19.6 * self.scale, fy + 12.4 * self.scale, fx + 5.4 * self.scale, fy + 10.4 * self.scale, fx - .2 * self.scale, fy + 7.4 * self.scale);
+                                ctx.closePath();
+                                ctx.fillStrokeShape(this);
+                            },
+                            fill: "black",
+                            stroke: "black",
+                            strokeWidth: 0
+                        });
+                    } else if (this.beamDir === "down") {
+                        fy = this.beam.y() + this.beamHeight;
+                        flag = new Kinetic.Shape({
+                            sceneFunc: function(ctx) {
+                                ctx.beginPath();
+                                ctx.moveTo(fx, fy);
+                                ctx.bezierCurveTo(fx + 6.2 * self.scale, fy - 11.8 * self.scale, fx + 21.4 * self.scale, fy - 10.4 * self.scale, fx + 10 * self.scale, fy - 26.4 * self.scale);
+                                ctx.bezierCurveTo(fx + 19.6 * self.scale, fy - 12.4 * self.scale, fx + 5.4 * self.scale, fy - 10.4 * self.scale, fx - .2 * self.scale, fy - 7.4 * self.scale);
+                                ctx.closePath();
+                                ctx.fillStrokeShape(this);
+                            },
+                            fill: "black",
+                            stroke: "black",
+                            strokeWidth: 0
+                        });
+                    }
                     rendered.push(flag);
                 }
             }
@@ -2469,42 +2546,80 @@ Euterpe.TimeSignatureShape = function() {
         });
     }
     Euterpe.extend(Euterpe.Node, TimeSignatureShape, {
-        render: function(startX, startY, scale) {
-            var startX = startX;
-            var startY = startY + this.yoffset * scale;
+        render: function(x, y, scale) {
+            var startY = y + this.yoffset * scale;
             var assets = [];
-            if (this.digit === "4") {
-                assets.push(this.shape4(startX, startY, scale));
+            if (this.digit === "2") {
+                assets.push(this.shape2(x, startY, scale));
+            } else if (this.digit === "4") {
+                assets.push(this.shape4(x, startY, scale));
             }
             Euterpe.bind(this, assets);
             return assets;
         },
-        shape4: function(startX, y, scale) {
+        shape2: function(x, y, scale) {
             return new Kinetic.Shape({
                 sceneFunc: function(ctx) {
-                    var x = startX + 17.6 * scale;
+                    var _x = x + scale;
+                    var _y = y - .5 * scale;
+                    var scY = scale * .2, scX = scY * 1.1;
+                    ctx.translate(_x, _y);
+                    ctx.scale(scX, scY);
                     ctx.beginPath();
-                    ctx.moveTo(x, y);
-                    ctx.lineTo(x - 10 * self.scale, y);
-                    ctx.bezierCurveTo(x - 8.8 * self.scale, y + 6.8 * self.scale, x - 10.54 * self.scale, y + 10.66 * self.scale, x - 17.6 * self.scale, y + 16 * self.scale);
-                    ctx.lineTo(x - 17.6 * self.scale, y + 17 * self.scale);
-                    ctx.lineTo(x - 3.6 * self.scale, y + 17 * self.scale);
-                    ctx.lineTo(x - 3.6 * self.scale, y + 22.4 * self.scale);
-                    ctx.lineTo(x - 5.6 * self.scale, y + 22.4 * self.scale);
-                    ctx.lineTo(x - 5.6 * self.scale, y + 23.4 * self.scale);
-                    ctx.lineTo(x - 5.6 * self.scale, y + 23.4 * self.scale);
-                    ctx.lineTo(x + 4.4 * self.scale, y + 23.4 * self.scale);
-                    ctx.lineTo(x + 4.4 * self.scale, y + 22.4 * self.scale);
-                    ctx.lineTo(x + 2.4 * self.scale, y + 22.4 * self.scale);
-                    ctx.lineTo(x + 2.4 * self.scale, y + 17 * self.scale);
-                    ctx.lineTo(x + 4.4 * self.scale, y + 17 * self.scale);
-                    ctx.lineTo(x + 4.4 * self.scale, y + 16 * self.scale);
-                    ctx.lineTo(x + 2.4 * self.scale, y + 16 * self.scale);
-                    ctx.lineTo(x + 2.4 * self.scale, y + 1.4 * self.scale);
-                    ctx.lineTo(x - 3.6 * self.scale, y + 7.2 * self.scale);
-                    ctx.lineTo(x - 3.6 * self.scale, y + 16 * self.scale);
-                    ctx.lineTo(x - 16.6 * self.scale, y + 16 * self.scale);
-                    ctx.lineTo(x, y);
+                    ctx.moveTo(96.3, 78.7);
+                    ctx.bezierCurveTo(96.3, 97.7, 91.7, 123.2, 67.1, 123.2);
+                    ctx.bezierCurveTo(58.1, 123.2, 51.8, 118.6, 45.9, 114.1);
+                    ctx.bezierCurveTo(40.2, 109.6, 34.6, 104.8, 26.6, 104.2);
+                    ctx.bezierCurveTo(17.9, 103.6, 9.9, 110.1, 9.6, 118.9);
+                    ctx.lineTo(.9, 118.9);
+                    ctx.bezierCurveTo(-5.4, 92.9, 23.5, 79, 41.1, 68.2);
+                    ctx.bezierCurveTo(53.2, 60.6, 64.3, 47.8, 64.6, 32.6);
+                    ctx.bezierCurveTo(64.8, 14.4, 56.1, 9.1, 43.3, 9.1);
+                    ctx.bezierCurveTo(30, 9.1, 24.9, 12.2, 24.9, 16.7);
+                    ctx.bezierCurveTo(24.9, 22.6, 40.5, 21.2, 40.5, 36.5);
+                    ctx.bezierCurveTo(40.5, 45.9, 31.2, 53.5, 21.8, 53.5);
+                    ctx.bezierCurveTo(11.6, 52.4, 3.1, 45.9, 3.1, 34.8);
+                    ctx.bezierCurveTo(3.1, 16.7, 16.2, 0, 52.7, 0);
+                    ctx.bezierCurveTo(80.4, 0, 94, 17.3, 94, 34.5);
+                    ctx.bezierCurveTo(94, 66.8, 50.1, 67.9, 32, 84.4);
+                    ctx.lineTo(32, 84.9);
+                    ctx.bezierCurveTo(49.3, 82.1, 61.5, 86.4, 71.6, 92.3);
+                    ctx.bezierCurveTo(77, 95.4, 87.8, 95.7, 87.8, 78.7);
+                    ctx.lineTo(96.3, 78.7);
+                    ctx.closePath();
+                    ctx.fillStrokeShape(this);
+                },
+                fill: "black",
+                stroke: "black",
+                strokeWidth: 0
+            });
+        },
+        shape4: function(x, y, scale) {
+            return new Kinetic.Shape({
+                sceneFunc: function(ctx) {
+                    var _x = x + 17.6 * scale;
+                    ctx.beginPath();
+                    ctx.moveTo(_x, y);
+                    ctx.lineTo(_x - 10 * scale, y);
+                    ctx.bezierCurveTo(_x - 8.8 * scale, y + 6.8 * scale, _x - 10.54 * scale, y + 10.66 * scale, _x - 17.6 * scale, y + 16 * scale);
+                    ctx.lineTo(_x - 17.6 * scale, y + 17 * scale);
+                    ctx.lineTo(_x - 3.6 * scale, y + 17 * scale);
+                    ctx.lineTo(_x - 3.6 * scale, y + 22.4 * scale);
+                    ctx.lineTo(_x - 5.6 * scale, y + 22.4 * scale);
+                    ctx.lineTo(_x - 5.6 * scale, y + 23.4 * scale);
+                    ctx.lineTo(_x - 5.6 * scale, y + 23.4 * scale);
+                    ctx.lineTo(_x + 4.4 * scale, y + 23.4 * scale);
+                    ctx.lineTo(_x + 4.4 * scale, y + 22.4 * scale);
+                    ctx.lineTo(_x + 2.4 * scale, y + 22.4 * scale);
+                    ctx.lineTo(_x + 2.4 * scale, y + 17 * scale);
+                    ctx.lineTo(_x + 4.4 * scale, y + 17 * scale);
+                    ctx.lineTo(_x + 4.4 * scale, y + 16 * scale);
+                    ctx.lineTo(_x + 2.4 * scale, y + 16 * scale);
+                    ctx.lineTo(_x + 2.4 * scale, y + 1.4 * scale);
+                    ctx.lineTo(_x - 3.6 * scale, y + 7.2 * scale);
+                    ctx.lineTo(_x - 3.6 * scale, y + 16 * scale);
+                    ctx.lineTo(_x - 16.6 * scale, y + 16 * scale);
+                    ctx.lineTo(_x, y);
                     ctx.fillStrokeShape(this);
                 },
                 fill: "black",
