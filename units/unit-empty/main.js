@@ -17,8 +17,8 @@ Euterpe.plugins.add(
 );
 
 var root = new Euterpe.Score({
-    title: 'Por Una Cabeza',
-    musicBy:'Carlos Gardel and Alfredo Le Pera',
+    title: 'Empty unit',
+    musicBy:'None',
     tuning:'Guitar standard tuning',
     titleMargin:50,
     musicByMargin:50,
@@ -33,56 +33,8 @@ var root = new Euterpe.Score({
                     rightType: "single"
                 }),
 
-
-                new Euterpe.Column({
-                    items: [
-                        new Euterpe.Note({
-                            beamDirection: "down",
-                            type: "quarter",
-                            flags: 1,
-                            location: 7.5,
-                            bar: 'begin',
-                            bar_id: 'b1'
-                        })
-                    ]
-                }),
-
-                new Euterpe.Column({
-                    items: [
-                        new Euterpe.Note({
-                            beamDirection: "down",
-                            type: "quarter",
-                            flags: 1,
-                            location: 4,
-                            bar: 'cont',
-                            bar_id: 'b1',
-                            dots: 1,
-                            text: '1',
-                            leftItems: [
-                                new Euterpe.Sharp({}),
-                                new Euterpe.Sharp({}),
-                                new Euterpe.Sharp({}),
-                                new Euterpe.Sharp({}),
-                                new Euterpe.Sharp({}),
-                                new Euterpe.Sharp({}),
-                                new Euterpe.Sharp({}),
-                                new Euterpe.Sharp({})]
-                        })
-                    ]
-                }),
-
-                new Euterpe.Column({
-                    items: [
-                        new Euterpe.Note({
-                            beamDirection: "down",
-                            type: "quarter",
-                            flags: 1,
-                            location: 5.5,
-                            bar: 'end',
-                            bar_id: 'b1'
-                        })
-                    ]
-                }),
+                new Euterpe.TrebleClef({}),
+                new Euterpe.TimeSignature(),
 
                 new Euterpe.Bar({
                     rightType: "single"
