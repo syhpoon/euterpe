@@ -79,7 +79,7 @@ Euterpe.Rest = (function() {
          *
          */
         render: function(x, y, scale) {
-            var startX = x + this.getRealWidth(scale) / 2;
+            var startX = x;
 
             var rendered = [];
 

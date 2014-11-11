@@ -1,19 +1,24 @@
+#!/usr/bin/env python
+
+import sys
+import SimpleHTTPServer
+import SocketServer
+import BaseHTTPServer
+
+TPL = """\
 <!DOCTYPE html>
 <html>
 <head>
    <meta charset="utf-8">
-   <script src="dev-unit/jquery.js"></script>
-   <script src="dev-unit/underscore.js"></script>
-   <script src="dev-unit/kinetic.js"></script>
+   <script src="deps/jquery.js"></script>
+   <script src="deps/underscore.js"></script>
+   <script src="deps/kinetic.js"></script>
 
 </head>
 
 <body>
   <div id="canvas"></div>
   <br />
-  <button id="bezier">Bezier</button>
-  <button id="line">Line</button>
-
 </body>
 
 <script src="src/core.js"></script>
@@ -23,7 +28,9 @@
 <script src="src/column.js"></script>
 <script src="src/bar.js"></script>
 <script src="src/text.js"></script>
+<script src="src/rest.js"></script>
 <script src="src/string-number.js"></script>
+<script src="src/key-signature.js"></script>
 <script src="src/plugin.js"></script>
 <script src="src/plugin-note-bar.js"></script>
 <script src="src/plugin-note-text.js"></script>
@@ -35,15 +42,34 @@
 <script src="src/score.js"></script>
 <script src="src/note.js"></script>
 <script src="src/clef.js"></script>
-<script src="src/flat.js"></script>
 <script src="src/sharp.js"></script>
+<script src="src/flat.js"></script>
 <script src="src/natural.js"></script>
-<script src="src/rest.js"></script>
 <script src="src/time-signature.js"></script>
 <script src="src/time-signature-shape.js"></script>
-<script src="src/key-signature.js"></script>
 
-<script src="editor.js"></script>
-<script src="main.js"></script>
+<script src="%(unit)s/main.js"></script>
 
-</html>
+</html>"""
+
+l = len(sys.argv)
+
+if l != 2:
+	print "Usage: ./run <unit-name>"
+
+	sys.exit(1)
+else:
+	unit = sys.argv[1]
+
+	with open("index.html", "w") as f:
+		f.write(TPL % locals())
+
+	SocketServer.TCPServer.allow_reuse_address = True
+	handler = SimpleHTTPServer.SimpleHTTPRequestHandler
+	handler.protocol_version = "HTTP/1.0"
+	httpd = SocketServer.TCPServer(("", 8000), handler)
+
+	print "Running WEB server on port 8000"
+
+	httpd.serve_forever()
+
