@@ -183,7 +183,6 @@ Euterpe.replace = function(root, id, obj) {
 };
 
 Euterpe.initLog = function() {
-    var console = window.console || {};
     var stub = function() {};
     Euterpe.log = {
         debug: stub,
@@ -323,6 +322,7 @@ Euterpe.bind = function(node, rendered) {
     if (typeof node.config.on === "undefined") {
         return;
     }
+    console.log("AAAA ", node.id);
     if (!_.isArray(rendered)) {
         rendered = [ rendered ];
     } else {
@@ -967,7 +967,7 @@ Euterpe.Rest = function() {
     }
     Euterpe.extend(Euterpe.Node, Rest, {
         render: function(x, y, scale) {
-            var startX = x + this.getRealWidth(scale) / 2;
+            var startX = x;
             var rendered = [];
             switch (this.type) {
               case "half":
@@ -1830,6 +1830,51 @@ Euterpe.PluginAlign = function() {
     return PluginAlign;
 }();
 
+Euterpe.helpers = {};
+
+Euterpe.helpers.events = {
+    highlight: function(from, to) {
+        function over(_node, assets, state) {
+            if (typeof state.fill === "undefined") {
+                state.fill = {};
+            }
+            if (typeof state.stroke === "undefined") {
+                state.stroke = {};
+            }
+            for (var i = 0; i < assets.length; i++) {
+                var asset = assets[i];
+                if (asset.fill() === from) {
+                    state.fill[asset._id] = from;
+                    asset.fill(to);
+                }
+                if (asset.stroke() === from) {
+                    state.stroke[asset._id] = from;
+                    asset.stroke(to);
+                }
+            }
+            Euterpe.global.background.draw();
+            Euterpe.global.foreground.draw();
+        }
+        function out(_node, assets, state) {
+            for (var i = 0; i < assets.length; i++) {
+                var asset = assets[i];
+                if (typeof state.fill[asset._id] !== "undefined") {
+                    asset.fill(state.fill[asset._id]);
+                }
+                if (typeof state.stroke[asset._id] !== "undefined") {
+                    asset.stroke(state.stroke[asset._id]);
+                }
+            }
+            Euterpe.global.background.draw();
+            Euterpe.global.foreground.draw();
+        }
+        return {
+            mouseover: over,
+            mouseout: out
+        };
+    }
+};
+
 Euterpe.Score = function() {
     function Score(config) {
         this.layer = config.layer;
@@ -2203,7 +2248,6 @@ Euterpe.Note = function() {
                     rendered.push(flag);
                 }
             }
-            Euterpe.bind(this, rendered);
             return rendered;
         }
     });
