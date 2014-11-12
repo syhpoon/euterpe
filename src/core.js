@@ -518,7 +518,6 @@ Euterpe.bind = function(node, rendered) {
     if(typeof node.config.on === 'undefined') {
         return;
     }
-    console.log("AAAA ", node.id);
 
     if(!_.isArray(rendered)) {
         rendered = [rendered];
