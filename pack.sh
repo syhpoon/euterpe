@@ -18,6 +18,7 @@ J=("src/version.js" \
    "src/plugin-above-below.js" \
    "src/plugin-tab.js" \
    "src/plugin-align.js" \
+   "src/helpers.js" \
    "src/score.js" \
    "src/note.js" \
    "src/clef.js" \

@@ -315,7 +315,6 @@ Euterpe.replace = function(root, id, obj) {
  * Init logging subsystem
  */
 Euterpe.initLog = function() {
-    var console = window.console || {};
     var stub = function() {};
 
     Euterpe.log = {
@@ -519,6 +518,7 @@ Euterpe.bind = function(node, rendered) {
     if(typeof node.config.on === 'undefined') {
         return;
     }
+    console.log("AAAA ", node.id);
 
     if(!_.isArray(rendered)) {
         rendered = [rendered];

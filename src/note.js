@@ -309,8 +309,6 @@ Euterpe.Note = (function() {
                 }
             }
 
-            Euterpe.bind(this, rendered);
-
             return rendered;
         }
     });

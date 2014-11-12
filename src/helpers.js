@@ -14,7 +14,6 @@ Euterpe.helpers = {};
 
 /**
  * Some useful routines
- * @type {{}}
  */
 Euterpe.helpers.events = {
     /**
@@ -67,6 +66,9 @@ Euterpe.helpers.events = {
             Euterpe.global.foreground.draw();
         }
 
-        return [over, out];
+        return {
+            "mouseover": over,
+            "mouseout": out
+        }
     }
 };
