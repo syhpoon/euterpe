@@ -13,7 +13,7 @@ TPL = """\
    <script src="deps/jquery.js"></script>
    <script src="deps/underscore.js"></script>
    <script src="deps/kinetic.js"></script>
-
+   <script src="deps/numeric.js"></script>
 </head>
 
 <body>
@@ -38,6 +38,7 @@ TPL = """\
 <script src="src/plugin-above-below.js"></script>
 <script src="src/plugin-tab.js"></script>
 <script src="src/plugin-align.js"></script>
+<script src="src/plugin-slur.js"></script>
 
 <script src="src/helpers.js"></script>
 <script src="src/score.js"></script>

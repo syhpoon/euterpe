@@ -13,6 +13,7 @@ Euterpe.plugins.add(
         nodeMargin: 20,
         sideMargin: 5
     }),
+    new Euterpe.PluginSlur(),
     new Euterpe.PluginNoteText()
 );
 
@@ -780,7 +781,289 @@ var root = new Euterpe.Score({
                     leftType: "single"
                 })
             ]
-        })
+        }),
+
+        new Euterpe.Row(
+           {
+               type: "measure",
+               items: [
+                   new Euterpe.Bar(
+                      {
+                          number: 6,
+                          rightType: "single"
+                      }),
+
+                   // Beams down
+                   new Euterpe.Column(
+                      {
+                          items: [
+                              new Euterpe.Note(
+                                 {
+                                     beamDirection: "down",
+                                     type: "quarter",
+                                     location: 1,
+                                     slur: 'begin'
+                                 })
+                          ]
+                      }),
+
+                   new Euterpe.Column(
+                      {
+                          items: [
+                              new Euterpe.Note(
+                                 {
+                                     beamDirection: "down",
+                                     type: "quarter",
+                                     location: 1,
+                                     slur: 'end'
+                                 })
+                          ]
+                      }),
+
+                   // Beams up
+                   new Euterpe.Column(
+                      {
+                          items: [
+                              new Euterpe.Note(
+                                 {
+                                     beamDirection: "up",
+                                     type: "quarter",
+                                     location: 1,
+                                     slur: 'begin'
+                                 })
+                          ]
+                      }),
+
+                   new Euterpe.Column(
+                      {
+                          items: [
+                              new Euterpe.Note(
+                                 {
+                                     beamDirection: "up",
+                                     type: "quarter",
+                                     location: 1,
+                                     slur: 'end'
+                                 })
+                          ]
+                      }),
+
+                   // Different pitches up
+                   new Euterpe.Column(
+                      {
+                          items: [
+                              new Euterpe.Note(
+                                 {
+                                     beamDirection: "up",
+                                     type: "quarter",
+                                     location: 3,
+                                     slur: 'begin'
+                                 })
+                          ]
+                      }),
+
+                   new Euterpe.Column(
+                      {
+                          items: [
+                              new Euterpe.Note(
+                                 {
+                                     beamDirection: "up",
+                                     type: "quarter",
+                                     location: 2,
+                                     slur: 'cont'
+                                 })
+                          ]
+                      }),
+
+                   new Euterpe.Column(
+                      {
+                          items: [
+                              new Euterpe.Note(
+                                 {
+                                     beamDirection: "up",
+                                     type: "quarter",
+                                     location: 0,
+                                     slur: 'end'
+                                 })
+                          ]
+                      }),
+
+                   // Different pitches down
+                   new Euterpe.Column(
+                      {
+                          items: [
+                              new Euterpe.Note(
+                                 {
+                                     beamDirection: "down",
+                                     type: "quarter",
+                                     location: -1,
+                                     slur: 'begin'
+                                 })
+                          ]
+                      }),
+
+                   new Euterpe.Column(
+                      {
+                          items: [
+                              new Euterpe.Note(
+                                 {
+                                     beamDirection: "down",
+                                     type: "quarter",
+                                     location: 1,
+                                     slur: 'cont'
+                                 })
+                          ]
+                      }),
+
+                   new Euterpe.Column(
+                      {
+                          items: [
+                              new Euterpe.Note(
+                                 {
+                                     beamDirection: "down",
+                                     type: "quarter",
+                                     location: 3,
+                                     slur: 'end'
+                                 })
+                          ]
+                      }),
+
+                   // More notes under a slur
+                   new Euterpe.Column(
+                      {
+                          items: [
+                              new Euterpe.Note(
+                                 {
+                                     beamDirection: "up",
+                                     type: "quarter",
+                                     location: 3,
+                                     slur: 'begin'
+                                 })
+                          ]
+                      }),
+
+                   new Euterpe.Column(
+                      {
+                          items: [
+                              new Euterpe.Note(
+                                 {
+                                     beamDirection: "up",
+                                     type: "quarter",
+                                     location: 2,
+                                     slur: 'cont'
+                                 })
+                          ]
+                      }),
+
+                   new Euterpe.Column(
+                      {
+                          items: [
+                              new Euterpe.Note(
+                                 {
+                                     beamDirection: "up",
+                                     type: "quarter",
+                                     location: 1,
+                                     slur: 'cont'
+                                 })
+                          ]
+                      }),
+
+                   new Euterpe.Column(
+                      {
+                          items: [
+                              new Euterpe.Note(
+                                 {
+                                     beamDirection: "up",
+                                     type: "quarter",
+                                     location: 6,
+                                     slur: 'cont'
+                                 })
+                          ]
+                      }),
+
+                   new Euterpe.Column(
+                      {
+                          items: [
+                              new Euterpe.Note(
+                                 {
+                                     beamDirection: "up",
+                                     type: "quarter",
+                                     location: 4,
+                                     slur: 'end'
+                                 })
+                          ]
+                      }),
+
+                   // Multiple per column
+                   new Euterpe.Column(
+                      {
+                          items: [
+                              new Euterpe.Note(
+                                 {
+                                     beamDirection: "up",
+                                     type: "quarter",
+                                     location: 1,
+                                     slur_id: 'slur1',
+                                     slur: 'begin'
+                                 }),
+
+                              new Euterpe.Note(
+                                 {
+                                     beamDirection: "up",
+                                     type: "quarter",
+                                     location: 2,
+                                     slur_id: 'slur2',
+                                     slur: 'begin'
+                                 }),
+
+                              new Euterpe.Note(
+                                 {
+                                     beamDirection: "up",
+                                     type: "quarter",
+                                     location: 3,
+                                     slur_id: 'slur3',
+                                     slur: 'begin'
+                                 })
+                          ]
+                      }),
+
+                   new Euterpe.Column(
+                      {
+                          items: [
+                              new Euterpe.Note(
+                                 {
+                                     beamDirection: "up",
+                                     type: "quarter",
+                                     location: 2,
+                                     slur_id: 'slur1',
+                                     slur: 'end'
+                                 }),
+
+                              new Euterpe.Note(
+                                 {
+                                     beamDirection: "up",
+                                     type: "quarter",
+                                     location: 3,
+                                     slur_id: 'slur2',
+                                     slur: 'end'
+                                 }),
+
+                              new Euterpe.Note(
+                                 {
+                                     beamDirection: "up",
+                                     type: "quarter",
+                                     location: 4,
+                                     slur_id: 'slur3',
+                                     slur: 'end'
+                                 })
+                          ]
+                      }),
+
+                   new Euterpe.Bar(
+                      {
+                          rightType: "single"
+                      })
+               ]
+           })
     ]
 });
 
