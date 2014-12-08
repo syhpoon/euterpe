@@ -1034,8 +1034,16 @@ var root = new Euterpe.Score({
                                      beamDirection: "up",
                                      type: "quarter",
                                      location: 2,
-                                     slur_id: 'slur1',
-                                     slur: 'end'
+                                     slur: [
+                                         {
+                                             id: 'slur1',
+                                             type: 'end'
+                                         },
+                                         {
+                                             id: 'slur4',
+                                             type: 'begin'
+                                         }
+                                     ]
                                  }),
 
                               new Euterpe.Note(
@@ -1043,8 +1051,16 @@ var root = new Euterpe.Score({
                                      beamDirection: "up",
                                      type: "quarter",
                                      location: 3,
-                                     slur_id: 'slur2',
-                                     slur: 'end'
+                                     slur: [
+                                         {
+                                             id: 'slur2',
+                                             type: 'end'
+                                         },
+                                         {
+                                             id: 'slur5',
+                                             type: 'begin'
+                                         }
+                                     ]
                                  }),
 
                               new Euterpe.Note(
@@ -1052,7 +1068,47 @@ var root = new Euterpe.Score({
                                      beamDirection: "up",
                                      type: "quarter",
                                      location: 4,
-                                     slur_id: 'slur3',
+                                     slur: [
+                                         {
+                                             id: 'slur3',
+                                             type: 'end'
+                                         },
+                                         {
+                                             id: 'slur6',
+                                             type: 'begin'
+                                         }
+                                     ]
+                                 })
+                          ]
+                      }),
+
+                   new Euterpe.Column(
+                      {
+                          items: [
+                              new Euterpe.Note(
+                                 {
+                                     beamDirection: "up",
+                                     type: "quarter",
+                                     location: -1,
+                                     slur_id: 'slur4',
+                                     slur: 'end'
+                                 }),
+
+                              new Euterpe.Note(
+                                 {
+                                     beamDirection: "up",
+                                     type: "quarter",
+                                     location: 1,
+                                     slur_id: 'slur5',
+                                     slur: 'end'
+                                 }),
+
+                              new Euterpe.Note(
+                                 {
+                                     beamDirection: "up",
+                                     type: "quarter",
+                                     location: 2,
+                                     slur_id: 'slur6',
                                      slur: 'end'
                                  })
                           ]

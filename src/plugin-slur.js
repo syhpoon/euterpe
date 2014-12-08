@@ -32,39 +32,55 @@ Euterpe.PluginSlur = (function() {
             for(var i=0; i < notes.length; i++) {
                 var note = notes[i];
                 var cfg = note.config || {};
+                var slur_cfg;
 
-                if(cfg.slur === 'begin') {
-                    var sid = Euterpe.randomString(10);
-
-                    if(note.config.beamDirection == 'up') {
-                        dirs[groups.length] = true;
-                    }
-                    else {
-                        dirs[groups.length] = false;
-                    }
+                if (_.isArray(cfg.slur)) {
+                    slur_cfg = cfg.slur;
+                }
+                else {
+                    slur_cfg = [
+                        {
+                            id: cfg.slur_id,
+                            type: cfg.slur
+                        }]
                 }
 
-                var slur_id = cfg.slur_id || sid;
+                for (var j = 0; j < slur_cfg.length; j++) {
+                    cfg = slur_cfg[j];
 
-                if(!_.isArray(current[slur_id])) {
-                    current[slur_id] = [];
-                }
+                    if (cfg.type === 'begin') {
+                        var sid = Euterpe.randomString(10);
+                    }
 
-                if(cfg.slur === 'begin' || cfg.slur === 'cont' ||
-                   cfg.slur === 'end') {
+                    var slur_id = cfg.id || sid;
 
-                    current[slur_id].push(note);
+                    if (!_.isArray(current[slur_id])) {
+                        current[slur_id] = [];
+                    }
 
-                    if(cfg.slur === 'end') {
-                        groups.push(_.clone(current[slur_id]));
+                    if (cfg.type === 'begin' || cfg.type === 'cont' ||
+                        cfg.type === 'end') {
 
-                        current.length = 0;
+                        current[slur_id].push(note);
+
+                        if (cfg.type === 'end') {
+                            if (note.config.beamDirection == 'up') {
+                                dirs[groups.length] = true;
+                            }
+                            else {
+                                dirs[groups.length] = false;
+                            }
+
+                            groups.push(_.clone(current[slur_id]));
+
+                            current.length = 0;
+                        }
                     }
                 }
             }
 
             for(var k=0; k < groups.length; k++) {
-               extra.push(this.makeSlur(groups[k], dirs[k]));
+                extra.push(this.makeSlur(groups[k], dirs[k]));
             }
 
             return root;
@@ -82,6 +98,7 @@ Euterpe.PluginSlur = (function() {
             var m = up ? -1: 1;
             var curve = 25 * scale;
             var off = 2 * scale;
+            var noteHeadOff = 8 * scale;
 
             return function(root, scale) {
                 var first = Euterpe.select("#"+firstId, root)[0];
@@ -94,9 +111,9 @@ Euterpe.PluginSlur = (function() {
                 };
 
                 var firstX = first.X + first.headWidth / 2;
-                var firstY = first.Y - 15 * m * scale;
+                var firstY = first.Y - noteHeadOff * m * scale;
                 var lastX = last.X + last.headWidth / 2;
-                var lastY = last.Y - 15 * m * scale;
+                var lastY = last.Y - noteHeadOff * m * scale;
                 var vertexX;
 
                 var midIdx = Math.floor(group.length / 2);
