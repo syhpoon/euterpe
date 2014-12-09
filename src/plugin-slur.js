@@ -28,6 +28,7 @@ Euterpe.PluginSlur = (function() {
             var groups = [];
             var current = [];
             var dirs = [];
+            var multiVoice = null;
 
             for(var i=0; i < notes.length; i++) {
                 var note = notes[i];
@@ -61,10 +62,17 @@ Euterpe.PluginSlur = (function() {
                     if (cfg.type === 'begin' || cfg.type === 'cont' ||
                         cfg.type === 'end') {
 
+                        if(this.isMultiVoice(note)) {
+                            multiVoice = note.config.beamDirection;
+                        }
+
                         current[slur_id].push(note);
 
                         if (cfg.type === 'end') {
-                            if (note.config.beamDirection == 'up') {
+                            if(multiVoice !== null) {
+                                dirs[groups.length] = multiVoice !== 'up';
+                            }
+                            else if(note.config.beamDirection == 'up') {
                                 dirs[groups.length] = true;
                             }
                             else {
@@ -74,20 +82,40 @@ Euterpe.PluginSlur = (function() {
                             groups.push(_.clone(current[slur_id]));
 
                             current.length = 0;
+                            multiVoice = null;
                         }
                     }
                 }
             }
 
             for(var k=0; k < groups.length; k++) {
-                extra.push(this.makeSlur(groups[k], dirs[k]));
+                extra.push(this.makeSlur(groups[k], dirs[k], scale));
             }
 
             return root;
         },
 
+        /** @private
+         *
+         * Check is note is a part of multivoice column
+         *
+         * @param note
+         */
+        isMultiVoice: function(note) {
+            var parent = note.parent;
+
+            if(typeof parent === 'undefined' ||
+               parent.name !== 'Euterpe.Column') {
+                return false;
+            }
+
+            return !_.all(parent.items, function(obj) {
+                return obj.config.beamDirection === note.config.beamDirection;
+            });
+        },
+
         /** @private */
-        makeSlur: function(group, up) {
+        makeSlur: function(group, up, scale) {
             if(group.length < 2) {
                 throw "Slur group must contain two or more notes";
             }
@@ -96,9 +124,9 @@ Euterpe.PluginSlur = (function() {
             var lastId = group[group.length - 1].id;
             var self = this;
             var m = up ? -1: 1;
-            var curve = 25 * scale;
+            var curve = 23 * scale;
             var off = 2 * scale;
-            var noteHeadOff = 8 * scale;
+            var noteHeadOff = 10 * scale;
 
             return function(root, scale) {
                 var first = Euterpe.select("#"+firstId, root)[0];
@@ -145,8 +173,8 @@ Euterpe.PluginSlur = (function() {
                         var note = group[i];
                         var y = pEq(note.X);
 
-                        if((up && (note.Y > y - 15 * scale)) ||
-                           (!up && (note.Y - y) < 15 * scale)) {
+                        if((up && (note.Y > y - 10 * scale)) ||
+                           (!up && (note.Y - y) < 10 * scale)) {
                             vertexY1 -= 10 * m * scale;
                             vertexY2 = vertexY1 - off * m * scale;
                         }
