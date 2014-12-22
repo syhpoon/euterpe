@@ -20,24 +20,12 @@ Euterpe.global = {
     loglevel: Euterpe.const.LOG_INFO
 };
 
-/**
- * Plugins repository
- */
-Euterpe.plugins = {
-    plugins: [],
-
-    add: function() {
-        var self = this;
-
-        _.each(arguments, function(plugin) { self.plugins.push(plugin);});
-    },
-
-    fold: function(root, scale, extra) {
-        return _.reduce(this.plugins,
-            function(obj, plugin) {
-                return plugin.process(obj, scale, extra);
-            }, root);
-    }
+/** Fold plugins **/
+Euterpe.foldPlugins = function(plugins, root, scale, extra) {
+    return _.reduce(plugins,
+                    function(obj, plugin) {
+                        return plugin.process(obj, scale, extra);
+                    }, root);
 };
 
 /**
@@ -146,9 +134,10 @@ Euterpe.extend = function(base, sub, extend) {
  * @param {Number} width - Canvas width
  * @param {Number} scale - Scale factor
  * @param {String} containerId - Id of the 'canvas' element
+ * @param {Array} plugins - List of plugins to apply
  * @returns {Kinetic.Stage} - Stage object
  */
-Euterpe.render = function(root, x, y, width, scale, containerId) {
+Euterpe.render = function(root, x, y, width, scale, containerId, plugins) {
     Euterpe.initLog();
 
     Euterpe.global.root = root;
@@ -158,7 +147,7 @@ Euterpe.render = function(root, x, y, width, scale, containerId) {
     Euterpe.global.lineWidth = scale;
 
     var extra = [];
-    var processed = Euterpe.plugins.fold(root, scale, extra);
+    var processed = Euterpe.foldPlugins(plugins, root, scale, extra);
     var h = processed.getRealHeight(scale, true);
 
     y += h[0];

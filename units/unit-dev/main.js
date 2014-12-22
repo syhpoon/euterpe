@@ -3,7 +3,7 @@ var width = 1300;
 
 //Euterpe.global.loglevel = Euterpe.const.LOG_DEBUG;
 
-Euterpe.plugins.add(
+var plugins = [
     new Euterpe.PluginNoteBar(),
     new Euterpe.PluginAccidentals(),
     new Euterpe.PluginAboveBelow(),
@@ -15,7 +15,7 @@ Euterpe.plugins.add(
     }),
     new Euterpe.PluginSlur(),
     new Euterpe.PluginNoteText()
-);
+];
 
 var root = new Euterpe.Score({
     title: 'Sample unit',
@@ -1123,6 +1123,6 @@ var root = new Euterpe.Score({
     ]
 });
 
-var stage = Euterpe.render(root, 0, 0, width, scale, 'canvas');
+var stage = Euterpe.render(root, 0, 0, width, scale, 'canvas', plugins);
 
 stage.draw();

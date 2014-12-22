@@ -18,19 +18,10 @@ Euterpe.global = {
     loglevel: Euterpe.const.LOG_INFO
 };
 
-Euterpe.plugins = {
-    plugins: [],
-    add: function() {
-        var self = this;
-        _.each(arguments, function(plugin) {
-            self.plugins.push(plugin);
-        });
-    },
-    fold: function(root, scale, extra) {
-        return _.reduce(this.plugins, function(obj, plugin) {
-            return plugin.process(obj, scale, extra);
-        }, root);
-    }
+Euterpe.foldPlugins = function(plugins, root, scale, extra) {
+    return _.reduce(plugins, function(obj, plugin) {
+        return plugin.process(obj, scale, extra);
+    }, root);
 };
 
 Euterpe.getConfig = function(config, name, defaultVal) {
@@ -83,7 +74,7 @@ Euterpe.extend = function(base, sub, extend) {
     }
 };
 
-Euterpe.render = function(root, x, y, width, scale, containerId) {
+Euterpe.render = function(root, x, y, width, scale, containerId, plugins) {
     Euterpe.initLog();
     Euterpe.global.root = root;
     Euterpe.global.background = new Kinetic.Layer({});
@@ -91,7 +82,7 @@ Euterpe.render = function(root, x, y, width, scale, containerId) {
     Euterpe.global.linePadding = 13 * scale;
     Euterpe.global.lineWidth = scale;
     var extra = [];
-    var processed = Euterpe.plugins.fold(root, scale, extra);
+    var processed = Euterpe.foldPlugins(plugins, root, scale, extra);
     var h = processed.getRealHeight(scale, true);
     y += h[0];
     var totalHeight = y + h[1];
