@@ -55,7 +55,7 @@ Euterpe.Note = (function() {
     }
 
     Euterpe.extend(Euterpe.Node, Note, {
-        beamRealHeight: 35,
+        beamRealHeight: 45,
 
         /** @private */
         calculateSize: function() {
@@ -247,65 +247,55 @@ Euterpe.Note = (function() {
                     rendered.push(this.beam);
                 }
 
+                var flagOff = 0;
+
+                var flagF = function(fx, fy) {
+                    return new Kinetic.Shape(
+                       {
+                           sceneFunc: function(ctx) {
+                               ctx.beginPath();
+                               ctx.moveTo(fx, fy);
+                               ctx.bezierCurveTo(
+                                  fx + 6.2 * self.scale, fy + 11.8 * m * self.scale,
+                                  fx + 21.4 * self.scale, fy + 10.4 * m * self.scale,
+                                  fx + 10 * self.scale, fy + 26.4 * m * self.scale);
+
+                               ctx.bezierCurveTo(
+                                  fx + 19.6 * self.scale, fy + 12.4 * m * self.scale,
+                                  fx + 5.4 * self.scale, fy + 10.4 * m * self.scale,
+                                  fx - 0.2 * self.scale, fy + 7.4 * m * self.scale);
+
+                               ctx.closePath();
+
+                               ctx.fillStrokeShape(this);
+                           },
+                           fill: 'black',
+                           stroke: 'black',
+                           strokeWidth: 0
+                       });
+                };
+
                 // Check for flags
-                if(this.flags == 1) {
+                while(this.flags >= 1) {
                     var fx = this.beam.x();
-                    var fy, flag;
+                    var fy;
+                    var m = 1;
 
                     if(this.beamDir === 'up') {
-                        fy =  this.beam.y() - this.beamHeight;
-
-                        flag = new Kinetic.Shape({
-                            sceneFunc: function(ctx) {
-                                ctx.beginPath();
-                                ctx.moveTo(fx, fy);
-                                ctx.bezierCurveTo(
-                                    fx + 6.2 * self.scale, fy + 11.8 * self.scale,
-                                    fx + 21.4 * self.scale, fy + 10.4 * self.scale,
-                                    fx + 10 * self.scale, fy + 26.4 * self.scale);
-
-                                ctx.bezierCurveTo(
-                                    fx + 19.6 * self.scale, fy + 12.4 * self.scale,
-                                    fx + 5.4 * self.scale, fy + 10.4 * self.scale,
-                                    fx - 0.2 * self.scale, fy + 7.4 * self.scale);
-
-                                ctx.closePath();
-
-                                ctx.fillStrokeShape(this);
-                            },
-                            fill: 'black',
-                            stroke: 'black',
-                            strokeWidth: 0
-                        });
+                        fy = this.beam.y() - this.beamHeight;
                     }
-                    else if(this.beamDir === 'down') {
+                    else {
                         fy =  this.beam.y() + this.beamHeight;
-
-                        flag = new Kinetic.Shape({
-                            sceneFunc: function(ctx) {
-                                ctx.beginPath();
-                                ctx.moveTo(fx, fy);
-                                ctx.bezierCurveTo(
-                                    fx + 6.2 * self.scale, fy - 11.8 * self.scale,
-                                    fx + 21.4 * self.scale, fy - 10.4 * self.scale,
-                                    fx + 10 * self.scale, fy - 26.4 * self.scale);
-
-                                ctx.bezierCurveTo(
-                                    fx + 19.6 * self.scale, fy - 12.4 * self.scale,
-                                    fx + 5.4 * self.scale, fy - 10.4 * self.scale,
-                                    fx - 0.2 * self.scale, fy - 7.4 * self.scale);
-
-                                ctx.closePath();
-
-                                ctx.fillStrokeShape(this);
-                            },
-                            fill: 'black',
-                            stroke: 'black',
-                            strokeWidth: 0
-                        });
+                        m = -1;
                     }
 
-                    rendered.push(flag);
+                    fy += flagOff * m;
+
+                    rendered.push(flagF(fx, fy));
+
+                    this.flags -= 1;
+
+                    flagOff += 9 * self.scale;
                 }
             }
 

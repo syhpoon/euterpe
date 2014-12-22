@@ -36,6 +36,19 @@ var root = new Euterpe.Score({
                 new Euterpe.TrebleClef({}),
                 new Euterpe.TimeSignature(),
 
+                new Euterpe.Column(
+                   {
+                       items: [
+                           new Euterpe.Note(
+                              {
+                                  type: "quarter",
+                                  beamDirection: "down",
+                                  flags: 3,
+                                  location: 0
+                              })
+                       ]
+                   }),
+
                 new Euterpe.Bar({
                     rightType: "single"
                 })
