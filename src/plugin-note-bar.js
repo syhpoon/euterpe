@@ -81,12 +81,7 @@ Euterpe.PluginNoteBar = (function() {
             var sorted = _.clone(items);
 
             sorted.sort(function(a, b) {
-                if(dir === 1) {
-                    return a.config.location - b.config.location;
-                }
-                else {
-                    return b.config.location - a.config.location;
-                }
+                return (a.config.location - b.config.location) * dir;
             });
 
             if(sorted.length > 2) {
@@ -116,15 +111,16 @@ Euterpe.PluginNoteBar = (function() {
 
                 // Change the beam height of all intermediate notes
                 for(var i=0; i < ids.length; i++) {
-                    if(ids[i].id === first.id || ids[i].id === last.id) {
-                        continue;
-                    }
-
                     var base = Math.abs(Euterpe.getY(ids[i], scale, 0));
 
                     var firstY = getY(first, base);
                     var lastY = getY(last, base);
                     var slope = (lastY - firstY) / (lastX - firstX);
+
+                    // Make sure slope is not too steep
+                    if(Math.abs(slope) > 1.3) {
+                        slope = slope > 0 ? 1.3 : -1.3;
+                    }
 
                     var X = Euterpe.getDistance(row, ids[i], scale) +
                             ids[i].getLeftWidth(scale);
