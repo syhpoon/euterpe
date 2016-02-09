@@ -39,6 +39,7 @@ TPL = """\
 <script src="src/plugin-tab.js"></script>
 <script src="src/plugin-align.js"></script>
 <script src="src/plugin-slur.js"></script>
+<script src="src/plugin-tuplet.js"></script>
 
 <script src="src/helpers.js"></script>
 <script src="src/score.js"></script>
