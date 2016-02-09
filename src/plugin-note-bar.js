@@ -17,8 +17,11 @@ Euterpe.PluginNoteBar = (function() {
      *
      * @constructor
      * @param {Object} config - Configuration parameters
+     * @param {Number} [config.maxSlope=1.2] - Maximum slope to enforce
      */
     var PluginNoteBar = function(config) {
+        this.maxSlope = Euterpe.getConfig(config, "maxSlope", 1.2);
+
         PluginNoteBar.super.call(this, "Euterpe.PluginNoteBar", config);
     };
 
@@ -118,8 +121,8 @@ Euterpe.PluginNoteBar = (function() {
                     var slope = (lastY - firstY) / (lastX - firstX);
 
                     // Make sure slope is not too steep
-                    if(Math.abs(slope) > 1.3) {
-                        slope = slope > 0 ? 1.3 : -1.3;
+                    if(Math.abs(slope) > this.maxSlope) {
+                        slope = slope > 0 ? this.maxSlope : -this.maxSlope;
                     }
 
                     var X = Euterpe.getDistance(row, ids[i], scale) +
