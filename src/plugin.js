@@ -20,5 +20,18 @@ Euterpe.Plugin = (function() {
         return item;
     };
 
+    Plugin.prototype.AREA_TOP = "top";
+    Plugin.prototype.AREA_BOTTOM = "bottom";
+
+    Plugin.prototype.extraObject = function(obj, area, startX, endX, height) {
+        return {
+            obj: obj,
+            area: area,
+            startX: startX,
+            endX: endX,
+            height: height
+        };
+    };
+
     return Plugin;
 })();

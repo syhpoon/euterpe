@@ -7,7 +7,7 @@
 
 Euterpe.Node = (function() {
     var Node = function(name, config) {
-        this.id = Euterpe.randomString(20);
+        this.id = config.id || Euterpe.randomString(20);
         this.name = name;
         this.config = config || {};
 
@@ -57,7 +57,7 @@ Euterpe.Node = (function() {
     Node.prototype.clone = function() {
         var cloned =  new this.constructor(this.config);
 
-        cloned.parentContainer = this.parentContainer;
+        cloned.parent = this.parent;
 
         return cloned;
     };

@@ -42,9 +42,22 @@ var root = new Euterpe.Score({
                            new Euterpe.Note(
                               {
                                   type: "quarter",
-                                  beamDirection: "down",
-                                  flags: 3,
+                                  beamDirection: "up",
+                                  location: -1
+                              }),
+
+                           new Euterpe.Note(
+                              {
+                                  type: "quarter",
+                                  beamDirection: "up",
                                   location: 0
+                              }),
+
+                           new Euterpe.Note(
+                              {
+                                  type: "quarter",
+                                  beamDirection: "up",
+                                  location: 4
                               })
                        ]
                    }),

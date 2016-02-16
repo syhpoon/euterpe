@@ -147,8 +147,8 @@ Euterpe.render = function(root, x, y, width, scale, containerId, plugins) {
     Euterpe.global.lineWidth = scale;
 
     var extra = [];
-    var processed = Euterpe.foldPlugins(plugins, root, scale, extra);
-    var h = processed.getRealHeight(scale, true);
+    Euterpe.global.root = Euterpe.foldPlugins(plugins, root, scale, extra);
+    var h = Euterpe.global.root.getRealHeight(scale, true);
 
     y += h[0];
 
@@ -163,10 +163,10 @@ Euterpe.render = function(root, x, y, width, scale, containerId, plugins) {
     Euterpe.stage.add(Euterpe.global.foreground);
     Euterpe.stage.add(Euterpe.global.background);
 
-    var rendered = _.flatten(
-        processed.render(x + root.leftMargin * scale, y, scale));
-
     // Render main tree
+    var rendered = _.flatten(
+        Euterpe.global.root.render(x + root.leftMargin * scale, y, scale));
+
     for(var i=0; i < rendered.length; i++) {
         if(rendered[i].layer2draw === 'background') {
             Euterpe.global.background.add(rendered[i]);
@@ -179,7 +179,7 @@ Euterpe.render = function(root, x, y, width, scale, containerId, plugins) {
     // Render extra
     for(var j=0; j < extra.length; j++) {
         var f = extra[j];
-        var result = f(processed, scale);
+        var result = f(Euterpe.global.root, scale);
 
         if(typeof result === 'undefined') {
             continue;
@@ -283,7 +283,7 @@ Euterpe.replace = function(root, id, obj) {
         var item = root.items[i];
 
         if(item.id == id) {
-            obj.parentContainer = root;
+            obj.parent = root;
 
             root.items[i] = obj;
 
@@ -343,14 +343,15 @@ Euterpe.initLog = function() {
  */
 Euterpe.getDistance = function(container, item, scale) {
     var d = 0;
+    var id = typeof item === "string" ? item : item.id;
 
     for(var i=0; i < container.items.length; i++) {
         var obj = container.items[i];
 
-        if(obj.id === item.id) {
+        if(obj.id === id) {
             break;
         }
-        else if(obj.isContainer && Euterpe.select("#"+item.id, obj).length > 0) {
+        else if(obj.isContainer && Euterpe.select("#"+id, obj).length > 0) {
             d += obj.leftMargin * scale;
             d += Euterpe.getDistance(obj, item, scale);
 
@@ -532,5 +533,23 @@ Euterpe.bind = function(node, rendered) {
         _.each(rendered, function(obj) {
             obj.on(event, h(obj, node.config.on[event]));
         });
+    }
+};
+
+/**
+ * Find a node parent
+ *
+ * @param {Object} node
+ * @param {String} selector Parent name or id
+ * @returns {Object}
+ */
+Euterpe.getParent = function(node, selector) {
+    while(true) {
+        if(typeof node === "undefined" || node.name === selector) {
+            return node;
+        }
+        else {
+            node = node.parent;
+        }
     }
 };

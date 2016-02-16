@@ -21,6 +21,10 @@ Euterpe.Container = (function() {
         this.rightMargin = Euterpe.getConfig(config, "rightMargin", 0);
         this.leftItems = [];
         this.rightItems = [];
+        this.bottomHeight = {};
+        this.topItems = {};
+        this.topHeight = {};
+        this.bottomItems = {};
 
         // Try to populate items if were defined in config
         if(typeof config !== 'undefined' && _.isArray(config.items)) {
@@ -42,7 +46,19 @@ Euterpe.Container = (function() {
         },
 
         getRealHeight: function(scale, raw) {
-            return Euterpe.getRealHeight(this, this.items, scale, raw);
+            var itemsH = Euterpe.getRealHeight(this, this.items, scale, raw);
+
+            var topH = _.reduce(this.topHeight,
+                                function(acc, h) {return acc + h}, 0) * scale;
+
+            var bottomH = _.reduce(this.bottomHeight,
+                                function(acc, h) {return acc + h}, 0) * scale;
+
+            if(raw) {
+                return [itemsH[0] + topH, itemsH[1] + bottomH];
+            } else {
+                return itemsH + topH + bottomH;
+            }
         },
 
         isContainer: true,
@@ -110,7 +126,7 @@ Euterpe.Container = (function() {
          * @param item
          */
         prepend: function(item) {
-            item.parentContainer = this;
+            item.parent = this;
 
             this.items.unshift(item);
         },
@@ -162,30 +178,21 @@ Euterpe.Container = (function() {
                 Euterpe.log.debug(
                     new Array(Euterpe.ContainerDepth).join("  "), item);
 
+                item.parent = this;
+
+                width = item.getRealWidth(scale);
+
+                item.X = x + item.leftMargin * scale;
+                item.Y = y;
+
                 if(item.isContainer) {
-                    item.parentContainer = this;
-
-                    width = item.getRealWidth(scale);
-
-                    item.X = x + item.leftMargin * scale;
-                    item.Y = y;
-
                     acc.push(containercb(item, item.X, item.Y, scale, i));
-
-                    x += width;
                 }
                 else {
-                    item.parentContainer = this;
-
-                    width = item.getRealWidth(scale);
-
-                    item.X = x + item.leftMargin * scale;
-                    item.Y = y;
-
                     acc.push(itemcb(item, item.X, item.Y, scale, i));
-
-                    x += width;
                 }
+
+                x += width;
             }
 
             Euterpe.ContainerDepth -= 1;
@@ -195,6 +202,112 @@ Euterpe.Container = (function() {
 
         render: function(x, y, scale) {
             return Euterpe.baseRender(this.items, x, y, scale);
+        },
+
+        renderOob: function(x, y, scale) {
+            var rendered = [];
+
+            var h = this.getRealHeight(scale, true);
+            var top = this.doRenderOob(x, y - h[0], scale,
+                                       this.topItems,
+                                       this.topHeight);
+            var bottom = this.doRenderOob(x, y + h[1], scale,
+                                          this.bottomItems,
+                                          this.bottomHeight);
+
+            Array.prototype.push.apply(rendered, top);
+            Array.prototype.push.apply(rendered, bottom);
+
+            return rendered;
+        },
+
+        /** @private */
+        doRenderOob: function(x, y, scale, xItems, xHeight) {
+            var self = this;
+            var rendered = [];
+            var level = 0;
+
+            while(typeof(xItems[level]) !== 'undefined') {
+                var items = xItems[level];
+
+                var r = _.map(items, function(obj) {
+                    return obj.render(x, y, scale, self);
+                });
+
+                Array.prototype.push.apply(rendered, _.flatten(r));
+
+                y += xHeight[level++] * scale;
+            }
+
+            return rendered;
+        },
+
+        /**
+         * Add item to the top area
+         * @param oob Oob node
+         */
+        addTopOob: function(oob) {
+            this._addOob(oob, this.topItems, this.topHeight);
+        },
+
+        /**
+         * Add item to the bottom area
+         * @param oob Oob node
+         */
+        addBottomOob: function(oob) {
+            this._addOob(oob, this.bottomItems, this.bottomHeight);
+        },
+
+        /** @private */
+        _addOob: function(obj, xItems, xHeight) {
+            // Find a place for the item
+            var level = 0;
+
+            while(true) {
+                var items = xItems[level];
+
+                if(typeof items === 'undefined') {
+                    xItems[level] = [obj];
+                    xHeight[level] = obj.height;
+
+                    break;
+                } else {
+                    var fit = true;
+
+                    for(var i=0; i < items.length; i++) {
+                        var item = items[i];
+                        var objLen = obj.endX - obj.startX;
+                        var itemLen = item.endX - item.startX;
+                        var smaller, bigger;
+
+                        if(objLen < itemLen) {
+                            smaller = obj;
+                            bigger = item;
+                        } else {
+                            smaller = item;
+                            bigger = obj;
+                        }
+
+                        if(!(smaller.endX < bigger.startX ||
+                             smaller.startX > bigger.endX)) {
+                            fit = false;
+                            break;
+                        }
+                    }
+
+                    if(!fit) {
+                        level += 1;
+                    } else {
+                        items.push(obj);
+
+                        if(obj.height > xHeight[level]) {
+                           xHeight[level] = obj.height;
+                        }
+
+                        break;
+                    }
+                }
+            }
         }
     };
 

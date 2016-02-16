@@ -13,6 +13,7 @@ var plugins = [
         nodeMargin: 20,
         sideMargin: 5
     }),
+    new Euterpe.PluginTuplet(),
     new Euterpe.PluginSlur(),
     new Euterpe.PluginNoteText()
 ];
@@ -1119,7 +1120,169 @@ var root = new Euterpe.Score({
                           rightType: "single"
                       })
                ]
-           })
+           }),
+
+        new Euterpe.Row(
+            {
+                type: "measure",
+                items: [
+                    new Euterpe.Bar(
+                        {
+                            number: 7,
+                            rightType: "single"
+                        }),
+
+                    new Euterpe.Column({
+                        items: [
+                            new Euterpe.Note({
+                                beamDirection: "up",
+                                type: "quarter",
+                                flags: 1,
+                                bar: "begin",
+                                tuplet: "begin",
+                                tupletPosition: "top",
+                                tupletText: "3",
+                                location: 5
+                            })
+                        ]
+                    }),
+
+                    new Euterpe.Column({
+                        items: [
+                            new Euterpe.Note({
+                                beamDirection: "up",
+                                type: "quarter",
+                                flags: 1,
+                                bar: "cont",
+                                tuplet: "cont",
+                                location: 3
+                            })
+                        ]
+                    }),
+
+                    new Euterpe.Column({
+                        items: [
+                            new Euterpe.Note({
+                                beamDirection: "up",
+                                type: "quarter",
+                                flags: 1,
+                                bar: "end",
+                                tuplet: "end",
+                                location: 0.5
+                            })
+                        ]
+                    }),
+
+                    new Euterpe.Column({
+                        items: [
+                            new Euterpe.Note({
+                                beamDirection: "down",
+                                type: "quarter",
+                                flags: 1,
+                                bar: "begin",
+                                tuplet: "begin",
+                                tupletPosition: "top",
+                                tupletText: "WTF",
+                                location: 3
+                            })
+                        ]
+                    }),
+
+                    new Euterpe.Column({
+                        items: [
+                            new Euterpe.Note({
+                                beamDirection: "down",
+                                type: "quarter",
+                                flags: 1,
+                                bar: "cont",
+                                tuplet: "cont",
+                                location: 4
+                            })
+                        ]
+                    }),
+
+                    new Euterpe.Column({
+                        items: [
+                            new Euterpe.Note({
+                                beamDirection: "down",
+                                type: "quarter",
+                                flags: 1,
+                                bar: "end",
+                                tuplet: "end",
+                                location: 6
+                            })
+                        ]
+                    }),
+
+                    new Euterpe.Column({
+                        items: [
+                            new Euterpe.Note({
+                                id: "tuplet-1-1",
+                                beamDirection: "up",
+                                type: "quarter",
+                                tuplet: "begin",
+                                tupletId: "tuplet-1",
+                                tupletPosition: "top",
+                                tupletText: "3",
+                                location: 1
+                            }),
+
+                            new Euterpe.Note({
+                                id: "tuplet-2-1",
+                                beamDirection: "down",
+                                type: "quarter",
+                                tuplet: "begin",
+                                tupletId: "tuplet-2",
+                                tupletPosition: "bottom",
+                                tupletText: "3",
+                                location: 4
+                            })
+                        ]
+                    }),
+
+                    new Euterpe.Column({
+                        items: [
+                            new Euterpe.Note({
+                                id: "tuplet-1-2",
+                                beamDirection: "up",
+                                type: "quarter",
+                                tuplet: "end",
+                                tupletId: "tuplet-1",
+                                location: 1
+                            })
+                        ]
+                    }),
+
+                    new Euterpe.Column({
+                        items: [
+                            new Euterpe.Note({
+                                beamDirection: "up",
+                                type: "quarter",
+                                location: 3
+                            })
+                        ]
+                    }),
+
+                    new Euterpe.Column({
+                        items: [
+                            new Euterpe.Note({
+                                id: "tuplet-2-2",
+                                beamDirection: "down",
+                                type: "quarter",
+                                tuplet: "end",
+                                tupletId: "tuplet-2",
+                                location: 5
+                            })
+                        ]
+                    }),
+
+                    new Euterpe.Bar(
+                        {
+                            number: 8,
+                            rightType: "single"
+                        })
+                ]
+            })
     ]
 });
 

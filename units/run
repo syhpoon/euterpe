@@ -24,6 +24,7 @@ TPL = """\
 <script src="src/core.js"></script>
 <script src="src/container.js"></script>
 <script src="src/node.js"></script>
+<script src="src/oob.js"></script>
 <script src="src/row.js"></script>
 <script src="src/column.js"></script>
 <script src="src/bar.js"></script>
